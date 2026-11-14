@@ -110,14 +110,14 @@ def despeckle(db):
     return 10 * np.log10(box(10 ** (db / 10), LOOKS, np.mean))
 
 
-def reservoir_outline(hh_db_by_date):
+def reservoir_outline(hh_db_by_date, limit=OUTLINE_DB):
     usual = np.median(np.stack(hh_db_by_date), axis=0)
-    water = sieve((usual < OUTLINE_DB).astype("uint8"), MIN_WATER_PIXELS, connectivity=8)
+    water = sieve((usual < limit).astype("uint8"), MIN_WATER_PIXELS, connectivity=8)
     return box(water, SHORE_PIXELS, np.max).astype(bool)
 
 
-def water_area_km2(hh_db, outline):
-    return round(float(((hh_db < WATER_DB) & outline).sum() * PIXEL_KM2), 3)
+def water_area_km2(hh_db, outline, limit=WATER_DB):
+    return round(float(((hh_db < limit) & outline).sum() * PIXEL_KM2), 3)
 
 
 def write_png(path, grey):
