@@ -50,6 +50,7 @@ Run it first, and again whenever something looks wrong. It is read-only. It chec
 node scripts/control-hubas.mjs towns
 node scripts/control-hubas.mjs drive --click-town 0702211000 --window 10 --name sc-123-bogo
 node scripts/control-hubas.mjs drive --town "Carmen, Bohol" --name sc-123-carmen
+node scripts/control-hubas.mjs drive --nav Method --name sc-123-method
 ```
 
 `drive` opens a fresh headless Chromium (falls back to installed Chrome), loads the app, waits for the map and the town layer, then does the actions in this order:
@@ -59,12 +60,13 @@ node scripts/control-hubas.mjs drive --town "Carmen, Bohol" --name sc-123-carmen
 | `--click-town <psgc>` | Click the town shape on the map | MapLibre `window.hubasMap`, layer `soil`, feature id = psgc. The tool finds a point inside the shape that is not under the slider or the panel. |
 | `--town <psgc or "Name, Province">` | Pick the town in the dropdown | label `Town` |
 | `--window <n>` | Move the slider to window n | label `Window`; range text in `.slider output` |
+| `--nav <link>` | Click a link in the top bar, such as `Method` | `navigation` named `Main`; waits until that link has `aria-current="page"` |
 
 Two more options: `--viewport 375x812` gives the phone layout, and `--offline-basemap yes` replaces the outside base map with a plain background (the same stub as `app/e2e/offline-basemap.ts`) for runs without internet.
 
 It prints `steps`, the map label, the legend lines, the slider value and range, the selected town, every row of the town panel (`Rank`, `Soil water`, `Good pixels`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
 
-`drive` always opens `/`. For `/method` and anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
+`drive` always starts on `/`. Add `--nav Method` to open `/method`. It prints `path` and the page `heading`, and `window`, `town` and `panel` are `null` off the map. For anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
 
 ## Evidence
 
