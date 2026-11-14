@@ -4,12 +4,14 @@ The slider at the bottom moves through the 12-day NISAR windows, from late June 
 
 ## Sub-features
 
+- `slider-play` advances one window per second and stops after the final window; Pause holds the current window.
 - `slider-range` shows the start and end date of the selected window.
 - `slider-map` recolors the map for the new window.
 - `slider-panel` updates the open town panel for the new window.
 
 ## How to get to it (user POV)
 
+- Click Play or Pause beside the date range.
 - Drag the slider labeled `Window` at the bottom of the page.
 - Focus the slider and press the arrow keys.
 

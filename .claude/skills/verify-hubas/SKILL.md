@@ -98,4 +98,4 @@ node scripts/control-hubas.mjs down
 ## Known limits
 
 - The 101 towns are real, but their soil water and rank are empty until sc-71 and sc-120: every town is grey and `Not ranked`. `outlook.json` and the windows in `manifest.json` are still mock data. Get town IDs with `towns`. The Malinao Dam data in `targets.json` is already real.
-- Features from the plan that are not built yet (dam view, rice, explainer, sound, rank colors) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.
+- Features from the plan that are not built yet (dam view, rice, explainer, rank colors) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.
