@@ -50,6 +50,19 @@ the median of all dates. The comments in `targets.py` say how the limits were
 selected and what the count leaves out. The command needs the same Earthdata
 Login as the download.
 
+The noise of the water area comes from a second command. It reads the dam images
+in `app/public/data/targets/` and needs no login:
+
+```sh
+uv run python area_noise.py
+```
+
+It moves the water limit and the outline limit by 1 dB and calculates the area of
+each date again. A limit moves all dates in the same direction, so the noise of
+the change is how much the difference between the lowest and the highest date
+moves. It says if the change is larger than that noise.
+The result is in `docs/radar-causes-and-limits.md`.
+
 ## Town borders and population
 
 ```sh
