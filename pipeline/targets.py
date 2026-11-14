@@ -1,5 +1,6 @@
 import argparse
 import json
+from datetime import date
 from dataclasses import dataclass
 from tempfile import TemporaryDirectory
 from typing import Literal
@@ -18,7 +19,8 @@ from rasterio.warp import Resampling, reproject
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC = ROOT.parent / "app/public/data"
-COLLECTION = "NISAR_L2_GCOV_PROVISIONAL_V1"
+# The catalogue moved from the provisional to the validated collection after 2026-10-12.
+COLLECTIONS = ("NISAR_L2_GCOV_PROVISIONAL_V1", "NISAR_L2_GCOV_V1")
 GRID = "science/LSAR/GCOV/grids/frequencyA"
 TARGET = "malinao-dam"
 BOUNDS = (124.297, 9.8075, 124.337, 9.8475)
@@ -151,7 +153,7 @@ def mean_hv_db(values):
 
 
 def produce_target(spec, start, end, session, image_dir):
-    results = earthaccess.search_data(short_name=COLLECTION, bounding_box=spec.bounds, temporal=(start, end), count=-1)
+    results = [granule for name in COLLECTIONS for granule in earthaccess.search_data(short_name=name, bounding_box=spec.bounds, temporal=(start, end), count=-1)]
     scenes = select_scenes(results, spec)
     print(f"{spec.id}: {len(results)} granules, {len(scenes)} dates on track {spec.track}.", flush=True)
     images, hh, means = [], [], []
@@ -196,7 +198,8 @@ def main():
     args = parser.parse_args()
     manifest = json.loads((PUBLIC / "manifest.json").read_text())
     start = min(window["start"] for window in manifest["windows"])
-    end = max(window["end"] for window in manifest["windows"])
+    # The manifest windows are the soil-water periods. The radar series continues to the newest image.
+    end = date.today().isoformat()
     if not earthaccess.login(persist=False).authenticated:
         raise SystemExit("Earthdata authentication failed. targets.json is not changed.")
     session = earthaccess.get_fsspec_https_session()
