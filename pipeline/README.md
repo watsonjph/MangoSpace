@@ -103,6 +103,19 @@ The starting month is the month of the last NISAR image. Only the ratio goes
 from one sensor to the other. Run it again after `targets.py` or `history.py`
 changes the data. A scenario is what happened before; it is not a forecast.
 
+## Sentinel-1 image of the rice targets
+
+```sh
+uv run python compare_bands.py 2026-10-12
+```
+
+For each rice target the command finds the `OPERA_L2_RTC-S1_V1` file on track 61
+that is nearest in time to the given NISAR date. It writes one VV and one VH
+image with the bounds, size and grey scale of the NISAR images, and prints the
+mean dB values. Sentinel-1 pixels are 30 m, so a rice sample of about
+110 m × 155 m has only about 20 independent pixels. The images are not in
+`targets.json`: `history` has no event name for 2026.
+
 ## Town borders and population
 
 ```sh
