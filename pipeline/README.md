@@ -36,8 +36,9 @@ or quality flags; sc-48 covers those.
 uv run python targets.py
 ```
 
-The command finds the `NISAR_L2_GCOV_PROVISIONAL_V1` granules on track 003 that
-cover the dam, for the manifest's dates. It reads only the dam window from each
+The command finds the GCOV granules on track 003 that cover the dam, from the
+manifest's first date to today. It searches `NISAR_L2_GCOV_PROVISIONAL_V1` and
+`NISAR_L2_GCOV_V1`, because the dates after 2026-10-12 are only in the second. It reads only the dam window from each
 remote file, so it does not download the 5 GB granules. It writes one HH and one
 HV image for each date into `app/public/data/targets/` and replaces the `bounds`
 and `nisar` fields of the `malinao-dam` entry in `targets.json`. It does not
