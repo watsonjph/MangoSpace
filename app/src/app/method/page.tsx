@@ -47,12 +47,14 @@ export default function MethodPage() {
           Water area is calculated from dark HH pixels inside a reservoir outline, using a −10 dB
           threshold after speckle reduction, then multiplying the count by the pixel area.</p>
         <p>A smaller water area can have several causes, including less rain, more water use,
-          or dam work. The radar images alone do not establish the cause. We have not yet
-          established whether the small 2026 area changes exceed measurement noise.</p>
+          or dam work. The radar images alone do not establish the cause. The small 2026 dip
+          exceeds the measured sensitivity of the change to radar limits, but wind, speckle
+          and processing changes remain unmeasured.</p>
         <p>Compare dates from the same satellite track for each target. Different radar viewing angles
           can change the image. NISAR and Sentinel-1 can give different water areas in km²,
           so compare changes between sensors as percentages rather than absolute areas.</p>
-        <p>The dam and rice views are not available in this build. Rice sample measurements cover
+        <p>The Dam view shows the packaged NISAR images and estimated surface water area.
+          The rice views are not available in this build. Rice sample measurements cover
           small field parcels, not whole towns, and do not establish crop identity or growth stage.</p>
         <p>If historical scenarios are added, dashed lines will mean:
           “This is what happened before. It is not a forecast.”</p>

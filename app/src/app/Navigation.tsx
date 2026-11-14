@@ -11,6 +11,7 @@ export default function Navigation() {
       <a href="/" className="brand" aria-label="Hubas home">Hubas</a>
       <nav aria-label="Main">
         <a href="/" aria-current={pathname === "/" ? "page" : undefined}>Soil water</a>
+        <a href="/dam" aria-current={pathname === "/dam" ? "page" : undefined}>Dam</a>
         <a href="/method" aria-current={pathname === "/method" ? "page" : undefined}>Method</a>
       </nav>
     </header>

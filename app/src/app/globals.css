@@ -122,7 +122,45 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .panel dt { font-size: 12px; color: var(--muted); margin-top: 6px; }
 .panel dd { margin: 0; }
 
+.dam-page {
+  height: auto;
+  min-height: calc(100dvh - 58px);
+  max-width: 1120px;
+  margin: auto;
+  padding: 28px 24px 48px;
+  line-height: 1.6;
+}
+.dam-page h1 { margin: 4px 0 12px; font-size: clamp(30px, 5vw, 44px); line-height: 1.2; }
+.dam-page h2 { font-size: 21px; margin: 16px 0 10px; }
+.dam-page .eyebrow, .dam-note, .radar-figure figcaption { color: var(--muted); font-size: 13px; }
+.dam-controls { display: flex; flex-wrap: wrap; gap: 20px; align-items: end; margin: 24px 0; }
+.dam-controls > div { display: grid; gap: 4px; font-weight: 600; }
+.dam-controls select { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: white; }
+.dam-controls fieldset { display: flex; gap: 18px; border: 1px solid var(--line); border-radius: 6px; padding: 4px 12px 10px; margin: 0; }
+.dam-controls input { accent-color: var(--accent); }
+.dam-controls :focus-visible, .dam-values summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.dam-grid { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 32px; align-items: start; }
+.radar-figure { margin: 0; }
+.radar-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+.radar-figure figcaption { margin-top: 8px; }
+.selected-area { font-size: 32px; font-weight: 700; margin: 4px 0; line-height: 1.4; }
+.selected-area span { display: block; font-size: 14px; font-weight: 400; color: var(--muted); }
+.water-chart { display: block; width: 100%; height: auto; }
+.water-chart text { font: 16px system-ui, sans-serif; fill: var(--muted); }
+.dam-notice { border-left: 4px solid var(--accent); background: #e9f3f3; padding: 12px; font-size: 14px; }
+.dam-values { margin-top: 24px; }
+.dam-values summary { cursor: pointer; font-weight: 600; }
+.dam-values table { width: 100%; max-width: 540px; border-collapse: collapse; margin-top: 12px; }
+.dam-values caption { text-align: left; color: var(--muted); font-size: 13px; }
+.dam-values th, .dam-values td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); }
+.dam-values tbody th { font-weight: 400; }
+
 @media (max-width: 640px) {
+  .topbar { gap: 8px; padding: 0 12px; }
+  .topbar nav { gap: 0; }
+  .topbar nav a { padding: 10px 8px; }
+  .dam-page { display: block; padding: 24px 16px 40px; }
+  .dam-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   main {
     display: grid;
     grid-template-rows: minmax(360px, 56dvh) auto auto;
