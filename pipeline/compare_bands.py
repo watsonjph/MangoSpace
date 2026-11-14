@@ -36,11 +36,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("nisar_date", help="A NISAR date of the rice targets, for example 2026-10-12.")
     nisar_date = parser.parse_args().nisar_date
+    path = targets.PUBLIC / "targets.json"
+    entries = {entry["id"]: entry for entry in json.loads(path.read_text())}
+    rice = [spec for spec in targets.TARGETS.values() if spec.kind == "rice"]
+    for spec in rice:
+        if nisar_date not in entries[spec.id]["nisar"]["dates"]:
+            raise SystemExit(f"{nisar_date} is not a NISAR date of {spec.id}. targets.json is not changed.")
     if not earthaccess.login(persist=False).authenticated:
-        raise SystemExit("Earthdata authentication failed.")
-    entries = {entry["id"]: entry for entry in json.loads((targets.PUBLIC / "targets.json").read_text())}
+        raise SystemExit("Earthdata authentication failed. targets.json is not changed.")
     day = date.fromisoformat(nisar_date)
-    for spec in (spec for spec in targets.TARGETS.values() if spec.kind == "rice"):
+    pngs, updates = {}, {}
+    for spec in rice:
         results = earthaccess.search_data(short_name=history.OPERA, bounding_box=spec.bounds, temporal=(str(day - timedelta(6)), str(day + timedelta(6))), count=-1)
         s1_date, links = nearest([link for granule in results for link in granule.data_links()], nisar_date)
         db = {}
@@ -49,10 +55,18 @@ def main():
             with rasterio.open(history.CACHE / "opera" / Path(link).name) as image:
                 db[band] = targets.reproject_to_db(image.read(1), image.transform, image.crs.to_epsg(), spec.bounds, spec.size)
         targets.check_coverage(db, f"{spec.id} {s1_date}")
-        for band, values in db.items():
-            targets.write_png(targets.PUBLIC / f"targets/{spec.id}-s1-{s1_date}-{band}.png", targets.to_grey(values))
+        images = {band: f"targets/{spec.id}-s1-{s1_date}-{band}.png" for band in db}
+        pngs |= {images[band]: values for band, values in db.items()}
+        updates[spec.id] = {"cBand": {"date": s1_date, "nisarDate": nisar_date, "images": images, "meanDb": {band: targets.mean_hv_db(values) for band, values in db.items()}}}
         index = entries[spec.id]["nisar"]["dates"].index(nisar_date)
-        print(f"{spec.id}: NISAR {nisar_date} mean HV {entries[spec.id]['nisar']['meanHvDb'][index]} dB; Sentinel-1 {s1_date} mean VV {targets.mean_hv_db(db['vv'])} dB, mean VH {targets.mean_hv_db(db['vh'])} dB")
+        print(f"{spec.id}: NISAR {nisar_date} mean HV {entries[spec.id]['nisar']['meanHvDb'][index]} dB; Sentinel-1 {s1_date} mean dB {updates[spec.id]['cBand']['meanDb']}")
+    # Write only after every target is read, so a failure leaves no half-written run.
+    for image, values in pngs.items():
+        targets.write_png(targets.PUBLIC / image, targets.to_grey(values))
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(targets.update_targets(path, updates))
+    temporary.replace(path)
+    print(f"Wrote cBand of {', '.join(updates)} to {path}")
 
 
 if __name__ == "__main__":
