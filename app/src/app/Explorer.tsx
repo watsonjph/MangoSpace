@@ -25,6 +25,10 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
       container: container.current!,
       style: "https://tiles.openfreemap.org/styles/positron",
       bounds: manifest.bounds,
+      attributionControl: {
+        compact: false,
+        customAttribution: '<a href="https://maplibre.org/" target="_blank">MapLibre</a>',
+      },
     });
     const fitRegion = () => {
       const compact = window.matchMedia("(max-width: 640px)").matches;

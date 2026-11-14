@@ -44,4 +44,7 @@ From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature
 - Radar explainer: click a pixel for HH and HV (wave 2)
 - Sound (wave 2)
 - Then and now, "if it repeats" lines, L-band vs C-band, RADARSAT-1 (wave 3)
-- Method page
+
+## Method and navigation
+
+- [Method and navigation](./method-navigation.md): available routes, Gate 1 methods, source credits and visible map attribution.

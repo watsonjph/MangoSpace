@@ -78,7 +78,9 @@ function serve({ port }) {
   createServer((req, res) => {
     let p = path.join(OUT, decodeURIComponent(new URL(req.url, "http://x").pathname));
     if (!p.startsWith(OUT)) return res.writeHead(403).end();
-    if (existsSync(p) && statSync(p).isDirectory()) p = path.join(p, "index.html");
+    if (existsSync(p) && statSync(p).isDirectory()) {
+      p = existsSync(path.join(p, "index.html")) ? path.join(p, "index.html") : `${p}.html`;
+    }
     if (!existsSync(p) && existsSync(`${p}.html`)) p = `${p}.html`;
     if (!existsSync(p)) return res.writeHead(404).end("not found");
     res.writeHead(200, { "content-type": TYPES[path.extname(p)] ?? "application/octet-stream" });
