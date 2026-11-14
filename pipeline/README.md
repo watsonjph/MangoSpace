@@ -103,3 +103,17 @@ The sample windows include field bunds and can contain other vegetation.
 Optical reference imagery locates field parcels; it is not 2026 crop ground truth. The `rainMm`, `history`,
 and `scenarios` fields are left unchanged; remaining mock context is not measured
 rice data. This command does not change the app's data contract.
+
+
+## Radar explainer development checks
+
+```sh
+uv run python -I radar_limits.py > data/sc-141/results.json
+```
+
+This offline command samples the fixed optical-context points in
+`docs/fixtures/sc-141-reference-points.json` across the committed dam images.
+It prints the decoded HH/HV, original plan matches, and conservative provisional
+amplitude cues. It is not a validated land-cover classifier. The limits, plain
+result sentences, reference positions, and unresolved building validation are
+in [the sc-141 handoff](../docs/sc-141-radar-limits.md).
