@@ -55,7 +55,10 @@ in `app/public/data/targets/` and needs no login:
 
 ```sh
 uv run python area_noise.py
+uv run python area_noise.py --history
 ```
+
+The second form measures the Sentinel-1 events of the history with the limits of `history.py`.
 
 It moves the water limit and the outline limit by 1 dB and calculates the area of
 each date again. A limit moves all dates in the same direction, so the noise of

@@ -1,6 +1,9 @@
 import unittest
 
+import numpy as np
+
 import area_noise
+import targets
 from test_targets import LAND, scene
 
 
@@ -28,6 +31,18 @@ class AreaNoiseTest(unittest.TestCase):
         dry = scene()
         dry[100:200, 100:200] = LAND
         result = area_noise.area_noise([scene(), scene(), dry], ["a", "b", "c"])
+        self.assertTrue(result["changeIsLargerThanNoise"])
+
+
+class HistoryNoiseTest(unittest.TestCase):
+    def test_a_sentinel_1_event_that_loses_half_the_reservoir_is_larger_than_the_noise(self):
+        full = np.full((targets.SIZE, targets.SIZE), -9.0)
+        full[100:200, 100:300] = -20.0
+        dry = full.copy()
+        dry[100:200, 100:200] = -9.0
+        result = area_noise.history_noise([full, full, dry], ["a", "b", "c"])
+        self.assertEqual(result["lowestDate"], "c")
+        self.assertAlmostEqual(result["changeKm2"], 10_000 * targets.PIXEL_KM2, delta=0.01)
         self.assertTrue(result["changeIsLargerThanNoise"])
 
 

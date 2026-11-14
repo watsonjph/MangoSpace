@@ -40,13 +40,13 @@ def connected(dark, seed):
         water = grown
 
 
-def water_by_date(vv_db_by_date):
+def water_by_date(vv_db_by_date, core_db=CORE_DB, edge_db=EDGE_DB):
     """The shore moves in a dry year, so there is no fixed outline. Water is the dark area that
     touches the usual reservoir. Dry fields are also dark on VV; they are left out when they do not touch it."""
     smooth = [targets.despeckle(vv) for vv in vv_db_by_date]
-    seed = targets.reservoir_outline(smooth, CORE_DB)
-    cores = [connected(vv < CORE_DB, seed) for vv in smooth]
-    return [fill_holes((vv < EDGE_DB) & targets.box(core, targets.SHORE_PIXELS, np.max).astype(bool)) for vv, core in zip(smooth, cores)]
+    seed = targets.reservoir_outline(smooth, core_db)
+    cores = [connected(vv < core_db, seed) for vv in smooth]
+    return [fill_holes((vv < edge_db) & targets.box(core, targets.SHORE_PIXELS, np.max).astype(bool)) for vv, core in zip(smooth, cores)]
 
 
 def fill_holes(water):
