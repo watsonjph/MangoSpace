@@ -1,10 +1,12 @@
 """Measure how much the dam water area and its change between dates move when the dB limits move by 1 dB."""
 
+import argparse
 import json
 from statistics import mean, pstdev
 
 import rasterio
 
+import history
 import targets
 
 STEP_DB = 1.0
@@ -16,6 +18,19 @@ def area_noise(hh_db_by_date, dates):
     smooth = [targets.despeckle(hh) for hh in hh_db_by_date]
     outlines = {shift: targets.reservoir_outline(smooth, targets.OUTLINE_DB + shift) for shift in (-STEP_DB, 0, STEP_DB)}
     series = [[targets.water_area_km2(hh, outlines[outline], targets.WATER_DB + water) for hh in smooth] for water, outline in SETTINGS]
+    return summary(series, dates)
+
+
+def history_noise(vv_db_by_date, dates):
+    """The same measurement for a Sentinel-1 event: the edge limit and the core limit of history.py move by 1 dB."""
+    series = [
+        [round(float(water.sum() * targets.PIXEL_KM2), 3) for water in history.water_by_date(vv_db_by_date, history.CORE_DB + core, history.EDGE_DB + edge)]
+        for edge, core in SETTINGS
+    ]
+    return summary(series, dates)
+
+
+def summary(series, dates):
     areas = series[0]
     low, high = areas.index(min(areas)), areas.index(max(areas))
     # A limit moves the area of every date in the same direction, so the noise of the change is how much
@@ -40,13 +55,20 @@ def area_noise(hh_db_by_date, dates):
     }
 
 
+def read_db(path):
+    with rasterio.open(targets.PUBLIC / path) as png:
+        return targets.BLACK_DB - targets.BLACK_DB * png.read(1) / 255
+
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--history", action="store_true", help="Measure the Sentinel-1 events of the history and not the NISAR dates.")
     target = next(entry for entry in json.loads((targets.PUBLIC / "targets.json").read_text()) if entry["id"] == targets.TARGET)
-    images = []
-    for paths in target["nisar"]["images"]:
-        with rasterio.open(targets.PUBLIC / paths["hh"]) as png:
-            images.append(targets.BLACK_DB - targets.BLACK_DB * png.read(1) / 255)
-    print(json.dumps(area_noise(images, target["nisar"]["dates"]), indent=1))
+    if parser.parse_args().history:
+        result = {event["event"]: history_noise([read_db(path) for path in event["images"]], event["dates"]) for event in target["history"]}
+    else:
+        result = area_noise([read_db(paths["hh"]) for paths in target["nisar"]["images"]], target["nisar"]["dates"])
+    print(json.dumps(result, indent=1, ensure_ascii=False))
 
 
 if __name__ == "__main__":
