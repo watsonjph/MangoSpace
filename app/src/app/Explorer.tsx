@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Map as MapLibreMap, setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Lgu, Manifest, Outlook } from "../../lib/data";
+import { setMapSelection, useMapSearch } from "./map-selection";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -17,8 +18,11 @@ setWorkerUrl(new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url)
 export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manifest; lgus: Lgu[]; outlooks: Outlook[] }) {
   const container = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<MapLibreMap | null>(null);
-  const [windowIndex, setWindowIndex] = useState(0);
-  const [psgc, setPsgc] = useState("");
+  const search = new URLSearchParams(useMapSearch());
+  const requestedWindow = Number(search.get("window"));
+  const windowIndex = Number.isInteger(requestedWindow) && requestedWindow >= 0 && requestedWindow < manifest.windows.length
+    ? requestedWindow : 0;
+  const psgc = lgus.find(lgu => lgu.psgc === search.get("town"))?.psgc ?? "";
 
   useEffect(() => {
     const m = new MapLibreMap({
@@ -64,7 +68,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           ],
         },
       });
-      m.on("click", "soil", (e) => setPsgc(String(e.features?.[0]?.id ?? "")));
+      m.on("click", "soil", (e) => setMapSelection("town", String(e.features?.[0]?.id ?? "")));
       fitRegion();
       setMap(m);
     });
@@ -111,13 +115,13 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           min={0}
           max={manifest.windows.length - 1}
           value={windowIndex}
-          onChange={(e) => setWindowIndex(Number(e.target.value))}
+          onChange={(e) => setMapSelection("window", e.target.value)}
         />
       </form>
 
       <aside className="panel">
         <label htmlFor="town">Town</label>
-        <select id="town" value={psgc} onChange={(e) => setPsgc(e.target.value)}>
+        <select id="town" value={psgc} onChange={(e) => setMapSelection("town", e.target.value)}>
           <option value="">Select a town</option>
           {lgus.map((l) => (
             <option key={l.psgc} value={l.psgc}>{l.name}, {l.province}</option>

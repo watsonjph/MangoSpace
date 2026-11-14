@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import MapLink from "../MapLink";
 import lgus from "../../../public/data/lgus.json";
 import outlooks from "../../../public/data/outlook.json";
 
@@ -91,7 +91,7 @@ export default function MethodPage() {
             The map also shows these credits.</li>
         </ul>
       </section>
-      <p><Link href="/" prefetch={false}>Back to soil water</Link></p>
+      <p><MapLink href="/">Back to soil water</MapLink></p>
     </main>
   );
 }
