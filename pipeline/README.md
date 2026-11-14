@@ -63,6 +63,37 @@ the change is how much the difference between the lowest and the highest date
 moves. It says if the change is larger than that noise.
 The result is in `docs/radar-causes-and-limits.md`.
 
+## Malinao Dam history from Sentinel-1
+
+```sh
+uv run python history.py
+uv run python history.py --event 2023–24
+```
+
+The command replaces the `history` field of `malinao-dam` with one entry for
+each selected event. Each date gets one VV image (the same grid and grey scale
+as the NISAR images) and a water area. All images are relative track 61,
+descending.
+
+- 2015–16 comes from the HyP3 RTC jobs of sc-43. Their IDs are in
+  `history_jobs.json`. The command reads only the dam window from each remote
+  450 MB zip file. On a slow connection this takes more than an hour; the
+  windows stay in the ignored `pipeline/data/history/` directory.
+- 2023–24 comes from `OPERA_L2_RTC-S1_V1`, burst `T061-129894-IW2`, at 7 MB for
+  each date. OPERA has only the last 5 weeks of 2015–16. When a date has two
+  processing versions, the command keeps the newer one and prints its name.
+  For 2023–24 this is 14 Mar 2024 (processed on 16 Mar and on 9 Apr 2024).
+  The catalogue has no file for 27 Nov 2023 and 26 Jan 2024.
+
+The command needs an Earthdata Login that accepted the ASF data EULA and
+approved the HyP3 application.
+
+The shore moves in a dry year, so the history does not use the fixed outline of
+`targets.py`. Water is the dark area (VV below −14.5 dB after the 5 × 5 mean)
+that touches the usual reservoir, with its edge counted down to −11.7 dB. Bright
+patches with water on all sides are counted as water. Dry fields that touch the
+reservoir can be counted as water, and wind at the shore can hide water.
+
 ## Town borders and population
 
 ```sh
