@@ -154,7 +154,9 @@
     "2026-09-06",
     "2026-09-18",
     "2026-09-30",
-    "2026-10-12"
+    "2026-10-12",
+    "2026-10-24",
+    "2026-11-05"
    ],
    "images": [
     {
@@ -192,6 +194,14 @@
     {
      "hh": "targets/ubay-rice-2026-10-12-hh.png",
      "hv": "targets/ubay-rice-2026-10-12-hv.png"
+    },
+    {
+     "hh": "targets/ubay-rice-2026-10-24-hh.png",
+     "hv": "targets/ubay-rice-2026-10-24-hv.png"
+    },
+    {
+     "hh": "targets/ubay-rice-2026-11-05-hh.png",
+     "hv": "targets/ubay-rice-2026-11-05-hv.png"
     }
    ],
    "meanHvDb": [
@@ -203,7 +213,9 @@
     -20.045,
     -18.686,
     -18.043,
-    -17.204
+    -17.204,
+    -16.481,
+    -19.152
    ]
   },
   "rainMm": [
@@ -240,7 +252,9 @@
     "2026-09-06",
     "2026-09-18",
     "2026-09-30",
-    "2026-10-12"
+    "2026-10-12",
+    "2026-10-24",
+    "2026-11-05"
    ],
    "images": [
     {
@@ -278,6 +292,14 @@
     {
      "hh": "targets/pilar-rice-2026-10-12-hh.png",
      "hv": "targets/pilar-rice-2026-10-12-hv.png"
+    },
+    {
+     "hh": "targets/pilar-rice-2026-10-24-hh.png",
+     "hv": "targets/pilar-rice-2026-10-24-hv.png"
+    },
+    {
+     "hh": "targets/pilar-rice-2026-11-05-hh.png",
+     "hv": "targets/pilar-rice-2026-11-05-hv.png"
     }
    ],
    "meanHvDb": [
@@ -289,7 +311,9 @@
     -16.925,
     -15.606,
     -15.205,
-    -15.214
+    -15.214,
+    -15.808,
+    -19.678
    ]
   },
   "rainMm": [
