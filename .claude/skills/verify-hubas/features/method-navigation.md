@@ -27,7 +27,7 @@ The top bar links the soil water map and the Method page. The Method page explai
 ## Gotchas
 
 - `drive` starts on the map, so it needs the base map. Add `--offline-basemap yes` without internet. Playwright MCP has no stub.
-- Clicking `Soil water` while on the map reloads it. The selected town is cleared.
+- Clicking `Soil water` while on the map reloads it. The selected town and window reset (sc-297).
 - Dam, rice, rank and history navigation items must wait for their view stories to merge. sc-225's dam round trip cannot be completed before sc-104.
 - The page states when soil water has not been loaded or the outlook is mock. Do not describe placeholders as measured results.
 - NISAR passes are combined per 12-day window using all valid readings, per Gate 1; coverage does not mean scientific quality.
