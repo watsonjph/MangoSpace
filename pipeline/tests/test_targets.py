@@ -101,7 +101,7 @@ class RiceTargetTest(unittest.TestCase):
         transform = from_bounds(*spec.bounds, 2, 2)
         first = {"hh": np.full((2, 2), 0.1), "hv": np.full((2, 2), 0.01)}
         second = {"hh": np.full((2, 2), 0.1), "hv": np.full((2, 2), 0.1)}
-        with tempfile.TemporaryDirectory() as directory, patch.object(targets.earthaccess, "search_data", return_value=[Granule("20260626"), Granule("20260708")]), patch.object(targets.h5py, "File"), patch.object(targets, "read_window", side_effect=[(first, transform, 4326), (second, transform, 4326)]):
+        with tempfile.TemporaryDirectory() as directory, patch.object(targets.earthaccess, "search_data", side_effect=[[Granule("20260626")], [Granule("20260708")]]), patch.object(targets.h5py, "File"), patch.object(targets, "read_window", side_effect=[(first, transform, 4326), (second, transform, 4326)]):
             image_dir = Path(directory)
             result = targets.produce_target(spec, "2026-06-21", "2026-10-31", MagicMock(), image_dir)
             nisar = result["nisar"]

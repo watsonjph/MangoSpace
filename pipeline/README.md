@@ -36,8 +36,9 @@ or quality flags; sc-48 covers those.
 uv run python targets.py
 ```
 
-The command finds the `NISAR_L2_GCOV_PROVISIONAL_V1` granules on track 003 that
-cover the dam, for the manifest's dates. It reads only the dam window from each
+The command finds the GCOV granules on track 003 that cover the dam, from the
+manifest's first date to today. It searches `NISAR_L2_GCOV_PROVISIONAL_V1` and
+`NISAR_L2_GCOV_V1`, because the dates after 2026-10-12 are only in the second. It reads only the dam window from each
 remote file, so it does not download the 5 GB granules. It writes one HH and one
 HV image for each date into `app/public/data/targets/` and replaces the `bounds`
 and `nisar` fields of the `malinao-dam` entry in `targets.json`. It does not
@@ -48,6 +49,82 @@ reservoir, after a 5 × 5 pixel mean that removes speckle. The outline comes fro
 the median of all dates. The comments in `targets.py` say how the limits were
 selected and what the count leaves out. The command needs the same Earthdata
 Login as the download.
+
+The noise of the water area comes from a second command. It reads the dam images
+in `app/public/data/targets/` and needs no login:
+
+```sh
+uv run python area_noise.py
+uv run python area_noise.py --history
+```
+
+The second form measures the Sentinel-1 events of the history with the limits of `history.py`.
+
+It moves the water limit and the outline limit by 1 dB and calculates the area of
+each date again. A limit moves all dates in the same direction, so the noise of
+the change is how much the difference between the lowest and the highest date
+moves. It says if the change is larger than that noise.
+The result is in `docs/radar-causes-and-limits.md`.
+
+## Malinao Dam history from Sentinel-1
+
+```sh
+uv run python history.py
+uv run python history.py --event 2023–24
+```
+
+The command writes one entry of the `history` field of `malinao-dam` for each
+selected event and keeps the entries of the other events. Each date gets one VV
+image (the same grid and grey scale as the NISAR images) and a water area. All
+images are relative track 61, descending.
+
+- 2015–16 comes from the HyP3 RTC jobs of sc-43. Their IDs are in
+  `history_jobs.json`. The command reads only the dam window from each remote
+  450 MB zip file. On a slow connection this takes more than an hour; the
+  windows stay in the ignored `pipeline/data/history/` directory.
+- 2023–24 comes from `OPERA_L2_RTC-S1_V1`, burst `T061-129894-IW2`, at 7 MB for
+  each date. OPERA has only the last 5 weeks of 2015–16. When a date has two
+  processing versions, the command keeps the newer one and prints its name.
+  For 2023–24 this is 14 Mar 2024 (processed on 16 Mar and on 9 Apr 2024).
+  The catalogue has no file for 27 Nov 2023 and 26 Jan 2024.
+
+The command needs an Earthdata Login that accepted the ASF data EULA and
+approved the HyP3 application.
+
+The shore moves in a dry year, so the history does not use the fixed outline of
+`targets.py`. Water is the dark area (VV below −14.5 dB after the 5 × 5 mean)
+that touches the usual reservoir, with its edge counted down to −11.7 dB. Bright
+patches with water on all sides are counted as water. Dry fields that touch the
+reservoir can be counted as water, and wind at the shore can hide water.
+
+## Scenario lines of Malinao Dam
+
+```sh
+uv run python scenarios.py
+```
+
+The command reads `targets.json` only and needs no login. For each event in
+`history` it writes one entry of `scenarios`: the last NISAR water area,
+multiplied for each month to May by the change of the Sentinel-1 area in the
+past event (the mean of the month divided by the mean of the starting month).
+The starting month is the month of the last NISAR image. Only the ratio goes
+from one sensor to the other. Run it again after `targets.py` or `history.py`
+changes the data. A scenario is what happened before; it is not a forecast.
+
+## Sentinel-1 image of the rice targets
+
+```sh
+uv run python compare_bands.py 2026-10-12
+```
+
+For each rice target the command finds the `OPERA_L2_RTC-S1_V1` file on track 61
+that is nearest in time to the given NISAR date. It writes one VV and one VH
+image with the bounds, size and grey scale of the NISAR images, and prints the
+mean dB values, and writes them to `cBand` of each rice target in
+`targets.json`. It stops before it writes anything if the date is not a NISAR
+date, or if the nearest date has more than one burst. Sentinel-1 pixels are
+30 m, so a rice sample of about 110 m × 155 m has only about 20 independent
+pixels.
 
 ## Town borders and population
 

@@ -44,5 +44,36 @@ for (const id of ["ubay-rice", "pilar-rice"]) {
       if (expectedSize) expect(size, path).toEqual(expectedSize);
       else expectedSize = size;
     }
+
+    const cBand = target.cBand;
+    if (!cBand) throw new Error(`Missing Sentinel-1 pair: ${id}`);
+    expect(dates).toContain(cBand.nisarDate);
+    for (const value of Object.values(cBand.meanDb)) expect(Number.isFinite(value)).toBe(true);
+    for (const path of [cBand.images.vv, cBand.images.vh]) {
+      expect(path).toContain(cBand.date);
+      const imageResponse = await page.goto(`/data/${path}`);
+      expect(imageResponse?.ok(), path).toBe(true);
+      const size = await page.evaluate(() => [document.images[0].naturalWidth, document.images[0].naturalHeight]);
+      expect(size, path).toEqual(expectedSize);
+    }
   });
 }
+
+test("every Malinao Dam history date has a water area and a Sentinel-1 image that loads", async ({ page, request }) => {
+  const targets: Target[] = await (await request.get("/data/targets.json")).json();
+  const history = targets.find((target) => target.id === "malinao-dam")!.history ?? [];
+  expect(history.length).toBeGreaterThan(0);
+
+  for (const { event, dates, images, waterAreaKm2 } of history) {
+    expect(dates.length, event).toBeGreaterThan(0);
+    expect(dates, event).toEqual([...dates].sort());
+    expect(images, event).toHaveLength(dates.length);
+    expect(waterAreaKm2, event).toHaveLength(dates.length);
+    for (const path of images) {
+      expect(path).not.toContain("placeholder");
+      await page.goto(`/data/${path}`);
+      const size = await page.evaluate(() => [document.images[0].naturalWidth, document.images[0].naturalHeight]);
+      expect(size, path).toEqual([440, 440]);
+    }
+  }
+});
