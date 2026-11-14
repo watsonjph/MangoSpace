@@ -210,7 +210,8 @@ async function drive(o) {
     if (o.nav) {
       const link = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: o.nav, exact: true });
       if (!(await link.count())) throw new Error(`No top bar link "${o.nav}". Links: ${(await page.getByRole("navigation", { name: "Main" }).getByRole("link").allInnerTexts()).join(", ")}`);
-      await link.click();
+      // The top bar uses plain <a> links, so even a click on the current page is a full reload to wait for.
+      await Promise.all([page.waitForEvent("load"), link.click()]);
       await page.waitForFunction((name) => document.querySelector('nav [aria-current="page"]')?.textContent.trim() === name, o.nav);
       await page.waitForLoadState("networkidle");
       steps.push(`clicked ${o.nav} in the top bar`);
