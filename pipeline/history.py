@@ -94,6 +94,8 @@ def read_opera(start, end):
     for file in sorted(earthaccess.download(urls, CACHE / "opera")):
         stamp = Path(file).name.split("_")[4]
         date = f"{stamp[:4]}-{stamp[4:6]}-{stamp[6:8]}"
+        if date in scenes:
+            print(f"{date}: two processing versions, keeping the newer {Path(file).name}", flush=True)
         with rasterio.open(file) as image:
             scenes[date] = targets.reproject_to_db(image.read(1), image.transform, image.crs.to_epsg(), targets.BOUNDS, targets.SIZE)
     return dict(sorted(scenes.items()))
