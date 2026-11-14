@@ -89,6 +89,20 @@ that touches the usual reservoir, with its edge counted down to −11.7 dB. Brig
 patches with water on all sides are counted as water. Dry fields that touch the
 reservoir can be counted as water, and wind at the shore can hide water.
 
+## Scenario lines of Malinao Dam
+
+```sh
+uv run python scenarios.py
+```
+
+The command reads `targets.json` only and needs no login. For each event in
+`history` it writes one entry of `scenarios`: the last NISAR water area,
+multiplied for each month to May by the change of the Sentinel-1 area in the
+past event (the mean of the month divided by the mean of the starting month).
+The starting month is the month of the last NISAR image. Only the ratio goes
+from one sensor to the other. Run it again after `targets.py` or `history.py`
+changes the data. A scenario is what happened before; it is not a forecast.
+
 ## Town borders and population
 
 ```sh
