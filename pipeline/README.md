@@ -70,10 +70,10 @@ uv run python history.py
 uv run python history.py --event 2023–24
 ```
 
-The command replaces the `history` field of `malinao-dam` with one entry for
-each selected event. Each date gets one VV image (the same grid and grey scale
-as the NISAR images) and a water area. All images are relative track 61,
-descending.
+The command writes one entry of the `history` field of `malinao-dam` for each
+selected event and keeps the entries of the other events. Each date gets one VV
+image (the same grid and grey scale as the NISAR images) and a water area. All
+images are relative track 61, descending.
 
 - 2015–16 comes from the HyP3 RTC jobs of sc-43. Their IDs are in
   `history_jobs.json`. The command reads only the dam window from each remote
@@ -93,6 +93,20 @@ The shore moves in a dry year, so the history does not use the fixed outline of
 that touches the usual reservoir, with its edge counted down to −11.7 dB. Bright
 patches with water on all sides are counted as water. Dry fields that touch the
 reservoir can be counted as water, and wind at the shore can hide water.
+
+## Scenario lines of Malinao Dam
+
+```sh
+uv run python scenarios.py
+```
+
+The command reads `targets.json` only and needs no login. For each event in
+`history` it writes one entry of `scenarios`: the last NISAR water area,
+multiplied for each month to May by the change of the Sentinel-1 area in the
+past event (the mean of the month divided by the mean of the starting month).
+The starting month is the month of the last NISAR image. Only the ratio goes
+from one sensor to the other. Run it again after `targets.py` or `history.py`
+changes the data. A scenario is what happened before; it is not a forecast.
 
 ## Town borders and population
 
