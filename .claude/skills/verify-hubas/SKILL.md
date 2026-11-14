@@ -5,7 +5,7 @@ description: Launch, check and drive the Hubas web app (app/, Next.js static exp
 
 # Verify Hubas
 
-Hubas is one page: a MapLibre map of Cebu and Bohol with a soil water legend, a "Window" time slider, and a town panel. On a phone (640 px wide or less) the panel and slider sit below the map. All data comes from static files in `app/public/data`. There is no server code and no login.
+Hubas has two routes. `/` is a MapLibre map of Cebu and Bohol with a soil water legend, a "Window" time slider, and a town panel. `/method` explains the method and credits the sources. A top bar links them. On a phone (640 px wide or less) the panel and slider sit below the map. All data comes from static files in `app/public/data`. There is no server code and no login.
 
 The control tool is `app/scripts/control-hubas.mjs`. Run every command from `app/`. Each command prints JSON. Read `ok` first; on `false`, follow `hint`.
 
@@ -64,7 +64,7 @@ Two more options: `--viewport 375x812` gives the phone layout, and `--offline-ba
 
 It prints `steps`, the map label, the legend lines, the slider value and range, the selected town, every row of the town panel (`Rank`, `Soil water`, `Good pixels`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
 
-For something `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
+`drive` always opens `/`. For `/method` and anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
 
 ## Evidence
 
