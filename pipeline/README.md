@@ -126,6 +126,31 @@ date, or if the nearest date has more than one burst. Sentinel-1 pixels are
 30 m, so a rice sample of about 110 m × 155 m has only about 20 independent
 pixels.
 
+## Town soil water
+
+```sh
+uv run python soil.py
+```
+
+The command writes `soilMoisture` and `validShare` of each town in `lgus.json`,
+one value for each window of `manifest.json`, and the `generatedAt` time of the
+manifest. It does not change the windows, the rank or the other fields.
+
+- It uses all valid readings: the soil water and the quality flag are not the
+  fill value and not NaN. NISAR marks most of them as not recommended.
+- It combines all files that start in a window. A grid cell with more than one
+  valid reading gets their mean.
+- `soilMoisture` is the mean of the valid cells in the town, in m³/m³, or `null`.
+  `validShare` is the valid cells divided by all grid cells in the town. A cell
+  is in a town if its centre is inside the border.
+- A window with no file over a town leaves it `null`. The command does not fill it.
+
+If `download_sme2.py` saved a file in `pipeline/data/sme2/`, the command reads it.
+If not, it reads only the soil water, the flag and the cell centres from the
+remote file, about 2 MB of 80 MB, and keeps them in the ignored
+`pipeline/data/sme2-grids/`. It prints the number of files of each track in each
+window. It needs an Earthdata Login.
+
 ## Town borders and population
 
 ```sh
