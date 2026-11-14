@@ -35,7 +35,7 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Town panel](./town-panel.md): opening a town from the map or the dropdown and reading its rank, soil water, good pixels and PAGASA outlook.
 - [Method and navigation](./method-navigation.md): the top bar, the `/method` page, source credits and the map credits.
 
-- [Malinao Dam](./dam-view.md): selecting a NISAR date and band, estimated water area, possible causes and limits.
+- [Malinao Dam](./dam-view.md): selecting a NISAR date and band, estimated water area, historical percentage comparisons, dashed scenarios and measurement limits.
 
 ## Not built yet
 
@@ -45,4 +45,4 @@ From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature
 - Rice-field views at Ubay and Pilar (wave 2). Real same-track images and HV series for two selected paddy parcels are in `public/data/targets.json` and `public/data/targets/`, with a Sentinel-1 (C-band) VV and VH pair from 2026-10-13 next to the NISAR date 2026-10-12. No screen shows them yet. The dates of planting and growth are not ground-verified.
 - Radar explainer: click a pixel for HH and HV (wave 2)
 - Sound (wave 2)
-- Then and now, "if it repeats" lines, L-band vs C-band, RADARSAT-1 (wave 3)
+- L-band vs C-band and RADARSAT-1 views (wave 3)

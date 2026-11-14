@@ -56,7 +56,7 @@ export default function MethodPage() {
         <p>The Dam view shows the packaged NISAR images and estimated surface water area.
           The rice views are not available in this build. Rice sample measurements cover
           small field parcels, not whole towns, and do not establish crop identity or growth stage.</p>
-        <p>If historical scenarios are added, dashed lines will mean:
+        <p>The Dam view compares historical events as percentage changes. Its conditional scenario lines are dashed:
           “This is what happened before. It is not a forecast.”</p>
       </section>
 
