@@ -33,18 +33,15 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Soil water map](./soil-water-map.md): the map of Cebu and Bohol, town shapes colored by soil water, the "provisional" label, the legend, and the desktop and phone layouts.
 - [Time slider](./time-slider.md): moving through the 12-day windows and the map and panel following.
 - [Town panel](./town-panel.md): opening a town from the map or the dropdown and reading its rank, soil water, good pixels and PAGASA outlook.
+- [Method and navigation](./method-navigation.md): the top bar, the `/method` page, source credits and the map credits.
 
 ## Not built yet
 
 From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature file when each one lands.
 
 - Rank colors on the map (wave 2)
-- Malinao Dam view: radar image per date, water area chart, possible causes (wave 1). The data is in `public/data/targets.json` and `public/data/targets/` (real NISAR, 9 dates), but no screen shows it yet.
+- Malinao Dam view: radar image per date, water area chart, possible causes (wave 1). The data is in `public/data/targets.json` and `public/data/targets/`. It has real NISAR for 11 dates (2026-06-26 to 2026-11-05), the 2023–24 Sentinel-1 history and one scenario. No screen shows it yet.
 - Rice-field views at Ubay and Pilar (wave 2). Real same-track images and HV series for two selected paddy parcels are in `public/data/targets.json` and `public/data/targets/`; no screen shows them yet. The dates of planting and growth are not ground-verified.
 - Radar explainer: click a pixel for HH and HV (wave 2)
 - Sound (wave 2)
 - Then and now, "if it repeats" lines, L-band vs C-band, RADARSAT-1 (wave 3)
-
-## Method and navigation
-
-- [Method and navigation](./method-navigation.md): available routes, Gate 1 methods, source credits and visible map attribution.
