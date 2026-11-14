@@ -1,14 +1,14 @@
 [
  {
   "province": "Cebu",
-  "advisory": "MOCK advisory",
-  "issued": "2026-11-01",
-  "summary": "Mock text. Less rain than normal, Dec–May."
+  "advisory": "El Niño Advisory No. 6",
+  "issued": "2026-11-03",
+  "summary": "PAGASA expects below-normal to way-below-normal rainfall in November 2026. Heavy rain may still occur with tropical cyclones and other weather systems."
  },
  {
   "province": "Bohol",
-  "advisory": "MOCK advisory",
-  "issued": "2026-11-01",
-  "summary": "Mock text. Less rain than normal, Dec–May."
+  "advisory": "El Niño Advisory No. 6",
+  "issued": "2026-11-03",
+  "summary": "PAGASA expects below-normal to way-below-normal rainfall in November 2026. Heavy rain may still occur with tropical cyclones and other weather systems."
  }
 ]
