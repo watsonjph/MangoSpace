@@ -174,6 +174,24 @@ after `soil.py`.
 The rank says which towns to look at first. It is not a risk score and not a
 forecast.
 
+## Check of the soil water against SMAP
+
+```sh
+uv run python check_smap.py
+```
+
+Run it after `soil.py`: it uses the NISAR grids in `pipeline/data/sme2-grids/`.
+It compares them with `SPL3SMP_E`, the SMAP enhanced daily soil water on a 9 km
+grid, morning and evening passes. For each 12-day window and each SMAP cell it
+takes the mean of the SMAP readings and the mean of the NISAR cells of the towns
+inside the SMAP cell. A cell is compared if NISAR has data on half of it or more.
+It prints the mean difference, the root mean square difference and the
+correlation, for all pairs and for each window. It changes no file of the app.
+
+The command asks the Earthdata OPeNDAP server for only the cells of the region
+(a full SMAP file is 660 MB) and keeps each day in the ignored
+`pipeline/data/smap/`.
+
 ## Town borders and population
 
 ```sh

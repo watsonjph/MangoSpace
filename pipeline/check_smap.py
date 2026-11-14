@@ -1,10 +1,10 @@
 """Compare the NISAR soil water with SMAP over Cebu and Bohol, window by window."""
 
 import json
+import math
 from concurrent.futures import ThreadPoolExecutor
 
 import earthaccess
-import h5py
 import numpy as np
 
 import soil
@@ -15,33 +15,45 @@ FILL = -9999.0
 # A SMAP cell is compared only if NISAR has data on this share of it or more.
 MIN_SHARE = 0.5
 PASSES = (("Soil_Moisture_Retrieval_Data_AM", ""), ("Soil_Moisture_Retrieval_Data_PM", "_pm"))
+# EASE-Grid 2.0, global, 9 km: the number of columns, the size of a cell, the top edge, and the radius of the Earth.
+COLUMNS, CELL_M, TOP_M, EARTH_M = 3856, 9008.055, 7314540.83, 6378137
 
 
-def region_rows(session, url, bounds):
-    """The rows of the SMAP grid that cross the bounds. Each row is one latitude and the grid is the same in
-    all files, so one file gives the rows for all of them."""
-    with session.open(url, block_size=1024 * 1024, cache_type="blockcache") as file, h5py.File(file, "r") as product:
-        latitude = product[PASSES[0][0]]["latitude"][:]
-    rows = np.flatnonzero(np.any((latitude >= bounds[1]) & (latitude <= bounds[3]), axis=1))
-    if not rows.size:
-        raise SystemExit("The SMAP file has no reading in the latitudes of the bounds.")
-    # One row more on each side, for a day with no reading in the first or the last row.
-    return int(rows[0]) - 1, int(rows[-1]) + 2
+def grid_slice(bounds):
+    """The rows and columns of the 9 km EASE-Grid 2.0 that cover the bounds, with 2 cells more on each side.
+    The columns are equal steps of longitude. The rows are equal steps of the sine of the latitude."""
+    west, south, east, north = bounds
+    column = lambda lon: int((lon + 180) / (360 / COLUMNS))
+    row = lambda lat: int((TOP_M - EARTH_M * math.sin(math.radians(lat)) / math.cos(math.radians(30))) / CELL_M)
+    return f"[{row(north) - 2}:{row(south) + 2}][{column(west) - 2}:{column(east) + 2}]"
 
 
-def read_smap(name, url, session, bounds, rows):
-    """The SMAP soil water readings inside the bounds, as rows of (latitude, longitude, soil water)."""
+def parse(text):
+    """The arrays of a text answer of the server, by the name of the variable."""
+    arrays = {}
+    for line in text.splitlines():
+        if line.startswith("/"):
+            name, *values = line.split(",")
+            arrays.setdefault(name.split("[")[0].rsplit("/", 1)[1], []).append([float(value) for value in values])
+    return {name: np.array(rows) for name, rows in arrays.items()}
+
+
+def read_smap(name, url, session, bounds):
+    """The SMAP soil water readings inside the bounds, as rows of (latitude, longitude, soil water).
+    Only the cells of the region are asked from the server; a full file is 660 MB."""
     cached = CACHE / f"{name}.npy"
     if not cached.exists():
         west, south, east, north = bounds
-        band = slice(*rows)
+        cells = grid_slice(bounds)
+        wanted = ";".join(f"/{group}/{variable}{suffix}{cells}" for group, suffix in PASSES for variable in ("soil_moisture", "latitude", "longitude"))
+        answer = session.get(f"{url}.dap.csv", params={"dap4.ce": wanted}, timeout=300)
+        answer.raise_for_status()
+        arrays = parse(answer.text)
         readings = []
-        with session.open(url, block_size=256 * 1024, cache_type="blockcache") as file, h5py.File(file, "r") as product:
-            for group, suffix in PASSES:
-                data = product[group]
-                lat, lon, water = data[f"latitude{suffix}"][band], data[f"longitude{suffix}"][band], data[f"soil_moisture{suffix}"][band]
-                keep = (water != FILL) & (lat >= south) & (lat <= north) & (lon >= west) & (lon <= east)
-                readings.append(np.column_stack([lat[keep], lon[keep], water[keep]]))
+        for _, suffix in PASSES:
+            lat, lon, water = (arrays[f"{variable}{suffix}"] for variable in ("latitude", "longitude", "soil_moisture"))
+            keep = (water != FILL) & (lat >= south) & (lat <= north) & (lon >= west) & (lon <= east)
+            readings.append(np.column_stack([lat[keep], lon[keep], water[keep]]))
         np.save(cached, np.concatenate(readings))
         print(f"{name}: read", flush=True)
     return np.load(cached)
@@ -98,15 +110,14 @@ def main():
     results = earthaccess.search_data(short_name=SMAP, temporal=(windows[0]["start"], windows[-1]["end"]), bounding_box=bounds, count=-1)
     if not earthaccess.login(persist=False).authenticated:
         raise SystemExit("Earthdata authentication failed.")
-    session = earthaccess.get_fsspec_https_session()
+    session = earthaccess.get_requests_https_session()
     CACHE.mkdir(parents=True, exist_ok=True)
-    granules = sorted((granule["umm"]["GranuleUR"].split(".h5")[0], granule.data_links()[0]) for granule in results)
-    rows_file = CACHE / "rows.json"
-    if not rows_file.exists():
-        rows_file.write_text(json.dumps(region_rows(session, granules[0][1], bounds)))
-    rows = json.loads(rows_file.read_text())
-    with ThreadPoolExecutor(8) as pool:
-        days = list(pool.map(lambda granule: read_smap(*granule, session, bounds, rows), granules))
+    granules = sorted(
+        (granule["umm"]["GranuleUR"].split(".h5")[0], next(link["URL"] for link in granule["umm"]["RelatedUrls"] if "opendap" in link["URL"]))
+        for granule in results
+    )
+    with ThreadPoolExecutor(4) as pool:
+        days = list(pool.map(lambda granule: read_smap(*granule, session, bounds), granules))
     smap_days = [[] for _ in windows]
     for (name, _), readings in zip(granules, days):
         stamp = name.split("_")[5]
@@ -117,16 +128,21 @@ def main():
     lats = sorted({cell[0] for readings in days for cell in cell_means(readings)})
     half_lat = float(np.median(np.diff(lats))) / 2 if len(lats) > 1 else 0.04
     half_lon = 360 / 3856 / 2
-    pairs, by_window = [], []
+    # Only the cells of the towns of Cebu and Bohol: the bounds also have parts of Negros and Leyte.
+    masks = soil.town_masks(json.loads((soil.PUBLIC / "lgus.geojson").read_text(encoding="utf-8")), longitude, latitude)
+    towns = np.any(list(masks.values()), axis=0)
+    pairs, by_window, means = [], [], []
     for window, files, readings in zip(windows, nisar_files, smap_days):
-        nisar = soil.combine(files, longitude, latitude)
+        nisar = np.where(towns, soil.combine(files, longitude, latitude), np.nan)
         smap = cell_means(np.concatenate(readings)) if readings else {}
         found = [(value, water) for cell, water in smap.items() if (value := nisar_in_cell(nisar, longitude, latitude, cell, half_lat, half_lon)) is not None]
         pairs += found
-        by_window.append({"window": window["start"], "smapCells": len(smap), "pairs": len(found)})
+        by_window.append({"window": window["start"], "smapCells": len(smap), **(compare(found) if len(found) > 1 else {"pairs": len(found)})})
     if not pairs:
         raise SystemExit(f"No SMAP cell has a reading and NISAR coverage. SMAP cells by window: {by_window}")
-    print(json.dumps({"product": SMAP, "all": compare(pairs), "windows": by_window}, indent=1))
+    means = [(row["nisarMean"], row["smapMean"]) for row in by_window if "nisarMean" in row]
+    result = {"product": SMAP, "all": compare(pairs), "correlationOfWindowMeans": round(float(np.corrcoef(*np.array(means).T)[0, 1]), 2), "windows": by_window}
+    print(json.dumps(result, indent=1))
 
 
 if __name__ == "__main__":
