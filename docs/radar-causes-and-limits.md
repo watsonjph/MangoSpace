@@ -44,6 +44,31 @@ processing version after 12 October are not measured. In the file names, the
 is not checked. A wet season with little change is also a result. Calculate the
 numbers again when new dates arrive.
 
+## Water area in the past events: clear falls in March
+
+Story: [sc-151](https://app.shortcut.com/spacemangoes/story/151). Sentence for the
+dam view and the method page:
+
+> In the two past dry events, the Sentinel-1 water area of Malinao Dam was lowest
+> in March: it fell by about half in March 2016 and by about a fifth in March 2024,
+> then came back by May. These falls are much larger than the noise of the
+> measurement. The radar does not tell the cause.
+
+The numbers behind it, from `pipeline/area_noise.py --history`:
+
+| Event | Highest area | Lowest area | Change | Noise of the change | Noise of one area |
+| --- | --- | --- | --- | --- | --- |
+| 2015–16 | 0.806 km² (1 Feb 2016) | 0.375 km² (20 Mar 2016) | 0.431 km² (53% of the highest) | 0.027 km² | 0.076 km² |
+| 2023–24 | 0.775 km² (25 May 2024) | 0.590 km² (26 Mar 2024) | 0.185 km² (24% of the highest) | 0.011 km² | 0.053 km² |
+
+The method is the one of sc-235: the −11.7 dB edge limit or the −14.5 dB core limit
+of `history.py` moves by 1 dB, and the difference between the highest and the lowest
+date is calculated again. The script reads the committed images, which have steps of
+0.118 dB, so an area can differ from `targets.json` by up to 0.005 km². The noise is
+a sensitivity to the limits, not an error against a ground measurement. The two
+events come from different products (HyP3 and OPERA) that differ by about 5% in
+area, so compare the events as percentages.
+
 ## Scenario label
 
 This is what happened before. It is not a forecast.
