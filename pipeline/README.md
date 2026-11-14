@@ -108,7 +108,7 @@ rice data. This command does not change the app's data contract.
 ## Radar explainer development checks
 
 ```sh
-uv run python -I radar_limits.py > data/sc-141/results.json
+mkdir -p data/sc-141 && uv run python -I radar_limits.py > data/sc-141/results.json
 ```
 
 This offline command samples the fixed optical-context points in
