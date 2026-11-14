@@ -22,7 +22,9 @@ def scenario(event, last_date, last_area):
     if start not in past:
         raise SystemExit(f"{event['event']} has no image in month {start}. targets.json is not changed.")
     months, areas, month = [], [], last_date[:7]
-    while month[5:7] in past:
+    while True:
+        if month[5:7] not in past:
+            raise SystemExit(f"{event['event']} has no image in month {month[5:7]}. targets.json is not changed.")
         months.append(month)
         areas.append(round(last_area * past[month[5:7]] / past[start], 3))
         if month[5:7] == "05":
