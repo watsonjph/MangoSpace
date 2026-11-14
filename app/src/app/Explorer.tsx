@@ -27,6 +27,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
       bounds: manifest.bounds,
       attributionControl: {
         compact: false,
+        customAttribution: '<a href="https://maplibre.org/" target="_blank">MapLibre</a>',
       },
     });
     const fitRegion = () => {
