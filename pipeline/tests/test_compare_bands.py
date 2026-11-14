@@ -20,6 +20,12 @@ class NearestTest(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "No Sentinel-1 file"):
             compare_bands.nearest([link("T069", "20261012", "20261013", "VV")], "2026-10-12")
 
+    def test_stops_when_the_nearest_date_has_two_bursts(self):
+        urls = [link("T061", "20261013", "20261015", band) for band in ("VV", "VH")]
+        urls += [url.replace("129894-IW2", "129894-IW3") for url in urls]
+        with self.assertRaisesRegex(SystemExit, "more than one burst"):
+            compare_bands.nearest(urls, "2026-10-12")
+
 
 if __name__ == "__main__":
     unittest.main()

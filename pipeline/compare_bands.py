@@ -25,6 +25,10 @@ def nearest(urls, nisar_date):
         raise SystemExit(f"No Sentinel-1 file on track {TRACK} near {nisar_date}.")
     best = min((abs(day(url) - date.fromisoformat(nisar_date)), day(url)) for url in track)[1]
     newest = sorted(url for url in track if day(url) == best)
+    # The newest-version pick below sorts by name, which is only right inside one burst.
+    bursts = sorted({Path(url).name.split("_")[3] for url in newest})
+    if len(bursts) > 1:
+        raise SystemExit(f"{best} has more than one burst on track {TRACK}: {bursts}. targets.json is not changed.")
     return best.isoformat(), {band: [url for url in newest if url.endswith(f"_{band.upper()}.tif")][-1] for band in ("vv", "vh")}
 
 
