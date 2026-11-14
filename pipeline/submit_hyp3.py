@@ -27,7 +27,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--submit", action="store_true", help="Authenticate and submit jobs to HyP3 Basic")
     args = parser.parse_args()
-    scenes = select_scenes(json.loads((DIRECTORY / "candidates.json").read_text()))
+    candidates = DIRECTORY / "candidates.json"
+    if not candidates.exists():
+        raise SystemExit(f"{candidates} not found. Run `uv run python plan_hyp3.py` first.")
+    scenes = select_scenes(json.loads(candidates.read_text()))
     print(f"Plan: {len(scenes)} RTC jobs; track 61 descending; VV+VH; 30 m gamma0 power.", flush=True)
     if not args.submit:
         print("Run with --submit to enter Earthdata credentials locally and submit.")
