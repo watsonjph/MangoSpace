@@ -44,6 +44,18 @@ for (const id of ["ubay-rice", "pilar-rice"]) {
       if (expectedSize) expect(size, path).toEqual(expectedSize);
       else expectedSize = size;
     }
+
+    const cBand = target.cBand;
+    if (!cBand) throw new Error(`Missing Sentinel-1 pair: ${id}`);
+    expect(dates).toContain(cBand.nisarDate);
+    for (const value of Object.values(cBand.meanDb)) expect(Number.isFinite(value)).toBe(true);
+    for (const path of [cBand.images.vv, cBand.images.vh]) {
+      expect(path).toContain(cBand.date);
+      const imageResponse = await page.goto(`/data/${path}`);
+      expect(imageResponse?.ok(), path).toBe(true);
+      const size = await page.evaluate(() => [document.images[0].naturalWidth, document.images[0].naturalHeight]);
+      expect(size, path).toEqual(expectedSize);
+    }
   });
 }
 

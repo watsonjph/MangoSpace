@@ -372,7 +372,19 @@
    80,
    64,
    43
-  ]
+  ],
+  "cBand": {
+   "date": "2026-10-13",
+   "nisarDate": "2026-10-12",
+   "images": {
+    "vv": "targets/ubay-rice-s1-2026-10-13-vv.png",
+    "vh": "targets/ubay-rice-s1-2026-10-13-vh.png"
+   },
+   "meanDb": {
+    "vv": -5.592,
+    "vh": -14.933
+   }
+  }
  },
  {
   "id": "pilar-rice",
@@ -470,6 +482,18 @@
    80,
    64,
    43
-  ]
+  ],
+  "cBand": {
+   "date": "2026-10-13",
+   "nisarDate": "2026-10-12",
+   "images": {
+    "vv": "targets/pilar-rice-s1-2026-10-13-vv.png",
+    "vh": "targets/pilar-rice-s1-2026-10-13-vh.png"
+   },
+   "meanDb": {
+    "vv": -6.337,
+    "vh": -12.526
+   }
+  }
  }
 ]

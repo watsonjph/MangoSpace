@@ -117,9 +117,11 @@ uv run python compare_bands.py 2026-10-12
 For each rice target the command finds the `OPERA_L2_RTC-S1_V1` file on track 61
 that is nearest in time to the given NISAR date. It writes one VV and one VH
 image with the bounds, size and grey scale of the NISAR images, and prints the
-mean dB values. Sentinel-1 pixels are 30 m, so a rice sample of about
-110 m × 155 m has only about 20 independent pixels. The images are not in
-`targets.json`: `history` has no event name for 2026.
+mean dB values, and writes them to `cBand` of each rice target in
+`targets.json`. It stops before it writes anything if the date is not a NISAR
+date, or if the nearest date has more than one burst. Sentinel-1 pixels are
+30 m, so a rice sample of about 110 m × 155 m has only about 20 independent
+pixels.
 
 ## Town borders and population
 
