@@ -97,5 +97,5 @@ node scripts/control-hubas.mjs down
 
 ## Known limits
 
-- The 101 towns and their soil water are real (sc-71, all valid NISAR readings, provisional). The rank is empty until sc-120: every town is `Not ranked`. In windows 3 and 10 most Bohol towns are grey, because no Bohol track has a file there. `outlook.json` is still mock data. Get town IDs with `towns`. The Malinao Dam data in `targets.json` is already real.
+- The 101 towns and their soil water are real (sc-71, all valid NISAR readings, provisional). The rank is real too (sc-120): 99 towns have a rank from the window of 7 Oct; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey, because no Bohol track has a file there. `outlook.json` is still mock data. Get town IDs with `towns`. The Malinao Dam data in `targets.json` is already real.
 - Features from the plan that are not built yet (dam view, rice, explainer, sound, rank colors) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.
