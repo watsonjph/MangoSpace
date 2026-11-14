@@ -17,7 +17,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
     await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
 
     const navigation = page.getByRole("navigation", { name: "Main", exact: true });
-    await expect(navigation.getByRole("link")).toHaveText(["Soil water", "Dam", "Method"]);
+    await expect(navigation.getByRole("link")).toHaveText(["Soil water", "Dam", "Rice", "Method"]);
     await expect(navigation.getByRole("link", { name: "Soil water" })).toHaveAttribute("aria-current", "page");
     const header = await page.locator(".topbar").boundingBox();
     const map = await page.locator(".map").boundingBox();

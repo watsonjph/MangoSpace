@@ -1,6 +1,6 @@
 # Method and navigation
 
-The top bar links the soil water map, Malinao Dam and the Method page. The Method page explains the Gate 1 soil water rules, rank preview, radar limits and the sources and licences. Only available views appear in the navigation.
+The top bar links the soil water map, Dam and Rice views, and the Method page. The Method page explains the Gate 1 soil water rules, rank preview, radar limits and the sources and licences. Only available views appear in the navigation.
 
 ## Sub-features
 

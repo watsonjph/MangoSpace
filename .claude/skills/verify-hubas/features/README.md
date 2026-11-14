@@ -37,12 +37,13 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 
 - [Malinao Dam](./dam-view.md): selecting a NISAR date and band, estimated water area, historical percentage comparisons, dashed scenarios and measurement limits.
 
+- [Rice samples](./rice-view.md): selecting Ubay or Pilar, dates and radar bands, the HV series and field-validation limits.
+
 ## Not built yet
 
 From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature file when each one lands.
 
 - Rank colors on the map (wave 2)
-- Rice-field views at Ubay and Pilar (wave 2). Real same-track images and HV series for two selected paddy parcels are in `public/data/targets.json` and `public/data/targets/`, with a Sentinel-1 (C-band) VV and VH pair from 2026-10-13 next to the NISAR date 2026-10-12. No screen shows them yet. The dates of planting and growth are not ground-verified.
 - Radar explainer: click a pixel for HH and HV (wave 2)
 - Sound (wave 2)
 - L-band vs C-band and RADARSAT-1 views (wave 3)

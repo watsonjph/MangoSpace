@@ -5,7 +5,7 @@ description: Launch, check and drive the Hubas web app (app/, Next.js static exp
 
 # Verify Hubas
 
-Hubas has three routes. `/` is a MapLibre map of Cebu and Bohol with a soil water legend, a "Window" time slider, and a town panel. `/dam` shows Malinao Dam radar images, estimated water area and limits. `/method` explains the method and credits the sources. A top bar links them. On a phone (640 px wide or less) the panel and slider sit below the map. All data comes from static files in `app/public/data`. There is no server code and no login.
+Hubas has four routes. `/` is a MapLibre map of Cebu and Bohol with a soil water legend, a "Window" time slider, and a town panel. `/dam` shows Malinao Dam radar images, estimated water area and limits. `/rice` shows selected Ubay and Pilar parcel images and HV measurements. `/method` explains the method and credits the sources. A top bar links them. On a phone (640 px wide or less) the panel and slider sit below the map. All data comes from static files in `app/public/data`. There is no server code and no login.
 
 The control tool is `app/scripts/control-hubas.mjs`. Run every command from `app/`. Each command prints JSON. Read `ok` first; on `false`, follow `hint`.
 
@@ -98,4 +98,4 @@ node scripts/control-hubas.mjs down
 ## Known limits
 
 - The 101 towns are real, but their soil water and rank are empty until sc-71 and sc-120: every town is grey and `Not ranked`. `outlook.json` and the windows in `manifest.json` are still mock data. Get town IDs with `towns`. The Malinao Dam data in `targets.json` is already real.
-- Features from the plan that are not built yet (rice, explainer, sound, rank colors) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.
+- Features from the plan that are not built yet (explainer, sound, rank colors) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.

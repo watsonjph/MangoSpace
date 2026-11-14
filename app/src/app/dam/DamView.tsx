@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { Target } from "../../../lib/data";
 import ThenAndNow from "./ThenAndNow";
+import { RadarImage, ObservationChart } from "../components/RadarObservations";
 import { parseComparison, percentSeries } from "./comparison";
 
 type Band = keyof Target["nisar"]["images"][number];
@@ -47,47 +47,6 @@ function parseDam(value: unknown): Dam {
     };
   });
   return { track, observations, comparison: parseComparison(target.history, target.scenarios, observations.at(-1) ?? { date: "", area: null }) };
-}
-
-function RadarImage({ src, alt }: { src: string; alt: string }) {
-  const [failed, setFailed] = useState(false);
-  return failed
-    ? <p role="status">Radar image unavailable for this date and band.</p>
-    : <Image unoptimized loading="eager" src={src} alt={alt} width={440} height={440} onError={() => setFailed(true)} />;
-}
-
-function WaterChart({ observations, selectedDate }: { observations: Observation[]; selectedDate: string }) {
-  const measured = observations.flatMap((point) => point.area === null ? [] : [point.area]);
-  if (!measured.length) return <p>No water-area measurements available.</p>;
-  const first = observations[0];
-  const last = observations[observations.length - 1];
-  const start = Date.parse(first.date);
-  const duration = Date.parse(last.date) - start;
-  const max = Math.max(...measured, 0.1) * 1.1;
-  const x = (date: string) => duration ? 64 + (Date.parse(date) - start) / duration * 608 : 368;
-  const y = (area: number) => 220 - area / max * 176;
-  const path = observations.map((point, index) => {
-    if (point.area === null) return "";
-    return `${index === 0 || observations[index - 1].area === null ? "M" : "L"}${x(point.date)},${y(point.area)}`;
-  }).join(" ");
-
-  return (
-    <svg className="water-chart" viewBox="0 0 736 280" role="img" aria-label="Water area over time, in square kilometres. Exact values are in the table below.">
-      {[0, max / 2, max].map((tick) => <g key={tick}>
-        <line x1="64" x2="672" y1={y(tick)} y2={y(tick)} stroke="var(--line)" />
-        <text x="54" y={y(tick) + 5} textAnchor="end">{tick.toFixed(2)}</text>
-      </g>)}
-      <text x="64" y="22">Water area (km²)</text>
-      <path d={path} fill="none" stroke="var(--accent)" strokeWidth="3" />
-      {observations.map((point) => point.area !== null && <circle key={point.date}
-        cx={x(point.date)} cy={y(point.area)} r={point.date === selectedDate ? 7 : 4}
-        fill={point.date === selectedDate ? "var(--dry)" : "var(--accent)"}>
-        <title>{point.date}: {point.area.toFixed(3)} km²</title>
-      </circle>)}
-      <text x="64" y="252">{first.date}</text>
-      <text x="672" y="252" textAnchor="end">{last.date}</text>
-    </svg>
-  );
 }
 
 export default function DamView() {
@@ -159,7 +118,10 @@ export default function DamView() {
           <section className="current-area-card" aria-labelledby="water-area-heading">
             <h2 id="water-area-heading">Water area</h2>
             <p className="selected-area" aria-live="polite" data-testid="selected-water-area">{selected.area === null ? "Not available" : `${selected.area.toFixed(3)} km²`}<span>{selected.date}</span></p>
-            <WaterChart observations={load.dam.observations} selectedDate={date} />
+            <ObservationChart points={load.dam.observations.map(point => ({ date: point.date, value: point.area }))}
+              selectedDate={date} label="Water area over time, in square kilometres. Exact values are in the table below."
+              title="Water area (km²)" unit="km²" domain={[0, Math.max(0.1, ...load.dam.observations.flatMap(point => point.area === null ? [] : [point.area])) * 1.1]}
+              empty="No water-area measurements available." />
             <p className="dam-note">Areas are estimates from dark HH pixels after speckle reduction. Switching the image to HV does not change this HH-derived area.</p>
             <p className="dam-notice">Rain observations are not available yet. Placeholder rain values are not shown.</p>
           </section>

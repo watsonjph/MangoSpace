@@ -12,6 +12,7 @@ export default function Navigation() {
       <nav aria-label="Main">
         <a href="/" aria-current={pathname === "/" ? "page" : undefined}>Soil water</a>
         <a href="/dam" aria-current={pathname === "/dam" ? "page" : undefined}>Dam</a>
+        <a href="/rice" aria-current={pathname === "/rice" ? "page" : undefined}>Rice</a>
         <a href="/method" aria-current={pathname === "/method" ? "page" : undefined}>Method</a>
       </nav>
     </header>

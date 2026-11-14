@@ -54,7 +54,7 @@ export default function MethodPage() {
           can change the image. NISAR and Sentinel-1 can give different water areas in km²,
           so compare changes between sensors as percentages rather than absolute areas.</p>
         <p>The Dam view shows the packaged NISAR images and estimated surface water area.
-          The rice views are not available in this build. Rice sample measurements cover
+          The Rice view shows selected samples in Ubay and Pilar. Rice sample measurements cover
           small field parcels, not whole towns, and do not establish crop identity or growth stage.</p>
         <p>The Dam view compares historical events as percentage changes. Its conditional scenario lines are dashed:
           “This is what happened before. It is not a forecast.”</p>
