@@ -78,7 +78,10 @@ descending.
   450 MB zip file. On a slow connection this takes more than an hour; the
   windows stay in the ignored `pipeline/data/history/` directory.
 - 2023–24 comes from `OPERA_L2_RTC-S1_V1`, burst `T061-129894-IW2`, at 7 MB for
-  each date. OPERA has only the last 5 weeks of 2015–16.
+  each date. OPERA has only the last 5 weeks of 2015–16. When a date has two
+  processing versions, the command keeps the newer one and prints its name.
+  For 2023–24 this is 14 Mar 2024 (processed on 16 Mar and on 9 Apr 2024).
+  The catalogue has no file for 27 Nov 2023 and 26 Jan 2024.
 
 The command needs an Earthdata Login that accepted the ASF data EULA and
 approved the HyP3 application.
