@@ -113,7 +113,7 @@ def history_entry(event, scenes, image_dir):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Write the Sentinel-1 history of Malinao Dam. The selected events replace the history field.")
+    parser = argparse.ArgumentParser(description="Write the Sentinel-1 history of Malinao Dam. The selected events replace only their own entries.")
     parser.add_argument("--event", action="append", choices=JOBS, help="Event to write; repeat for more. Default: all.")
     events = parser.parse_args().event or list(JOBS)
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -125,7 +125,10 @@ def main():
         scenes |= {event: read_event(hyp3, JOBS[event]) for event in events if event not in OPERA_EVENTS}
     path = targets.PUBLIC / "targets.json"
     with TemporaryDirectory(prefix="history-images-", dir=targets.PUBLIC) as staging:
-        entries = [history_entry(event, scenes[event], Path(staging)) for event in sorted(scenes)]
+        dam = next(entry for entry in json.loads(path.read_text()) if entry["id"] == targets.TARGET)
+        kept = [entry for entry in dam.get("history", []) if entry["event"] not in scenes]
+        new = [history_entry(event, scenes[event], Path(staging)) for event in scenes]
+        entries = sorted(kept + new, key=lambda entry: entry["event"])
         contents = targets.update_targets(path, {targets.TARGET: {"history": entries}})
         for image in Path(staging).iterdir():
             image.replace(targets.PUBLIC / "targets" / image.name)

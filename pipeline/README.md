@@ -70,10 +70,10 @@ uv run python history.py
 uv run python history.py --event 2023–24
 ```
 
-The command replaces the `history` field of `malinao-dam` with one entry for
-each selected event. Each date gets one VV image (the same grid and grey scale
-as the NISAR images) and a water area. All images are relative track 61,
-descending.
+The command writes one entry of the `history` field of `malinao-dam` for each
+selected event and keeps the entries of the other events. Each date gets one VV
+image (the same grid and grey scale as the NISAR images) and a water area. All
+images are relative track 61, descending.
 
 - 2015–16 comes from the HyP3 RTC jobs of sc-43. Their IDs are in
   `history_jobs.json`. The command reads only the dam window from each remote
