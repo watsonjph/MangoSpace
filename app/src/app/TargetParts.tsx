@@ -50,7 +50,7 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
         ))}
         {months.map((month, i) => i % every === 0 && (
           <text key={month} x={x(month)} y={height - 6} textAnchor="middle">
-            {new Date(month).toLocaleDateString("en-GB", { month: "short", year: new Date(month).getUTCMonth() ? undefined : "2-digit", timeZone: "UTC" })}
+            {new Date(month).toLocaleDateString("en-GB", { month: "short", year: new Date(month).getUTCMonth() ? undefined : "numeric", timeZone: "UTC" })}
           </text>
         ))}
         {rain?.map(([time, mm]) => (
