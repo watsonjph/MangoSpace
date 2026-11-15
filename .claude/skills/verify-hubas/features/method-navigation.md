@@ -21,13 +21,13 @@ The top bar links the soil water map and the Method page. The Method page explai
 - **Open Method.** Run `node scripts/control-hubas.mjs drive --nav Method --name method` and again with `--viewport 375x812`. `path` is `/method`, `heading` is `Measured, not forecast`, and `consoleErrors` is empty. Read the page text in `aria.yml`, including the line explaining "Good pixels" as coverage.
 - **Wrong link.** `drive --nav Bogus` fails and lists the top bar links.
 - For the "Back to soil water" link and the map credits, use the spec below or the Playwright MCP.
-- Run the committed flow with `npx playwright test e2e/method-navigation.spec.ts`. It checks navigation, page reload, sources, map credits and console/network errors. Screenshots, video and traces go to test-results, not docs/proof.
+- Run the committed flows with `npx playwright test e2e/method-navigation.spec.ts e2e/map-selection.spec.ts`. The selection spec checks each return link, reloads, shared URLs and invalid selections on desktop and phone. The Method spec checks sources, map credits and console/network errors. Screenshots, video and traces go to test-results, not docs/proof.
 - Copy selected proof into docs/proof when opening a PR.
 
 ## Gotchas
 
 - `drive` starts on the map, so it needs the base map. Add `--offline-basemap yes` without internet. Playwright MCP has no stub.
-- Clicking `Soil water` while on the map reloads it. The selected town and window reset (sc-297).
+- Town and window travel in the URL. Reloading, top bar links and Back to soil water preserve the selection; invalid selections fall back to no town and window 0.
 - Dam, rice, rank and history navigation items must wait for their view stories to merge. sc-225's dam round trip cannot be completed before sc-104.
 - The page states when soil water has not been loaded or the outlook is mock. Do not describe placeholders as measured results.
 - NISAR passes are combined per 12-day window using all valid readings, per Gate 1; coverage does not mean scientific quality.
