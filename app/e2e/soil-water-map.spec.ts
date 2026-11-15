@@ -2,6 +2,7 @@ import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useOfflineBasemap } from "./offline-basemap";
+import { waitForLgusSource } from "./wait-for-lgus-source";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -54,7 +55,7 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
-  await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"));
+  await waitForLgusSource(page);
   await page.waitForFunction(() => window.hubasMap?.getFeatureState({ source: "lgus", id: "mock-bogo-city" }).sm === 0.34);
 
   const mapState = await page.evaluate(() => ({

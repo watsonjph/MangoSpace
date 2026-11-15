@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useOfflineBasemap } from "./offline-basemap";
+import { waitForLgusSource } from "./wait-for-lgus-source";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -8,7 +9,7 @@ declare global {
 
 // Screen position of mock Bogo City (124.0 E, 11.05 N), from the map's own projection.
 async function bogo(page: Page) {
-  await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"));
+  await waitForLgusSource(page);
   return page.evaluate(() => {
     const p = window.hubasMap!.project([124.0, 11.05]);
     return { x: p.x, y: p.y };
