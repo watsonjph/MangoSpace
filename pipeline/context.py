@@ -85,7 +85,9 @@ def main():
     for target in targets:
         target["rainMm"] = rain_before(target["nisar"]["dates"], daily, cells[target["id"]])
         print(target["id"], cells[target["id"]], target["rainMm"])
-    path.write_text(json.dumps(targets, indent=1, ensure_ascii=False) + "\n")
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(targets, indent=1, ensure_ascii=False) + "\n")
+    temporary.replace(path)
 
 
 if __name__ == "__main__":
