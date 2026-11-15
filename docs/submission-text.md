@@ -16,7 +16,7 @@ Hubas is a radar-data explorer for Cebu and Bohol. It maps NISAR soil water for 
 
 Local governments, water districts, farmers, teachers and the public need a way to read satellite water observations with their limits. Hubas responds to Dancing with the SARs by preparing NISAR radar measurements for a web experience focused on Cebu and Bohol.
 
-A visitor picks a town and a 12-day window and sees the town's soil water in m³/m³, the share of the town with good pixels, its rank preview and the official PAGASA outlook for its province. Gray means no good pixels in that window, not dry ground. A town is “Not ranked” when less than half of it has data. The rank preview ranks 99 of 101 towns and is not a drought risk score.
+A visitor picks a town and a 12-day window and sees the town's soil water in m³/m³, the share of the town with data (“Pixels with data”), its rank preview and the official PAGASA outlook for its province. Gray means less than half the town has data in that window, not dry ground. A town is “Not ranked” when less than half of it has data. The rank preview ranks 99 of 101 towns and is not a drought risk score.
 
 ### How it works
 
