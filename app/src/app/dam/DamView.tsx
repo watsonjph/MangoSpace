@@ -41,7 +41,7 @@ export default function DamView({ dam }: { dam: Target }) {
     </main>
   );
 
-  const observed: Line = { label: "Measured in 2026 (NISAR)", color: NOW, points: dates.map((date, i) => [Date.parse(date), areas[i]]) };
+  const observed: Line = { label: "2026, NISAR", color: NOW, points: dates.map((date, i) => [Date.parse(date), areas[i]]) };
   const rain = dam.rainMm.length === dates.length ? dates.map((date, i): [number, number] => [Date.parse(date), dam.rainMm[i]]) : undefined;
   const scenarios: Line[] = (dam.scenarios ?? []).filter((scenario) => scenario.waterAreaKm2.length).map((scenario) => ({
     label: scenario.label,
@@ -68,6 +68,11 @@ export default function DamView({ dam }: { dam: Target }) {
       frame: events.slice(0, i).reduce((count, earlier) => count + earlier.dates.length, 0) + event.low,
     })),
     { label: "Now", frame: past.length + last },
+  ];
+  const frameSrcs = [...past.map((item) => item.src), ...images.map((image) => image[band])];
+  const periods = [
+    ...events.map((event, i) => ({ label: event.event, index: events.slice(0, i).reduce((count, earlier) => count + earlier.dates.length, 0) })),
+    { label: "2026", index: past.length },
   ];
   const lowest = Math.min(...areas, ...scenarios.flatMap((line) => line.points.map(([, value]) => value)));
   // Each period is a share of its own first date: Sentinel-1 and NISAR areas do not compare in km².
@@ -96,9 +101,11 @@ export default function DamView({ dam }: { dam: Target }) {
 
       <h2>{scenarios.length ? "Measured this year, and if a past event repeats" : "Measured this year"}</h2>
       <Chart lines={[observed, ...scenarios]} domain={[Math.min(0.6, Math.floor(lowest * 10 - 2) / 10), 0.9]} format={(value) => value.toFixed(2)}
+        unit="km²" finding={{ time: Date.parse(dates[last]), text: "Steady in 2026" }}
         rain={rain} selected={old ? undefined : index} onSelect={(i) => setPicked(past.length + i)}
         label="Water area of Malinao Dam on each radar date of 2026, with lines for a repeat of two past dry events" />
       {scenarios.length > 0 && <p className="dam-note" data-testid="scenario-note">Dashed lines: this is what happened before. It is not a forecast. Each line applies past monthly-average changes to the latest NISAR area, so it can differ from the lowest reading on any one date of that event.</p>}
+      {events[0] && <p className="dam-note">Past event: {fmt(events[0].lowDate)}, {signed(events[0].fall)}. This historical reading is not a point on the 2026 chart.</p>}
 
       <h2>The radar image of each date</h2>
       <div className="dam-image">
@@ -106,6 +113,7 @@ export default function DamView({ dam }: { dam: Target }) {
           caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`} />
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
+            periods={periods} frames={frameSrcs}
             band={band} setBand={old ? undefined : setBand}>
             {past.length > 0 && (
               <div role="group" aria-label="Go to">

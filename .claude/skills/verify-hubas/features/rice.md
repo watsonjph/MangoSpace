@@ -11,6 +11,7 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 - Band picker (group `Radar band`): `HH` (default) and `HV`.
 - `rice-radar` shows the parcel image, enlarged. `rice-hv` shows the mean HV signal and `rice-rain` the rain in the 12 days before.
 - `rice-empty` replaces the page when no parcel has HV data.
+- Each HV line is named at its end and a note marks the 5 November fall. The axis shows dB once, and rain has its own numeric mm axis. Move a mouse or touch the chart to read both parcels at the nearest date.
 
 ## How to get to it (user POV)
 
@@ -34,3 +35,5 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 - The Sentinel-1 VV and VH pair in `targets.json` (`cBand`) is not on this page.
 - Wait for `data-ready=true` before moving the slider. A fill before hydration is lost.
 - The page has no map, but `drive` starts on `/`, which loads the base map. Add `--offline-basemap yes` without internet.
+
+- timelapse.spec.ts plays the entire Ubay sequence, checks every loaded frame and saves proof with PROOF=1.
