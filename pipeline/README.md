@@ -157,8 +157,9 @@ window. It needs an Earthdata Login.
 uv run python rank.py
 ```
 
-The command reads `lgus.json` only and fills `rank`. It needs no login. Run it
-after `soil.py`.
+The command reads `lgus.json`, fills `rank`, and writes the index of the window
+of the rank as `rankWindow` in `manifest.json`. It needs no login. Run it after
+`soil.py`.
 
 - The window of the rank is the latest window in which the most towns have data
   on half of their area or more. A window with no pass over Bohol is not used.
