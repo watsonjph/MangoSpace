@@ -66,6 +66,10 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 900, touch: fals
       await page.getByRole("button", { name: "HV", exact: true }).click();
       await expect(image).toHaveAttribute("src", `/data/${dam.nisar.images[dam.nisar.dates.indexOf("2026-10-12")].hv}`);
       await expect(result).toHaveText(reading, { useInnerText: true });
+      await page.getByRole("button", { name: "Color", exact: true }).click();
+      await expect(button).toHaveCount(0);
+      await expect(page.getByTestId("dam-radar")).toContainText("Switch to HH or HV to inspect a pixel.");
+      await page.getByRole("button", { name: "HV", exact: true }).click();
       await page.getByRole("slider", { name: "Date" }).fill(String(date - 1));
       await expect(result).toHaveText("");
       await expect(result).not.toContainText("Pixel (");
