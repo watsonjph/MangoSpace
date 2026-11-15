@@ -40,6 +40,7 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [The score](./score.md): the `/score` page, the soil, dam and rice staffs and the rain on one date axis, one playhead, and a sound voice for each staff.
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
 - Screen copy: `e2e/screen-copy.spec.ts` checks a numbered finding on every view, the data behind the fixed soil finding, and readable PAGASA dates. Canonical terms are in `docs/screen-terms.md`.
+- Opening: the map asks "What happened to water before El Niño?" and links to `/start`, which leads through the soil, the dam and the rice in order, each with a finding, a source and a link that keeps the town and window. `e2e/opening.spec.ts` follows it at 1280 and 390 px; `e2e/screen-copy.spec.ts` checks the data behind its numbers.
 
 ## Not built yet
 
@@ -54,4 +55,3 @@ From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature
 These were in the plan and were removed on purpose. Do not report them as missing.
 
 - Rank map colors and the `Rank` button (sc-126). Removed in sc-450: the rank is in the town panel only. See [Rank preview](./rank-preview.md).
-Opening: /start gives the soil, dam and rice sequence. opening.spec.ts checks each link, numeric/source sentences, selection retention and the first-screen question at 1280/390 px.
