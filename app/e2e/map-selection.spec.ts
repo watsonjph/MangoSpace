@@ -22,31 +22,36 @@ for (const width of [1280, 375]) {
       await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
       await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus") && window.hubasMap.loaded());
     };
-    const selection = async () => {
+    const selection = async (mode: "soil" | "rank" = "soil") => {
       await mapReady();
       await expect(page.getByLabel("Town")).toHaveValue("0702211000");
       await expect(page.getByLabel("Window", { exact: false })).toHaveValue("3");
       await expect(page.locator(".slider output")).toHaveText("2026-07-27 → 2026-08-08");
+      await expect(page.getByRole("button", { name: "Rank" })).toHaveAttribute("aria-pressed", String(mode === "rank"));
     };
     await mapReady();
     await page.getByLabel("Town").selectOption("0702211000");
     await page.getByLabel("Window", { exact: false }).fill("3");
     const navigation = page.getByRole("navigation", { name: "Main", exact: true });
-    await navigation.getByRole("link", { name: "Soil water" }).click();
-    await selection();
+    await navigation.getByRole("button", { name: "Rank" }).click();
+    await expect(page).toHaveURL(/mode=rank$/);
+    await selection("rank");
+    await navigation.getByRole("link", { name: "Method" }).click();
+    await expect(page.getByRole("heading", { name: "Measured, not forecast" })).toBeVisible();
     await page.reload();
-    await selection();
+    await page.getByRole("link", { name: "Soil water", exact: true }).click();
+    await selection("rank");
     for (const returnLink of ["Back to soil water", "Soil water", "Hubas home"]) {
       await navigation.getByRole("link", { name: "Method" }).click();
       await expect(page.getByRole("heading", { name: "Measured, not forecast" })).toBeVisible();
       await page.reload();
       await page.getByRole("link", { name: returnLink, exact: true }).click();
-      await selection();
+      await selection("rank");
     }
     const sharedUrl = page.url();
     await page.goto("/method");
     await page.goto(sharedUrl);
-    await selection();
+    await selection("rank");
     await page.screenshot({ path: test.info().outputPath(`selection-${width}.png`), fullPage: true });
     expect(errors).toEqual([]);
   });

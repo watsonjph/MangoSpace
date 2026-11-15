@@ -69,9 +69,9 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   expect(colorExpression).toContain("#b07a1f");
   expect(colorExpression).toContain("#c8c48a");
   expect(colorExpression).toContain("#0d6f7d");
-  await expect(page.getByTestId("soil-water-legend")).toContainText("0.10 m³/m³ · drier");
-  await expect(page.getByTestId("soil-water-legend")).toContainText("0.45 m³/m³ · wetter");
-  await expect(page.getByTestId("soil-water-legend")).toContainText("Gray: less than half the pixels have data");
+  await expect(page.getByTestId("map-legend")).toContainText("0.10 m³/m³ · drier");
+  await expect(page.getByTestId("map-legend")).toContainText("0.45 m³/m³ · wetter");
+  await expect(page.getByTestId("map-legend")).toContainText("Gray: less than half the pixels have data");
   await expect(page.getByText("provisional")).toBeVisible();
 
   await page.getByLabel("Window").fill("4");

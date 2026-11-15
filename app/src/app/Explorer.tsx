@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Map as MapLibreMap, setWorkerUrl } from "maplibre-gl";
+import { Map as MapLibreMap, setWorkerUrl, type ExpressionSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Lgu, Manifest, Outlook } from "../../lib/data";
-import { setMapSelection, useMapSearch } from "./map-selection";
+import { getMapMode, setMapSelection, useMapSearch } from "./map-selection";
 import SeasonSound from "./SeasonSound";
 import SoilWaterLine from "./SoilWaterLine";
 
@@ -13,6 +13,20 @@ declare global {
 }
 
 const SOURCE = "lgus";
+const SOIL_FILL_COLOR: ExpressionSpecification = [
+  "case",
+  ["any", ["==", ["feature-state", "sm"], null], ["<", ["coalesce", ["feature-state", "share"], 0], 0.5]],
+  "#9aa5a2",
+  ["interpolate", ["linear"], ["feature-state", "sm"], 0.1, "#b07a1f", 0.25, "#c8c48a", 0.45, "#0d6f7d"],
+];
+const RANK_FILL_COLOR: ExpressionSpecification = [
+  "case",
+  ["==", ["feature-state", "rankScore"], null], "#9aa5a2",
+  ["interpolate", ["linear"], ["feature-state", "rankScore"], 0, "#d4c5e8", 1, "#45236c"],
+];
+const RANK_OUTLINE_COLOR: ExpressionSpecification = [
+  "case", ["==", ["feature-state", "stable"], true], "#d98d00", "#12201d",
+];
 
 // MapLibre 6 looks for its worker next to its own module. The bundler moves the module, so point at the worker file.
 setWorkerUrl(new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url).href);
@@ -20,7 +34,9 @@ setWorkerUrl(new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url)
 export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manifest; lgus: Lgu[]; outlooks: Outlook[] }) {
   const container = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<MapLibreMap | null>(null);
-  const search = new URLSearchParams(useMapSearch());
+  const query = useMapSearch();
+  const mode = getMapMode(query);
+  const search = new URLSearchParams(query);
   const requestedWindow = Number(search.get("window"));
   const windowIndex = Number.isInteger(requestedWindow) && requestedWindow >= 0 && requestedWindow < manifest.windows.length
     ? requestedWindow : 0;
@@ -78,13 +94,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         paint: {
           "fill-opacity": 0.8,
           "fill-outline-color": "#12201d",
-          "fill-color": [
-            "case",
-            // Same 50% rule as the rank (sc-120): a town with less than half its pixels is not coloured.
-            ["any", ["==", ["feature-state", "sm"], null], ["<", ["coalesce", ["feature-state", "share"], 0], 0.5]],
-            "#9aa5a2",
-            ["interpolate", ["linear"], ["feature-state", "sm"], 0.1, "#b07a1f", 0.25, "#c8c48a", 0.45, "#0d6f7d"],
-          ],
+          "fill-color": SOIL_FILL_COLOR,
         },
       });
       m.on("click", "soil", (e) => setMapSelection("town", String(e.features?.[0]?.id ?? "")));
@@ -101,7 +111,18 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
 
   useEffect(() => {
     if (!map) return;
-    for (const lgu of lgus) map.setFeatureState({ source: SOURCE, id: lgu.psgc }, { sm: lgu.soilMoisture[windowIndex], share: lgu.validShare[windowIndex] });
+    map.setPaintProperty("soil", "fill-color", mode === "rank" ? RANK_FILL_COLOR : SOIL_FILL_COLOR);
+    map.setPaintProperty("soil", "fill-outline-color", mode === "rank" ? RANK_OUTLINE_COLOR : "#12201d");
+  }, [map, mode]);
+
+  useEffect(() => {
+    if (!map) return;
+    for (const lgu of lgus) map.setFeatureState({ source: SOURCE, id: lgu.psgc }, {
+      sm: lgu.soilMoisture[windowIndex],
+      share: lgu.validShare[windowIndex],
+      rankScore: lgu.rank == null ? null : 1 - (lgu.rank.position - 1) / Math.max(lgu.rank.of - 1, 1),
+      stable: lgu.rank?.stable ?? false,
+    });
   }, [map, lgus, windowIndex]);
 
   const win = manifest.windows[windowIndex];
@@ -115,14 +136,21 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
       <div ref={container} className="map" data-ready={map ? "true" : "false"} />
       <p className="tag">Cebu + Bohol · 12-day window · {manifest.sme2Status}</p>
 
-      <section className="legend" aria-labelledby="legend-title" data-testid="soil-water-legend">
-        <h2 id="legend-title">Soil water</h2>
-        <div className="legend-ramp" aria-hidden="true" />
-        <div className="legend-values">
-          <span>0.10 m³/m³ · drier</span>
-          <span>0.45 m³/m³ · wetter</span>
-        </div>
-        <p><span className="no-data-swatch" aria-hidden="true" /> Gray: less than half the pixels have data</p>
+      <section className="legend" aria-labelledby="legend-title" data-testid="map-legend">
+        <h2 id="legend-title">{mode === "rank" ? "Rank preview" : "Soil water"}</h2>
+        {mode === "rank" ? <>
+          <div className="rank-ramp" aria-hidden="true" />
+          <div className="legend-values"><span>Later on the list</span><span>Look here first</span></div>
+          <p><span className="no-data-swatch" aria-hidden="true" /> Not ranked</p>
+          <p><span className="stable-swatch" aria-hidden="true" /> Gold outline: stable in checks</p>
+        </> : <>
+          <div className="legend-ramp" aria-hidden="true" />
+          <div className="legend-values">
+            <span>0.10 m³/m³ · drier</span>
+            <span>0.45 m³/m³ · wetter</span>
+          </div>
+          <p><span className="no-data-swatch" aria-hidden="true" /> Gray: less than half the pixels have data</p>
+        </>}
       </section>
 
       <form className="slider" onSubmit={(e) => e.preventDefault()}>
@@ -155,10 +183,31 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           <h2 data-testid="town-name">{lgu.name}<span>{lgu.province}</span></h2>
           <SoilWaterLine name={lgu.name} values={lgu.soilMoisture} shares={lgu.validShare} windows={manifest.windows} index={windowIndex} />
           <dl>
-            <dt>Rank{rankWin && `, ${rankWin.start} → ${rankWin.end}`}</dt>
-            <dd data-testid="rank">{lgu.rank ? `#${lgu.rank.position} of ${lgu.rank.of}` : "Not ranked"}</dd>
+            <dt>Rank preview{rankWin && `, ${rankWin.start} → ${rankWin.end}`}</dt>
+            <dd className="rank-value" data-testid="rank">
+              {lgu.rank ? <>
+                <span>#{lgu.rank.position} of {lgu.rank.of} ranked · look here first</span>
+                {lgu.rank.stable && <><span> </span><span className="stable-mark" aria-label="Stable, stayed in the top 10 in every check">Stable</span></>}
+              </> : "Not ranked"}
+            </dd>
+            {lgu.rank && <>
+              <dt>Rank parts</dt>
+              <dd className="rank-parts">
+                {([
+                  ["dryness", "Dryness"],
+                  ["dryingSpeed", "Drying speed"],
+                  ["people", "People"],
+                ] as const).map(([key, label]) => {
+                  const percent = Math.round(lgu.rank!.parts[key] * 100);
+                  return <label className="rank-part" key={key}>
+                    <span>{label}</span><span>{percent}%</span>
+                    <progress max={100} value={percent} aria-label={`${label}: ${percent}%`} />
+                  </label>;
+                })}
+              </dd>
+            </>}
             <dt>Soil water</dt>
-            <dd data-testid="moisture">{moisture == null ? "No good pixels" : `${moisture.toFixed(3)} m³/m³`}</dd>
+            <dd data-testid="moisture">{moisture == null ? "No data" : `${moisture.toFixed(3)} m³/m³`}</dd>
             <dt>Pixels with data</dt>
             <dd>{Math.round(lgu.validShare[windowIndex] * 100)}%</dd>
             <dt>PAGASA, {lgu.province}</dt>
