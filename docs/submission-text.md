@@ -1,6 +1,6 @@
 # Hubas project-page copy
 
-Story: [sc-175](https://app.shortcut.com/spacemangoes/story/175). Updated 15 November 2026 against main at 59d3fb3 and the findings in sc-450. Draft for team review. Confirm the final deployed build and pending links before submission.
+Story: [sc-175](https://app.shortcut.com/spacemangoes/story/175). Updated 15 November 2026 against main at 7cd6c93 and the findings in sc-450. Draft for team review. Confirm the final deployed build and pending links before submission.
 
 ## Project name
 
@@ -30,13 +30,13 @@ The dam view shows NISAR HH/HV images, water area, GPM rain and Sentinel-1 histo
 - **Dam.** Malinao Dam's measured water area stayed between about 0.76 and 0.82 km² in 2026. In the Sentinel-1 histories, the area fell by about 52% in March 2016 and 19% in March 2024, relative to each event's starting area. These are changes within each sensor's series, not absolute area comparisons between sensors.
 - **Rice.** The HV signal of the two parcels rose by about 5–6 dB from June to its September or October peak, then fell by about 3–4 dB on 5 November. This is a measured radar change; no field observation confirms planting dates or growth stages.
 
-The planned musical experience treats each radar pass as a note. The sound redo (sc-499), shared timeline (sc-491) and combined three-part score (sc-572) are not claimed as shipped in this draft. Update this paragraph only after they are merged and verified.
+The app has a shared playback timeline and a Score page that plays the soil, dam and rice observations on their real dates. Sound is opt-in. The separate pentatonic instrument redo (sc-499) is in development and is not claimed as deployed here.
 
 ### What the observations can tell us
 
 The NISAR soil water data is provisional. We checked it against NASA SMAP: NISAR reads 0.07 m³/m³ lower on average, and the two agree on when the islands were wetter or drier (correlation 0.70 over 11 windows) but not on which towns are drier in a single window. SMAP therefore does not confirm the order of the rank preview, so we present it as a list of towns to check, not as a result. A smaller water area can have several causes, including less rain, more water use or dam work. Radar images alone do not establish the cause. Rice-parcel measurements do not establish crop identity or growth stage. Historical examples describe what happened before; they do not predict what happens next.
 
-The official PAGASA outlook is separate from our measurements. The app quotes El Niño Advisory No. 6, issued November 3, 2026: PAGASA expects below-normal to way-below-normal rainfall in November 2026 for Cebu and Bohol, and heavy rain may still occur with tropical cyclones and other weather systems.
+The official PAGASA outlook is separate from our measurements. The app quotes El Niño Advisory No. 6, issued 3 Nov 2026: PAGASA expects below-normal to way-below-normal rainfall in November 2026 for Cebu and Bohol, and heavy rain may still occur with tropical cyclones and other weather systems.
 
 ### What we hope to achieve
 
@@ -71,10 +71,16 @@ We used Claude and OpenAI Codex to assist with code, tests, documentation and su
 
 - Repository: [watsonjph/MangoSpace](https://github.com/watsonjph/MangoSpace).
 - Live app: [hubas.vercel.app](https://hubas.vercel.app/). Vercel deploys it from `main`. No login.
-- Public demo: **pending sc-201**. Use the required short video or slide deck; the repo link does not replace the demo.
+- Public demo: [seven-slide English PowerPoint](https://raw.githubusercontent.com/watsonjph/MangoSpace/e652704ad4dbfc13cea0dc08ec6d8c793474512f/docs/demo/Hubas-demo-final.pptx), prepared under sc-553 per the user request and packaged by sc-201. The last slide says Measured, not forecast and shows the live URL.
 - Team/project page: **pending URL**. No project-page publication has been performed.
 - Before submission: replace current-build caveats only when the corresponding feature/data is merged, deployed and verified; check every linked source/licence; have a second member read the complete page under sc-237.
 
 ## Claims check against the saved plan
 
-The three findings above follow sc-450's revised message. Dam, rice, history and conditional scenario views are on main. The town rank remains a provisional preview: SMAP does not validate its order. This draft does not claim drought prediction, a risk score, a proven physical cause, confirmed crop stages, or an implemented combined musical score. A second team member must reconcile these sentences with the plan's final “we say” column and the deployed build before publication.
+The three findings above follow sc-450's revised message. Dam, rice, history and conditional scenario views are on main. The town rank remains a provisional preview: SMAP does not validate its order. This draft does not claim drought prediction, a risk score, a proven physical cause, confirmed crop stages, or the unmerged sound redo. The combined Score page is shipped. A second team member must reconcile these sentences with the plan's final “we say” column and the deployed build before publication.
+
+## Submission review status
+
+The public app and immutable slide-demo links are present. The app is a deployed static export; measurements, not a forecast, remain the main claim. AI-assisted text/layout in the slide demo is visibly labelled. Actual radar observations are not AI-generated satellite data.
+
+Pending team checks: actual Space Apps project-page URL; final NISAR/SMAP granule versions from the pipeline owner; and a named second reader's reconciliation with the final plan and deployed build. No form was published or submitted. Do not claim the pending checks are complete.
