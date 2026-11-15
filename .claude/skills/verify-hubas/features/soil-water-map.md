@@ -1,13 +1,13 @@
 # Soil water map
 
-The map shows Cebu and Bohol on a light base map. Each town is a shape filled by its soil water for the selected window: dry is ochre, wet is teal, and a town with no good pixels is grey. A label at the top left says the data is provisional, and a legend below it explains the colors. The map frames both islands so the label, legend, panel and slider do not cover them.
+The map shows Cebu and Bohol on a light base map. Each town is a shape filled by its soil water for the selected window: dry is ochre, wet is teal, and a town with less than half its pixels with data is grey; the panel still shows its value. A label at the top left says the data is provisional, and a legend below it explains the colors. The map frames both islands so the label, legend, panel and slider do not cover them.
 
 ## Sub-features
 
 - `map-load` shows the base map and every town shape without console errors.
 - `map-colors` fills each town by its soil water in the selected window.
 - `map-label` shows "Cebu + Bohol · 12-day window · provisional".
-- `map-legend` shows "Soil water", "0.10 m³/m³ · drier", "0.45 m³/m³ · wetter" and "Gray: no good pixels".
+- `map-legend` shows "Soil water", "0.10 m³/m³ · drier", "0.45 m³/m³ · wetter" and "Gray: less than half the pixels have data".
 - `map-framing` keeps Cebu and Bohol in view and clear of the overlays, at desktop and phone widths.
 
 ## How to get to it (user POV)
@@ -21,7 +21,7 @@ Preconditions:
 
 - `doctor` reports `ok: true`, including `basemap`.
 
-- **Load.** Open the app. Run `node scripts/control-hubas.mjs drive --name map-load`. `steps` contains `map ready`, `consoleErrors` is empty, `label` is `Cebu + Bohol · 12-day window · provisional`, and `legend` is `["Soil water", "0.10 m³/m³ · drier", "0.45 m³/m³ · wetter", "Gray: no good pixels"]`.
+- **Load.** Open the app. Run `node scripts/control-hubas.mjs drive --name map-load`. `steps` contains `map ready`, `consoleErrors` is empty, `label` is `Cebu + Bohol · 12-day window · provisional`, and `legend` is `["Soil water", "0.10 m³/m³ · drier", "0.45 m³/m³ · wetter", "Gray: less than half the pixels have data"]`.
 - **See the towns.** Open `screenshot.png` in the evidence folder. Every town from `towns` is visible as a filled shape inside Cebu or Bohol, and no overlay covers either island.
 - **Phone layout.** Run `node scripts/control-hubas.mjs drive --viewport 375x812 --name map-phone`. The full-page `screenshot.png` shows the map on top, then the panel, then the slider.
 - **Grey towns.** Run `node scripts/control-hubas.mjs drive --window 3 --name map-w3`. A town with `null` at index 3 of `soilMoisture` in `lgus.json` shows grey. In windows 3 and 10, 29 of the 48 Bohol towns are grey; in the other windows no town is grey.

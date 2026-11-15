@@ -1,10 +1,11 @@
-import path from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Lgu, Manifest } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { saveProof } from "./proof";
 
 const BOGO = "0702211000";
 const TUBIGON = "0701245000";
+const MANDAUE = "0731300000";
 
 test("every town has real soil water and coverage for each window", async ({ request }) => {
   const lgus: Lgu[] = await (await request.get("/data/lgus.json")).json();
@@ -36,7 +37,6 @@ test("the map and the panel show a town with data and a town with no data in a w
   expect(bogo.soilMoisture[0]).not.toBeNull();
   expect(tubigon.soilMoisture[3]).toBeNull();
   const state = (psgc: string) => page.evaluate((id) => window.hubasMap!.getFeatureState({ source: "lgus", id }).sm, psgc);
-  const proof = (name: string) => page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", name), fullPage: true });
 
   await useOfflineBasemap(page);
   await page.setViewportSize({ width: 1280, height: 800 });
@@ -47,8 +47,20 @@ test("the map and the panel show a town with data and a town with no data in a w
   await page.getByLabel("Town").selectOption(BOGO);
   await expect(page.getByTestId("moisture")).toHaveText(`${bogo.soilMoisture[0]!.toFixed(3)} m³/m³`);
   await expect.poll(() => state(BOGO)).toBe(bogo.soilMoisture[0]);
+  // A town with less than half its pixels is grey on the map, but the panel still gives its value.
+  const mandaue = lgus.find((l) => l.psgc === MANDAUE)!;
+  expect(mandaue.soilMoisture[0]).not.toBeNull();
+  expect(mandaue.validShare[0]).toBeLessThan(0.5);
+  const fill = (psgc: string) =>
+    page.evaluate((id) => {
+      const layer = window.hubasMap!.queryRenderedFeatures({ layers: ["soil"] }).find((f) => f.id === id)?.layer;
+      return layer?.type === "fill" ? String(layer.paint?.["fill-color"]) : undefined;
+    }, psgc);
+  const grey = "rgba(154,165,162,1)"; // #9aa5a2 in Explorer.tsx
+  await expect.poll(() => fill(MANDAUE)).toBe(grey);
+  expect(await fill(BOGO)).not.toBe(grey);
   await page.waitForFunction(() => window.hubasMap!.loaded());
-  await proof("sc-71-map-window-1.png");
+  await saveProof(page, "sc-71-map-window-1.png");
 
   await page.getByLabel("Window").fill("3");
   await page.getByLabel("Town").selectOption(TUBIGON);
@@ -56,7 +68,7 @@ test("the map and the panel show a town with data and a town with no data in a w
   await expect.poll(() => state(TUBIGON)).toBeNull();
   await expect.poll(() => state(BOGO)).toBe(bogo.soilMoisture[3]);
   await page.waitForFunction(() => window.hubasMap!.loaded());
-  await proof("sc-71-map-window-4.png");
+  await saveProof(page, "sc-71-map-window-4.png");
 });
 
 test("the rank is a full order of the towns with data, and the panel shows it", async ({ page, request }) => {
@@ -91,7 +103,7 @@ test("the rank is a full order of the towns with data, and the panel shows it", 
   const rankWin = manifest.windows[manifest.rankWindow!];
   await expect(page.locator(".panel dt").first()).toHaveText(`Rank, ${rankWin.start} → ${rankWin.end}`);
   await page.waitForFunction(() => window.hubasMap!.loaded());
-  await page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-120-rank-first-town.png"), fullPage: true });
+  await saveProof(page, "sc-120-rank-first-town.png");
 });
 
 test("the method page gives the SMAP check numbers", async ({ page }) => {
@@ -102,5 +114,5 @@ test("the method page gives the SMAP check numbers", async ({ page }) => {
   await expect(check).toContainText("correlation 0.70");
   await expect(page.getByTestId("rank-smap")).toContainText("SMAP does not confirm which towns are drier");
   await check.scrollIntoViewIfNeeded();
-  await page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-163-method-smap.png") });
+  await saveProof(page, "sc-163-method-smap.png", { fullPage: false });
 });
