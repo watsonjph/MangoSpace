@@ -86,8 +86,8 @@ for (const width of [320, 340, 360]) {
     await page.setViewportSize({ width, height: 700 });
     await page.goto("/?town=0702211000");
     await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
-    for (const window of ["0", "5"]) {
-      await page.getByLabel("Window").fill(window);
+    for (const index of ["0", "5"]) {
+      await page.getByLabel("Window").fill(index);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
     }
   });
