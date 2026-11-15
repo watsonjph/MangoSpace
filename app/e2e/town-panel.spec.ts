@@ -29,6 +29,22 @@ test("the panel opens for each town with its name, province and soil water line"
   expect(errors).toEqual([]);
 });
 
+// A 1080p laptop at 150% scaling. The tallest panel (a caption for open circles) must not cover the map attribution.
+test("on a short screen the panel scrolls and the attribution stays visible", async ({ page }) => {
+  await useOfflineBasemap(page);
+  await page.setViewportSize({ width: 1280, height: 650 });
+  await page.goto("/");
+  await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
+  await page.getByLabel("Town").selectOption(MANDAUE);
+  const panel = await page.locator(".panel").boundingBox();
+  const attribution = await page.locator(".maplibregl-ctrl-attrib").boundingBox();
+  expect(panel!.y + panel!.height).toBeLessThanOrEqual(attribution!.y);
+  const sound = page.getByRole("button", { name: "Hear the season" });
+  await sound.scrollIntoViewIfNeeded();
+  await expect(sound).toBeInViewport();
+  expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight)).toBe(true);
+});
+
 test("the line marks the selected window and leaves a gap where a window has no data", async ({ page, request }) => {
   const lgus: Lgu[] = await (await request.get("/data/lgus.json")).json();
   const manifest: Manifest = await (await request.get("/data/manifest.json")).json();

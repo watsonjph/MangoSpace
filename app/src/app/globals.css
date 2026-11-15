@@ -116,7 +116,8 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .slider input { width: 100%; accent-color: var(--accent); }
 .slider output { font-family: "Cascadia Code", Consolas, monospace; }
 
-.panel { top: 12px; right: 12px; width: 320px; display: grid; gap: 8px; }
+/* Stops above the map attribution, which the OpenStreetMap licence needs visible; a short screen scrolls the panel. */
+.panel { top: 12px; right: 12px; width: 320px; max-height: calc(100% - 48px); overflow-y: auto; display: grid; gap: 8px; }
 .panel select { font: inherit; padding: 6px; }
 .panel dl { margin: 0; display: grid; gap: 2px; }
 .panel dt { font-size: 12px; color: var(--muted); margin-top: 6px; }
@@ -165,6 +166,8 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
     position: static;
     grid-row: 2;
     width: auto;
+    max-height: none;
+    overflow: visible;
     margin: 12px 12px 0;
   }
 
