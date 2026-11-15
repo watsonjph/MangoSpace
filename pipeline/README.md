@@ -151,6 +151,30 @@ remote file, about 2 MB of 80 MB, and keeps them in the ignored
 `pipeline/data/sme2-grids/`. It prints the number of files of each track in each
 window. It needs an Earthdata Login.
 
+## Town rank
+
+```sh
+uv run python rank.py
+```
+
+The command reads `lgus.json`, fills `rank`, and writes the index of the window
+of the rank as `rankWindow` in `manifest.json`. It needs no login. Run it after
+`soil.py`.
+
+- The window of the rank is the latest window in which the most towns have data
+  on half of their area or more. A window with no pass over Bohol is not used.
+- A town is ranked if it has data on half of its area or more in that window and
+  3 windows before it. If not, `rank` is `null`.
+- Three parts, each from 0 to 1 over the ranked towns, with the same weight:
+  `dryness` (1 is the lowest soil water in the window), `dryingSpeed` (1 is the
+  largest fall of the soil water over the 3 windows) and `people` (1 is the
+  largest population, on a logarithm scale).
+- `stable` is true if the town is in the top 10 with equal weights and with each
+  part at double weight, one at a time.
+
+The rank says which towns to look at first. It is not a risk score and not a
+forecast.
+
 ## Town borders and population
 
 ```sh

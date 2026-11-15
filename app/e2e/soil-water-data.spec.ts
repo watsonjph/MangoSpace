@@ -70,3 +70,38 @@ test("the map and the panel show a town with data and a town with no data in a w
   await page.waitForFunction(() => window.hubasMap!.loaded());
   await saveProof(page, "sc-71-map-window-4.png");
 });
+
+test("the rank is a full order of the towns with data, and the panel shows it", async ({ page, request }) => {
+  const lgus: Lgu[] = await (await request.get("/data/lgus.json")).json();
+  const manifest: Manifest = await (await request.get("/data/manifest.json")).json();
+  const ranked = lgus.filter((l) => l.rank !== null);
+  expect(ranked.length).toBeGreaterThan(0);
+  expect(ranked.map((l) => l.rank!.position).sort((a, b) => a - b)).toEqual(ranked.map((_, i) => i + 1));
+  for (const { name, rank } of ranked) {
+    expect(rank!.of, name).toBe(ranked.length);
+    for (const part of Object.values(rank!.parts)) {
+      expect(part, name).toBeGreaterThanOrEqual(0);
+      expect(part, name).toBeLessThanOrEqual(1);
+    }
+  }
+  const stable = ranked.filter((l) => l.rank!.stable);
+  expect(stable.every((l) => l.rank!.position <= 10)).toBe(true);
+  // A town with no data on half of its area in any window cannot have a rank.
+  for (const l of lgus.filter((l) => l.validShare.every((share) => share < 0.5))) expect(l.rank, l.name).toBeNull();
+
+  const first = ranked.find((l) => l.rank!.position === 1)!;
+  const unranked = lgus.find((l) => l.rank === null)!;
+  await useOfflineBasemap(page);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+  await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
+  await page.getByLabel("Window").fill("9");
+  await page.getByLabel("Town").selectOption(unranked.psgc);
+  await expect(page.getByTestId("rank")).toHaveText("Not ranked");
+  await page.getByLabel("Town").selectOption(first.psgc);
+  await expect(page.getByTestId("rank")).toHaveText(`#1 of ${ranked.length}`);
+  const rankWin = manifest.windows[manifest.rankWindow!];
+  await expect(page.locator(".panel dt").first()).toHaveText(`Rank, ${rankWin.start} → ${rankWin.end}`);
+  await page.waitForFunction(() => window.hubasMap!.loaded());
+  await page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-120-rank-first-town.png"), fullPage: true });
+});

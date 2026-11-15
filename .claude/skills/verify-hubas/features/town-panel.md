@@ -20,9 +20,9 @@ The panel at the top right shows one town: its rank or "Not ranked", its soil wa
 Preconditions:
 
 - `doctor` reports `ok: true`.
-- Until `rank.py` (sc-120) runs, every town has `rank: null`. Two towns are named Carmen: `0701212000` in Bohol and `0702215000` in Cebu.
+- `rank.py` (sc-120) ranks 99 towns; City of Mandaue and City of Lapu-Lapu have `rank: null`. The rank row is labelled `Rank, <start> → <end>` (the window of `manifest.rankWindow`), so the `panel` key is that label, not `Rank`. The rank does not change with the slider. Two towns are named Carmen: `0701212000` in Bohol and `0702215000` in Cebu.
 
-- **Open from the map.** Click the City of Bogo on the map. Run `node scripts/control-hubas.mjs drive --click-town 0702211000 --name panel-map`. `town` is `0702211000` and `panel.Rank` matches the town's `rank` in `lgus.json`: `#<position> of <of>`, or `Not ranked` for `null`.
+- **Open from the map.** Click the City of Bogo on the map. Run `node scripts/control-hubas.mjs drive --click-town 0702211000 --name panel-map`. `town` is `0702211000` and the `Rank, …` row matches the town's `rank` in `lgus.json`: `#<position> of <of>`, or `Not ranked` for `null`.
 - **Open from the list.** Choose Carmen in the dropdown. Run `node scripts/control-hubas.mjs drive --town "Carmen, Bohol" --name panel-list`. `town` is `0701212000`, not the Carmen in Cebu.
 - **Values.** In either run, `panel["Soil water"]` equals the town's `soilMoisture` at `window.index`, to 3 decimals, and `panel["Good pixels"]` equals `validShare` × 100, rounded.
 - **Outlook.** `panel` has a key `PAGASA, <province>` whose value contains the `summary`, `advisory` and `issued` of the matching entry in `outlook.json`.

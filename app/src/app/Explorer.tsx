@@ -83,6 +83,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
   }, [map, lgus, windowIndex]);
 
   const win = manifest.windows[windowIndex];
+  const rankWin = manifest.rankWindow == null ? null : manifest.windows[manifest.rankWindow];
   const lgu = lgus.find((l) => l.psgc === psgc);
   const outlook = outlooks.find((o) => o.province === lgu?.province);
   const moisture = lgu?.soilMoisture[windowIndex];
@@ -126,7 +127,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         </select>
         {lgu && (
           <dl>
-            <dt>Rank</dt>
+            <dt>Rank{rankWin && `, ${rankWin.start} → ${rankWin.end}`}</dt>
             <dd data-testid="rank">{lgu.rank ? `#${lgu.rank.position} of ${lgu.rank.of}` : "Not ranked"}</dd>
             <dt>Soil water</dt>
             <dd data-testid="moisture">{moisture == null ? "No good pixels" : `${moisture.toFixed(3)} m³/m³`}</dd>
