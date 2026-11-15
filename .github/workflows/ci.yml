@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
 jobs:
+  skill-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Codex reads .agents/, Claude reads .claude/; symlinks break on Windows, so the copy is checked instead.
+      - run: diff -r .claude/skills/verify-hubas .agents/skills/verify-hubas
   app:
     runs-on: ubuntu-latest
     defaults:
@@ -26,3 +32,15 @@ jobs:
         with:
           name: playwright-results
           path: app/test-results
+  pipeline:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v9.0.0
+        with:
+          python-version: "3.12"
+      - run: uv sync --locked
+      - run: uv run python -m unittest discover -s tests

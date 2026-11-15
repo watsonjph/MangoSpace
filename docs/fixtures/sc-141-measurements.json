@@ -1,0 +1,1622 @@
+[
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-06-26",
+    "x": 168,
+    "y": 201,
+    "hhDb": -19.176,
+    "hvDb": -22.0,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-06-26",
+    "x": 220,
+    "y": 190,
+    "hhDb": -14.118,
+    "hvDb": -19.294,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-06-26",
+    "x": 157,
+    "y": 238,
+    "hhDb": -16.588,
+    "hvDb": -23.412,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-06-26",
+    "x": 143,
+    "y": 135,
+    "hhDb": -10.118,
+    "hvDb": -18.118,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-06-26",
+    "x": 330,
+    "y": 245,
+    "hhDb": -7.294,
+    "hvDb": -13.412,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-06-26",
+    "x": 374,
+    "y": 370,
+    "hhDb": -9.176,
+    "hvDb": -14.235,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-06-26",
+    "x": 184,
+    "y": 163,
+    "hhDb": -9.529,
+    "hvDb": -19.059,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-06-26",
+    "x": 321,
+    "y": 197,
+    "hhDb": -0.706,
+    "hvDb": -6.0,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-06-26",
+    "x": 371,
+    "y": 121,
+    "hhDb": -10.353,
+    "hvDb": -17.059,
+    "images": {
+      "hh": "targets/malinao-dam-2026-06-26-hh.png",
+      "hv": "targets/malinao-dam-2026-06-26-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-07-08",
+    "x": 168,
+    "y": 201,
+    "hhDb": -16.353,
+    "hvDb": -21.294,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-07-08",
+    "x": 220,
+    "y": 190,
+    "hhDb": -15.412,
+    "hvDb": -22.588,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-07-08",
+    "x": 157,
+    "y": 238,
+    "hhDb": -15.059,
+    "hvDb": -23.059,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-07-08",
+    "x": 143,
+    "y": 135,
+    "hhDb": -8.471,
+    "hvDb": -16.235,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-07-08",
+    "x": 330,
+    "y": 245,
+    "hhDb": -6.118,
+    "hvDb": -9.882,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-07-08",
+    "x": 374,
+    "y": 370,
+    "hhDb": -4.706,
+    "hvDb": -13.882,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-07-08",
+    "x": 184,
+    "y": 163,
+    "hhDb": -7.882,
+    "hvDb": -17.176,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-07-08",
+    "x": 321,
+    "y": 197,
+    "hhDb": -0.588,
+    "hvDb": -6.471,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-07-08",
+    "x": 371,
+    "y": 121,
+    "hhDb": -9.059,
+    "hvDb": -15.765,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-08-hh.png",
+      "hv": "targets/malinao-dam-2026-07-08-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-07-20",
+    "x": 168,
+    "y": 201,
+    "hhDb": -17.412,
+    "hvDb": -21.882,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-07-20",
+    "x": 220,
+    "y": 190,
+    "hhDb": -19.294,
+    "hvDb": -23.412,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-07-20",
+    "x": 157,
+    "y": 238,
+    "hhDb": -14.824,
+    "hvDb": -21.529,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-07-20",
+    "x": 143,
+    "y": 135,
+    "hhDb": -8.706,
+    "hvDb": -14.706,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-07-20",
+    "x": 330,
+    "y": 245,
+    "hhDb": -7.176,
+    "hvDb": -12.0,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-07-20",
+    "x": 374,
+    "y": 370,
+    "hhDb": -5.529,
+    "hvDb": -12.0,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-07-20",
+    "x": 184,
+    "y": 163,
+    "hhDb": -5.529,
+    "hvDb": -14.824,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-07-20",
+    "x": 321,
+    "y": 197,
+    "hhDb": -1.412,
+    "hvDb": -6.235,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-07-20",
+    "x": 371,
+    "y": 121,
+    "hhDb": -10.353,
+    "hvDb": -14.824,
+    "images": {
+      "hh": "targets/malinao-dam-2026-07-20-hh.png",
+      "hv": "targets/malinao-dam-2026-07-20-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-08-13",
+    "x": 168,
+    "y": 201,
+    "hhDb": -20.824,
+    "hvDb": -23.882,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-08-13",
+    "x": 220,
+    "y": 190,
+    "hhDb": -18.0,
+    "hvDb": -22.118,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-08-13",
+    "x": 157,
+    "y": 238,
+    "hhDb": -20.588,
+    "hvDb": -23.882,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-08-13",
+    "x": 143,
+    "y": 135,
+    "hhDb": -10.824,
+    "hvDb": -16.353,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-08-13",
+    "x": 330,
+    "y": 245,
+    "hhDb": -5.529,
+    "hvDb": -11.294,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-08-13",
+    "x": 374,
+    "y": 370,
+    "hhDb": -7.529,
+    "hvDb": -15.529,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-08-13",
+    "x": 184,
+    "y": 163,
+    "hhDb": -8.0,
+    "hvDb": -18.471,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-08-13",
+    "x": 321,
+    "y": 197,
+    "hhDb": -0.588,
+    "hvDb": -6.118,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-08-13",
+    "x": 371,
+    "y": 121,
+    "hhDb": -8.118,
+    "hvDb": -14.353,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-13-hh.png",
+      "hv": "targets/malinao-dam-2026-08-13-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-08-25",
+    "x": 168,
+    "y": 201,
+    "hhDb": -18.588,
+    "hvDb": -22.588,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-08-25",
+    "x": 220,
+    "y": 190,
+    "hhDb": -18.471,
+    "hvDb": -22.235,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-08-25",
+    "x": 157,
+    "y": 238,
+    "hhDb": -17.765,
+    "hvDb": -22.118,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-08-25",
+    "x": 143,
+    "y": 135,
+    "hhDb": -12.118,
+    "hvDb": -18.235,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-08-25",
+    "x": 330,
+    "y": 245,
+    "hhDb": -4.118,
+    "hvDb": -12.471,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-08-25",
+    "x": 374,
+    "y": 370,
+    "hhDb": -6.588,
+    "hvDb": -13.176,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-08-25",
+    "x": 184,
+    "y": 163,
+    "hhDb": -7.176,
+    "hvDb": -13.294,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-08-25",
+    "x": 321,
+    "y": 197,
+    "hhDb": -3.882,
+    "hvDb": -9.765,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-08-25",
+    "x": 371,
+    "y": 121,
+    "hhDb": -6.353,
+    "hvDb": -12.118,
+    "images": {
+      "hh": "targets/malinao-dam-2026-08-25-hh.png",
+      "hv": "targets/malinao-dam-2026-08-25-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-06",
+    "x": 168,
+    "y": 201,
+    "hhDb": -18.353,
+    "hvDb": -21.176,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-06",
+    "x": 220,
+    "y": 190,
+    "hhDb": -18.0,
+    "hvDb": -21.176,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-06",
+    "x": 157,
+    "y": 238,
+    "hhDb": -17.529,
+    "hvDb": -21.882,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-06",
+    "x": 143,
+    "y": 135,
+    "hhDb": -10.118,
+    "hvDb": -18.471,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-06",
+    "x": 330,
+    "y": 245,
+    "hhDb": -5.529,
+    "hvDb": -11.647,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-06",
+    "x": 374,
+    "y": 370,
+    "hhDb": -7.294,
+    "hvDb": -13.765,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-06",
+    "x": 184,
+    "y": 163,
+    "hhDb": -9.647,
+    "hvDb": -17.647,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-06",
+    "x": 321,
+    "y": 197,
+    "hhDb": -0.706,
+    "hvDb": -5.176,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-06",
+    "x": 371,
+    "y": 121,
+    "hhDb": -10.824,
+    "hvDb": -14.588,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-06-hh.png",
+      "hv": "targets/malinao-dam-2026-09-06-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-18",
+    "x": 168,
+    "y": 201,
+    "hhDb": -15.294,
+    "hvDb": -22.353,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-18",
+    "x": 220,
+    "y": 190,
+    "hhDb": -13.765,
+    "hvDb": -19.294,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-18",
+    "x": 157,
+    "y": 238,
+    "hhDb": -20.706,
+    "hvDb": -25.529,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-18",
+    "x": 143,
+    "y": 135,
+    "hhDb": -12.235,
+    "hvDb": -17.294,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-18",
+    "x": 330,
+    "y": 245,
+    "hhDb": -2.941,
+    "hvDb": -13.059,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-18",
+    "x": 374,
+    "y": 370,
+    "hhDb": -7.176,
+    "hvDb": -14.824,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-18",
+    "x": 184,
+    "y": 163,
+    "hhDb": -7.294,
+    "hvDb": -15.059,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-18",
+    "x": 321,
+    "y": 197,
+    "hhDb": -1.059,
+    "hvDb": -4.941,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-18",
+    "x": 371,
+    "y": 121,
+    "hhDb": -8.0,
+    "hvDb": -18.353,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-18-hh.png",
+      "hv": "targets/malinao-dam-2026-09-18-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-30",
+    "x": 168,
+    "y": 201,
+    "hhDb": -17.412,
+    "hvDb": -22.941,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-30",
+    "x": 220,
+    "y": 190,
+    "hhDb": -17.882,
+    "hvDb": -22.706,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-09-30",
+    "x": 157,
+    "y": 238,
+    "hhDb": -16.706,
+    "hvDb": -21.647,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-30",
+    "x": 143,
+    "y": 135,
+    "hhDb": -10.235,
+    "hvDb": -16.588,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-30",
+    "x": 330,
+    "y": 245,
+    "hhDb": -6.118,
+    "hvDb": -12.471,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-09-30",
+    "x": 374,
+    "y": 370,
+    "hhDb": -5.882,
+    "hvDb": -13.294,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-30",
+    "x": 184,
+    "y": 163,
+    "hhDb": -6.118,
+    "hvDb": -12.353,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-30",
+    "x": 321,
+    "y": 197,
+    "hhDb": 0.0,
+    "hvDb": -4.706,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-09-30",
+    "x": 371,
+    "y": 121,
+    "hhDb": -6.471,
+    "hvDb": -14.471,
+    "images": {
+      "hh": "targets/malinao-dam-2026-09-30-hh.png",
+      "hv": "targets/malinao-dam-2026-09-30-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "water-1",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-10-12",
+    "x": 168,
+    "y": 201,
+    "hhDb": -16.118,
+    "hvDb": -22.471,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-2",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-10-12",
+    "x": 220,
+    "y": 190,
+    "hhDb": -17.294,
+    "hvDb": -24.235,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "water-3",
+    "target": "malinao-dam",
+    "referenceContext": "water",
+    "date": "2026-10-12",
+    "x": 157,
+    "y": 238,
+    "hhDb": -18.824,
+    "hvDb": -23.059,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": true,
+      "plants": false,
+      "buildings": false
+    },
+    "cue": "dark"
+  },
+  {
+    "id": "plants-1",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-10-12",
+    "x": 143,
+    "y": 135,
+    "hhDb": -11.882,
+    "hvDb": -15.647,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "plants-2",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-10-12",
+    "x": 330,
+    "y": 245,
+    "hhDb": -5.647,
+    "hvDb": -14.0,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "plants-3",
+    "target": "malinao-dam",
+    "referenceContext": "plants",
+    "date": "2026-10-12",
+    "x": 374,
+    "y": 370,
+    "hhDb": -5.294,
+    "hvDb": -14.353,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": true
+    },
+    "cue": "not_sure"
+  },
+  {
+    "id": "buildings-1",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-10-12",
+    "x": 184,
+    "y": 163,
+    "hhDb": -6.471,
+    "hvDb": -13.059,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  },
+  {
+    "id": "buildings-2",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-10-12",
+    "x": 321,
+    "y": 197,
+    "hhDb": -0.588,
+    "hvDb": -6.353,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": false,
+      "buildings": true
+    },
+    "cue": "bright"
+  },
+  {
+    "id": "buildings-3",
+    "target": "malinao-dam",
+    "referenceContext": "buildings",
+    "date": "2026-10-12",
+    "x": 371,
+    "y": 121,
+    "hhDb": -6.824,
+    "hvDb": -13.647,
+    "images": {
+      "hh": "targets/malinao-dam-2026-10-12-hh.png",
+      "hv": "targets/malinao-dam-2026-10-12-hv.png"
+    },
+    "planMatches": {
+      "water": false,
+      "plants": true,
+      "buildings": false
+    },
+    "cue": "vegetation"
+  }
+]

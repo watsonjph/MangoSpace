@@ -1,7 +1,7 @@
 # MangoSpace · Hubas
 
 NASA Space Apps 2026, [Dancing with the SARs](https://www.spaceappschallenge.org/2026/challenges/dancing-with-the-sars/).
-Hubas shows which Cebu and Bohol towns enter El Niño driest, from NISAR radar data.
+Hubas shows the soil water, a dam and the rice fields of Cebu and Bohol before El Niño, from NISAR radar data.
 
 | Folder | What | Start |
 | --- | --- | --- |

@@ -23,9 +23,12 @@ const HELP = `control-hubas <command> [options]   (run from app/)
       --click-town <psgc>         Click the town's shape on the map canvas.
       --town <psgc|"Name, Prov">  Pick the town in the "Town" dropdown.
       --window <n>                Set the "Window" slider to index n (0 = first 12-day window).
+      --nav <link>                Click a link in the top bar, e.g. "Dam" or "Method".
       --name <label>              Evidence folder name (default: timestamp).
-      --viewport <WxH>            Browser size (default 1280x800).
-    Actions run in this order: click-town, town, window.
+      --viewport <WxH>            Browser size (default 1280x800). 375x812 gives the phone layout.
+      --offline-basemap yes       Replace the OpenFreeMap base map with a plain background,
+                                  the same stub the e2e specs use. For runs without internet.
+    Actions run in this order: click-town, town, window, nav.
     Prints the panel, the slider and console errors. Saves screenshot.png, aria.yml, result.json.
   down                            Stop the server that "up" started. Evidence stays.
 
@@ -76,7 +79,9 @@ function serve({ port }) {
   createServer((req, res) => {
     let p = path.join(OUT, decodeURIComponent(new URL(req.url, "http://x").pathname));
     if (!p.startsWith(OUT)) return res.writeHead(403).end();
-    if (existsSync(p) && statSync(p).isDirectory()) p = path.join(p, "index.html");
+    if (existsSync(p) && statSync(p).isDirectory()) {
+      p = existsSync(path.join(p, "index.html")) ? path.join(p, "index.html") : `${p}.html`;
+    }
     if (!existsSync(p) && existsSync(`${p}.html`)) p = `${p}.html`;
     if (!existsSync(p)) return res.writeHead(404).end("not found");
     res.writeHead(200, { "content-type": TYPES[path.extname(p)] ?? "application/octet-stream" });
@@ -99,8 +104,13 @@ async function up(o) {
   const child = spawn(process.execPath, [fileURLToPath(import.meta.url), "serve", "--port", String(port)], { detached: true, stdio: ["ignore", log, log], windowsHide: true });
   child.unref();
   const url = `http://127.0.0.1:${port}`;
+  const logText = () => readFileSync(path.join(VERIFY, "server.log"), "utf8");
   for (let i = 0; i < 50; i++) {
-    if ((await get(`${url}/data/manifest.json`)).status === 200) {
+    if (child.exitCode !== null || child.signalCode !== null || !alive(child.pid)) {
+      fail("The server process exited before it became ready.", `The port may have been taken during the build or startup. Pick another with --port.\n${logText().trim().split("\n").slice(-12).join("\n")}`);
+    }
+    // Another server can answer on this port before our child even tries to bind, so only trust a response once the child says it is listening.
+    if (logText().includes(`serving ${OUT} on ${port}`) && (await get(`${url}/data/manifest.json`)).status === 200) {
       writeFileSync(STATE, JSON.stringify({ pid: child.pid, port, url, startedAt: new Date().toISOString() }, null, 2));
       return out({ ok: true, url, pid: child.pid, next: "node scripts/control-hubas.mjs doctor" });
     }
@@ -116,9 +126,10 @@ async function doctor() {
   const add = (name, ok, detail) => checks.push({ name, ok, detail });
   add("state", !!s, s ? STATE : 'No server started by "up". Run: node scripts/control-hubas.mjs up');
   if (s) {
-    add("process", alive(s.pid), `pid ${s.pid}`);
+    const processAlive = alive(s.pid);
+    add("process", processAlive, `pid ${s.pid}`);
     const page = await get(`${s.url}/`);
-    add("page", page.status === 200 && page.text.includes("Hubas"), `${s.url}/ → ${page.status}`);
+    add("page", processAlive && page.status === 200 && page.text.includes("Hubas"), processAlive ? `${s.url}/ → ${page.status}` : `pid ${s.pid} is not running; a response from this port cannot be trusted`);
     const m = await get(`${s.url}/data/manifest.json`);
     let manifest = null;
     try { manifest = JSON.parse(m.text); } catch { /* reported below */ }
@@ -152,6 +163,15 @@ async function drive(o) {
   mkdirSync(dir, { recursive: true });
   const steps = [];
   try {
+    if (o["offline-basemap"] === "yes") {
+      await page.route("https://tiles.openfreemap.org/**", (route) => route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ version: 8, sources: {}, layers: [{ id: "background", type: "background", paint: { "background-color": "#e7ece9" } }] }),
+      }));
+      steps.push("offline basemap");
+    }
     await page.goto(s.url);
     await page.locator(".map[data-ready=true] canvas").waitFor({ timeout: 20000 });
     await page.waitForFunction(() => window.hubasMap?.getSource("lgus") && window.hubasMap.isSourceLoaded("lgus"), null, { timeout: 20000 });
@@ -193,23 +213,38 @@ async function drive(o) {
       await page.getByLabel("Window").fill(String(o.window));
       steps.push(`set window ${o.window}`);
     }
+    if (o.nav) {
+      const link = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: o.nav, exact: true });
+      if (!(await link.count())) throw new Error(`No top bar link "${o.nav}". Links: ${(await page.getByRole("navigation", { name: "Main" }).getByRole("link").allInnerTexts()).join(", ")}`);
+      // The top bar uses plain <a> links, so even a click on the current page is a full reload to wait for.
+      await Promise.all([page.waitForEvent("load"), link.click()]);
+      await page.waitForFunction((name) => document.querySelector('nav [aria-current="page"]')?.textContent.trim() === name, o.nav);
+      await page.waitForLoadState("networkidle");
+      steps.push(`clicked ${o.nav} in the top bar`);
+    }
 
     const text = async (loc) => ((await loc.count()) ? (await loc.first().textContent())?.trim() : null);
     const panel = await page.locator(".panel dl").count()
       ? Object.fromEntries(await page.locator(".panel dl dt").evaluateAll((dts) => dts.map((dt) => [dt.textContent.trim(), dt.nextElementSibling?.textContent.trim()])))
       : null;
+    const onMap = (await page.getByLabel("Window").count()) > 0;
     const result = {
       ok: consoleErrors.length === 0,
       url: s.url,
+      path: new URL(page.url()).pathname,
+      heading: await text(page.locator("h1")),
       steps,
       label: await text(page.locator(".tag")),
-      window: { index: Number(await page.getByLabel("Window").inputValue()), range: await text(page.locator(".slider output")) },
-      town: (await page.getByLabel("Town").inputValue()) || null,
+      legend: await page.getByTestId("map-legend").count()
+        ? (await page.getByTestId("map-legend").innerText()).split("\n").map((t) => t.trim()).filter(Boolean)
+        : null,
+      window: onMap ? { index: Number(await page.getByLabel("Window").inputValue()), range: await text(page.locator(".slider output")) } : null,
+      town: onMap ? (await page.getByLabel("Town").inputValue()) || null : null,
       panel,
       consoleErrors,
       evidence: dir,
     };
-    await page.screenshot({ path: path.join(dir, "screenshot.png") });
+    await page.screenshot({ path: path.join(dir, "screenshot.png"), fullPage: true }); // full page: on phones the panel and slider sit below the map
     writeFileSync(path.join(dir, "aria.yml"), await page.locator("body").ariaSnapshot());
     writeFileSync(path.join(dir, "result.json"), JSON.stringify(result, null, 2));
     out(result);

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "water-1",
+    "referenceContext": "water",
+    "referencePixel": [
+      460,
+      550
+    ],
+    "pixel": [
+      168,
+      201
+    ]
+  },
+  {
+    "id": "water-2",
+    "referenceContext": "water",
+    "referencePixel": [
+      600,
+      520
+    ],
+    "pixel": [
+      220,
+      190
+    ]
+  },
+  {
+    "id": "water-3",
+    "referenceContext": "water",
+    "referencePixel": [
+      430,
+      650
+    ],
+    "pixel": [
+      157,
+      238
+    ]
+  },
+  {
+    "id": "plants-1",
+    "referenceContext": "plants",
+    "referencePixel": [
+      390,
+      370
+    ],
+    "pixel": [
+      143,
+      135
+    ]
+  },
+  {
+    "id": "plants-2",
+    "referenceContext": "plants",
+    "referencePixel": [
+      900,
+      670
+    ],
+    "pixel": [
+      330,
+      245
+    ]
+  },
+  {
+    "id": "plants-3",
+    "referenceContext": "plants",
+    "referencePixel": [
+      1020,
+      1010
+    ],
+    "pixel": [
+      374,
+      370
+    ]
+  },
+  {
+    "id": "buildings-1",
+    "referenceContext": "buildings",
+    "referencePixel": [
+      502,
+      446
+    ],
+    "pixel": [
+      184,
+      163
+    ]
+  },
+  {
+    "id": "buildings-2",
+    "referenceContext": "buildings",
+    "referencePixel": [
+      876,
+      538
+    ],
+    "pixel": [
+      321,
+      197
+    ]
+  },
+  {
+    "id": "buildings-3",
+    "referenceContext": "buildings",
+    "referencePixel": [
+      1014,
+      332
+    ],
+    "pixel": [
+      371,
+      121
+    ]
+  }
+]
