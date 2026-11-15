@@ -192,6 +192,7 @@ test("playback keeps focus on the inspector and a drag from elsewhere picks noth
 
   const slider = page.getByRole("slider", { name: "Date" });
   await slider.fill(String(Number(await slider.getAttribute("max")) - 3));
+  await page.getByRole("button", { name: "Loop", exact: true }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await button.focus();
   await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible({ timeout: 15_000 });
