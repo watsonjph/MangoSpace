@@ -20,6 +20,10 @@ test("the interpretation figures still match the packaged measurements", async (
   for (const [date, mm] of [["2026-07-20", 99.2], ["2026-08-13", 6.1], ["2026-09-18", 60.9]] as const) {
     expect(dam.rainMm[dam.nisar.dates.indexOf(date)]).toBe(mm);
   }
+  for (const [id, mm] of [["ubay-rice", 39.6], ["pilar-rice", 46.4]] as const) {
+    const parcel = targets.find((target) => target.id === id)!;
+    expect(parcel.rainMm[parcel.nisar.dates.indexOf("2026-11-05")]).toBe(mm);
+  }
 });
 
 for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "mobile", width: 375, height: 812 }]) {
