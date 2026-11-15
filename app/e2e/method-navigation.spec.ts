@@ -36,7 +36,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
     await expect(page.getByRole("main")).toContainText("NISAR marks most of them as not recommended");
     await expect(page.getByRole("main")).toContainText("not a drought risk score");
     await expect(page.getByRole("main")).toContainText("less than half of it has data");
-    await expect(page.getByRole("main")).toContainText("“Good pixels” in the town panel");
+    await expect(page.getByRole("main")).toContainText("“Pixels with data” in the town panel");
     const sources = page.getByRole("region", { name: "Data sources and licences" });
     for (const text of ["NASA and ISRO", "NAMRIA", "CC BY 3.0 IGO", "2024 Census", "PSGC 3Q 2026", "DOST-PAGASA", "Open Database Licence"]) {
       await expect(sources).toContainText(text);
