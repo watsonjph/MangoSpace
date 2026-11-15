@@ -1,30 +1,28 @@
-# Rank map
+# Rank preview
 
-Choose Rank in the top bar to color towns by their place in the rank preview. The legend shows how the colors run from later on the list to the towns to look at first. Unranked towns are grey. Stable towns have a gold outline and a Stable mark in the panel.
+The rank preview is in the town panel only. The map always shows soil water. A ranked town shows its position, the rank window, three part bars, and a Stable mark when it stayed in the top 10 in every check.
 
 ## Sub-features
 
-- `rank-view` switches from Soil water colors to Rank colors and keeps the town and window selection.
-- `rank-colors` shows ranked towns in list order; towns without a rank are grey.
-- `rank-legend` identifies the preview scale, unranked towns and stable outlines.
-- `rank-panel` shows the rank window, position, first-check cue, Dryness, Drying speed and People bars, and the Stable mark when it applies.
+- `rank-panel` shows the rank window, the position, the `look here first` cue for the top 10, and the Dryness, Drying speed and People bars.
+- `rank-stable` shows the Stable mark.
+- `rank-none` shows `Not ranked` for a town with data on less than half of its area.
 
 ## How to get to it (user POV)
 
-- Open the map and choose Rank in the top bar.
-- Select a town in the `Town` list or click its map shape. Choose Soil water to return to the selected-window colors.
+- Open the map. Select a town in the `Town` list or click its shape. The selected town gets a light outline on the map.
 
 ## Driving it with control-hubas
 
-- **Rank view.** Run `node scripts/control-hubas.mjs drive --town 0702209000 --view rank --name rank`. `steps` ends with `chose Rank view`, `legend` is `["Rank preview", "Later on the list", "Look here first", "Not ranked", "Gold outline: stable in checks"]`, and the `Rank preview, …` row reads `#2 of 99 ranked · look here first Stable`.
-- **No cue below the top 10.** Run `drive --town 0701245000 --view rank --name rank-later`. The row reads `#84 of 99 ranked`, without `look here first`.
-- Run `npx playwright test e2e/rank-map.spec.ts` from `app/` for the full flow: map paint, part bars, an unranked town and the phone layout.
-- The spec checks a stable town's rank and part bars, an unranked town, Tubigon with no soil water in window 3, and the phone layout. Run `PROOF=1 npm test -- e2e/rank-map.spec.ts` to write `sc-126-rank-map-desktop.png`, `sc-126-rank-map-mobile.png` and `sc-233-no-data-desktop.png` to `docs/proof/`.
+- **A top-10 town.** Run `node scripts/control-hubas.mjs drive --town 0702209000 --name rank`. The `Rank preview, 7 Oct to 19 Oct 2026` row reads `#2 of 99 ranked · look here first Stable`.
+- **No cue below the top 10.** Run `drive --town 0701245000 --name rank-later`. The row reads `#84 of 99 ranked`, without `look here first`.
+- Run `npx playwright test e2e/rank-panel.spec.ts` from `app/` for the full flow: no Rank control on the page, the part bars, an unranked town, a town with no soil water in window 3, the phone layout, and the mean of all the towns when no town is selected.
+- Run `PROOF=1 npm test -- e2e/rank-panel.spec.ts` to write `sc-450-rank-in-panel-desktop.png`, `sc-450-rank-in-panel-mobile.png` and `sc-233-no-data-desktop.png` to `docs/proof/`.
 
 ## Gotchas
 
-- The rank preview uses its own fixed window. Moving the slider changes Soil water values but does not change the rank position or Rank map colors.
+- The rank preview uses its own fixed window. The slider changes the soil water values and does not change the rank.
 - `look here first` shows only for the top 10, the same cut the pipeline uses for Stable.
-- Links from Dam, Rice and Method open the Soil water view. `mode=rank` survives reload and shared URLs on `/`.
-- A town can have a rank while its soil water is missing for the selected slider window. It stays ranked in Rank view; Soil water view shows it grey and the panel says `No data`.
-- Rank describes an order of towns to check first. The rank is provisional.
+- There is no rank map. An old link with `mode=rank` opens the soil water map and the app ignores the parameter.
+- A town can have a rank while its soil water is missing for the selected window. The map shows it grey and the panel says `No data`.
+- The rank is an order of towns to check first. SMAP does not confirm the order (see `/method`).

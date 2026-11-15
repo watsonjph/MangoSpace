@@ -21,7 +21,7 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 ## Driving it with control-hubas
 
 - Start the static export with `node scripts/control-hubas.mjs up` and run `doctor`.
-- **Open rice.** Run `node scripts/control-hubas.mjs drive --nav Rice --name rice` and again with `--viewport 375x812`. `path` is `/rice`, `heading` is `Both samples reached their highest measured HV in September or October, then were lower on 5 November.`, and `consoleErrors` is empty. In `aria.yml`: both ranges, `Date` `5 Nov 2026`, HV `−19.2 dB` and rain `40 mm` (Ubay).
+- **Open rice.** Run `node scripts/control-hubas.mjs drive --nav Rice --name rice` and again with `--viewport 375x812`. `path` is `/rice`, `heading` is `The radar signal of both rice parcels rose from June, then fell on 5 November.`, and `consoleErrors` is empty. In `aria.yml`: both ranges, `Date` `5 Nov 2026`, HV `−19.2 dB` and rain `40 mm` (Ubay).
 - **Selection kept.** Run `drive --town 0701246000 --window 3 --nav Rice --name rice-sel`. In `aria.yml` the Soil water link points to `/?town=0701246000&window=3` and the Dam, Rice and Method links carry the same query.
 - `drive` cannot press the parcel or band buttons or move the Date slider. Use the Playwright MCP against the URL from `up`: open `/rice` and wait for `.rice-page[data-ready=true]`. Click `Pilar`: `rice-hv` reads `−19.7 dB` and `rice-rain` `46 mm`. Click `HV`: the image `src` is `/data/targets/pilar-rice-2026-11-05-hv.png`.
 - Run `npx playwright test e2e/rice.spec.ts` for every date and both bands of both parcels and a chart click, on desktop and phone. It also checks that the data still supports the heading. With `PROOF=1` it rewrites `docs/proof/sc-136-rice-desktop.png` and `-mobile.png`.
