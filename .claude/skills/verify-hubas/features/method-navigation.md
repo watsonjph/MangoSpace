@@ -1,10 +1,11 @@
 # Method and navigation
 
-The top bar links the soil water map, the Dam page and the Method page. The Method page explains the Gate 1 soil water rules, rank preview, radar limits and the sources and licences. Only available views appear in the navigation.
+The top bar switches the map between Soil water and Rank and links the Dam, Rice and Method pages. The Method page explains the Gate 1 soil water rules, rank preview, radar limits and the sources and licences. Only available views appear in the navigation.
 
 ## Sub-features
 
-- `navigation` opens each available view and marks the current page.
+- `navigation` opens the Method page and marks the current page.
+- `map-view` switches between Soil water and Rank while keeping the selected town and window.
 - `method` explains the data, coverage, rank preview and limits.
 - `sources` credits NISAR (ASF), the SMAP check, the NAMRIA/PSA town borders, the PSA 2024 census, the PAGASA outlook and the base map licences.
 - `attribution` keeps the map credits visible on desktop and phone: MapLibre, OpenFreeMap, OpenMapTiles and OpenStreetMap. The last three come from the base map, so with `--offline-basemap yes` only MapLibre shows.
@@ -12,8 +13,8 @@ The top bar links the soil water map, the Dam page and the Method page. The Meth
 ## How to get to it (user POV)
 
 - Open the app and click Method in the top bar.
-- Read the page, then click Soil water or Back to soil water.
-- Links work with the keyboard. The current link has a coloured background.
+- Read the page, then click Soil water or Back to soil water. The map opens with its saved mode, town and window.
+- Buttons and links work with the keyboard. The selected map view and current page have a coloured background.
 
 ## Driving it with control-hubas
 
@@ -28,7 +29,7 @@ The top bar links the soil water map, the Dam page and the Method page. The Meth
 ## Gotchas
 
 - `drive` starts on the map, so it needs the base map. Add `--offline-basemap yes` without internet. Playwright MCP has no stub.
-- Town and window travel in the URL. Reloading, top bar links and Back to soil water preserve the selection; invalid selections fall back to no town and window 0.
-- Rice, rank and history navigation items must wait for their view stories to merge. The Dam link is covered in [dam.md](./dam.md).
+- Town and window travel in the URL. Reloading, top bar links and Back to soil water preserve them; invalid selections fall back to no town and window 0. Map mode (`mode=rank`) survives reload and shared URLs on `/`, but links from other pages open Soil water.
+- Rank is a map mode, not a separate route. The Dam link is covered in [dam.md](./dam.md).
 - The sources list names each province's PAGASA advisory and issue date. The page also says when soil water has not been loaded. Do not describe placeholders as measured results.
 - NISAR passes are combined per 12-day window using all valid readings, per Gate 1; coverage does not mean scientific quality.

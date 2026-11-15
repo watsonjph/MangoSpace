@@ -5,6 +5,7 @@ The map shows Cebu and Bohol on a light base map. Each town is a shape filled by
 ## Sub-features
 
 - `map-load` shows the base map and every town shape without console errors.
+- `map-view` selects the Soil water button in the top bar.
 - `map-colors` fills each town by its soil water in the selected window.
 - `map-label` shows "Cebu + Bohol · 12-day window · provisional".
 - `map-legend` shows "Soil water", "0.10 m³/m³ · drier", "0.45 m³/m³ · wetter" and "Gray: less than half the pixels have data".
@@ -13,6 +14,7 @@ The map shows Cebu and Bohol on a light base map. Each town is a shape filled by
 ## How to get to it (user POV)
 
 - Open the app URL. On a desktop, the map fills the page below the top bar, with the panel and slider on top of it.
+- Choose Soil water in the top bar to color the map by the selected window.
 - On a phone (640 px wide or less), the map fills the top of the page; the panel and the slider follow below it.
 
 ## Driving it with control-hubas
