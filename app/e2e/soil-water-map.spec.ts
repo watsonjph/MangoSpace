@@ -65,10 +65,10 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   await mapShows(bogo, 0);
 
   const colorExpression = JSON.stringify(await page.evaluate(() => window.hubasMap!.getPaintProperty("soil", "fill-color")));
-  expect(colorExpression).toContain("#9aa5a2");
-  expect(colorExpression).toContain("#b07a1f");
-  expect(colorExpression).toContain("#c8c48a");
-  expect(colorExpression).toContain("#0d6f7d");
+  expect(colorExpression).toContain("#4b5a5e");
+  expect(colorExpression).toContain("#e6a94e");
+  expect(colorExpression).toContain("#dcd9b4");
+  expect(colorExpression).toContain("#4cc3cf");
   await expect(page.getByTestId("map-legend")).toContainText("0.10 m³/m³ · drier");
   await expect(page.getByTestId("map-legend")).toContainText("0.45 m³/m³ · wetter");
   await expect(page.getByTestId("map-legend")).toContainText("Gray: less than half the pixels have data");

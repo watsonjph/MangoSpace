@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { playSoilTone } from "../src/app/soil-tone";
+import { STEP_MS } from "../src/app/Timeline";
 import type { Lgu, Manifest } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
 
@@ -9,6 +10,8 @@ declare global {
     playSoilTone: typeof playSoilTone;
   }
 }
+
+const STEP = Math.round(STEP_MS * 1.1);
 
 for (const width of [1280, 375]) {
   test(`sound is opt-in and follows playback at ${width}px`, async ({ page, request }) => {
@@ -46,7 +49,7 @@ for (const width of [1280, 375]) {
     await sound.click();
     await expect(sound).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("button", { name: "Pause", exact: true })).toBeVisible();
-    await page.clock.runFor(1100);
+    await page.clock.runFor(STEP);
     await expect(slider).toHaveValue("1");
     expect(await page.evaluate(() => window.audioProbe.tones)).toBe(readings.slice(0, 2).filter(value => value != null).length);
     await page.getByRole("button", { name: "Pause", exact: true }).click();
@@ -59,10 +62,10 @@ for (const width of [1280, 375]) {
     await page.getByRole("button", { name: "Play", exact: true }).click();
     await expect(slider).toHaveValue("0");
     for (let index = 1; index <= last; index++) {
-      await page.clock.runFor(1100);
+      await page.clock.runFor(STEP);
       await expect(slider).toHaveValue(String(index));
     }
-    await page.clock.runFor(1100);
+    await page.clock.runFor(STEP);
     await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible();
     await sound.click();
     await expect(sound).toHaveAttribute("aria-pressed", "false");

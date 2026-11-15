@@ -56,7 +56,7 @@ export default function SeasonSound({ value, index, playing, onStart }: {
 
   return <div className="season-sound">
     <button type="button" aria-pressed={enabled} disabled={starting} onClick={toggle}>Hear the season</button>
-    <p>Sound {enabled ? "on" : "off"}. Wetter soil has a higher pitch; drier soil has a lower pitch.
+    <p>Sound {enabled ? "on" : "off"}. Wetter soil has a higher pitch. Drier soil has a lower pitch.
       {value == null ? " No reading for this window: silence." : " Missing readings are silent."}</p>
     {error && <p role="alert">{error}</p>}
   </div>;

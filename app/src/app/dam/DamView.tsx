@@ -3,9 +3,9 @@
 import { useState } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { type Band, Chart, fmt, type Line, NOW, Picker, Radar, useHydrated } from "../TargetParts";
+import { type Band, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated, VIOLET } from "../TargetParts";
 
-const EVENT_COLOR: Record<string, string> = { "2015–16": "#b07a1f", "2023–24": "#6b5b95" };
+const EVENT_COLOR: Record<string, string> = { "2015–16": DRY, "2023–24": VIOLET };
 const pct = (value: number, base: number) => (value / base - 1) * 100;
 const signed = (value: number) => {
   const rounded = Math.round(value);
@@ -57,7 +57,7 @@ export default function DamView({ dam }: { dam: Target }) {
   });
   // One slider runs through the past events and then 2026. The past frames come first.
   const past = events.flatMap((event) => event.dates.map((date, i) => ({
-    date, sensor: event.sensor, src: event.images[i], change: pct(event.values[i], event.values[0]), base: event.dates[0],
+    date, sensor: event.sensor, src: event.images[i], share: event.values[i] / event.values[0], change: pct(event.values[i], event.values[0]), base: event.dates[0],
   })));
   const frame = picked ?? past.length + last;
   const old = past.at(frame);
@@ -70,6 +70,9 @@ export default function DamView({ dam }: { dam: Target }) {
     { label: "Now", frame: past.length + last },
   ];
   const lowest = Math.min(...areas, ...scenarios.flatMap((line) => line.points.map(([, value]) => value)));
+  // Each period is a share of its own first date: Sentinel-1 and NISAR areas do not compare in km².
+  const frames = [...past.map((item) => item.share), ...areas.map((area) => area / areas[0])];
+  const span: [number, number] = [Math.min(...frames) - 0.05, Math.max(...frames) + 0.05];
 
   return (
     <main className="dam-page" data-ready={ready}>
@@ -101,7 +104,7 @@ export default function DamView({ dam }: { dam: Target }) {
         <Radar testId="dam-radar" src={old ? old.src : images[index][band]}
           caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`} />
         <div>
-          <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked}
+          <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
             band={band} setBand={old ? undefined : setBand}>
             {past.length > 0 && (
               <div role="group" aria-label="Go to">
@@ -124,7 +127,7 @@ export default function DamView({ dam }: { dam: Target }) {
                 <div><dt>Water area</dt><dd data-testid="dam-area">{areas[index].toFixed(2)} km²</dd></div>
                 {rain && <div><dt>Rain in the 12 days before</dt><dd data-testid="dam-rain">{dam.rainMm[index].toFixed(0)} mm</dd></div>}
               </dl>
-              <p className="dam-note">Changing the water or outline threshold by 1 dB changes a one-date estimate by up to 0.09 km². This is threshold sensitivity, not accuracy against ground truth. Click a point of the chart, or move the slider.</p>
+              <p className="dam-note">Changing the water or outline threshold by 1 dB changes a one-date estimate by up to 0.09 km². This is threshold sensitivity, not accuracy against ground truth. Click a point of the chart, move the slider, or push play.</p>
             </>
           )}
         </div>

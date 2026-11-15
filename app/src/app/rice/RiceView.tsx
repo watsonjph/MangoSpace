@@ -3,10 +3,10 @@
 import { useState } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { type Band, Chart, fmt, type Line, NOW, Picker, Radar, useHydrated } from "../TargetParts";
+import { type Band, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated } from "../TargetParts";
 
 const NAME: Record<string, string> = { "ubay-rice": "Ubay", "pilar-rice": "Pilar" };
-const COLOR = [NOW, "#b07a1f"];
+const COLOR = [NOW, DRY];
 const db = (value: number) => `${value.toFixed(1).replace("-", "−")} dB`;
 
 export default function RiceView({ parcels }: { parcels: Target[] }) {
@@ -37,7 +37,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   return (
     <main className="dam-page rice-page" data-ready={ready}>
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
-      <h1>Both samples reached their highest measured HV in September or October, then were lower on 5 November.</h1>
+      <h1>The radar signal of both rice parcels rose from June, then fell on 5 November.</h1>
       <dl className="dam-stats">
         {parcels.map((item, i) => {
           const values = item.nisar.meanHvDb!;
@@ -72,7 +72,8 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand} />
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand}
+            notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />
           <dl className="dam-stats">
             <div><dt>Mean HV signal</dt><dd data-testid="rice-hv">{db(target.nisar.meanHvDb![index])}</dd></div>
             {rain && <div><dt>Rain in the 12 days before</dt><dd data-testid="rice-rain">{target.rainMm[index].toFixed(0)} mm</dd></div>}
