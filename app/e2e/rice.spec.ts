@@ -70,7 +70,6 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
       await page.getByRole("button", { name: "HH" }).click();
     }
 
-    // A click on the chart selects the nearest date of the selected parcel.
     const box = (await chart.locator("svg").boundingBox())!;
     await chart.locator("svg").click({ position: { x: 46, y: box.height / 2 } });
     await expect(page.getByTestId("rice-hv")).toHaveText(db(parcels[1].nisar.meanHvDb![0]));

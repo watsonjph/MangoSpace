@@ -40,6 +40,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     ] as const) {
       await page.goto(path);
       if (path === "/") await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
+      else await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
       const block = page.getByRole("region", { name: heading, exact: true });
       await block.scrollIntoViewIfNeeded();
       for (const label of ["What we see.", "What can cause it.", "What we cannot tell."]) {

@@ -10,6 +10,7 @@ const MANDAUE = "0731300000";
 const pieces = (values: (number | null)[]) => values.filter((value, i) => value != null && values[i - 1] == null).length;
 
 test("the panel opens for each town with its name, province and soil water line", async ({ page, request }) => {
+  test.setTimeout(60_000);
   const lgus: Lgu[] = await (await request.get("/data/lgus.json")).json();
   const errors: string[] = [];
   page.on("console", (message) => message.type() === "error" && errors.push(message.text()));

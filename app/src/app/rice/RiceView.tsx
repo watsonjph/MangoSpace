@@ -14,6 +14,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const [picked, setPicked] = useState<number>();
   const [display, setDisplay] = useState<RadarDisplay>("hh");
   const ready = useHydrated();
+  const [readyRadar, setReadyRadar] = useState("");
 
   if (!parcels.length) return (
     <main className="dam-page" data-ready={ready}>
@@ -27,6 +28,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const { dates, images } = target.nisar;
   const index = Math.min(picked ?? dates.length - 1, dates.length - 1);
   const frameSrcs = images.map((image) => display === "color" ? [image.hh, image.hv] : [image[display]]);
+  const frameKey = frameSrcs[index]?.join("|") ?? "";
   const lines: Line[] = parcels.map((item, i) => ({
     label: `${NAME[item.id]}, NISAR HV`,
     color: COLOR[i],
@@ -77,9 +79,11 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
       <div className="dam-image">
         {display === "color" ? (
           <Radar testId="rice-radar" display="color" sources={images[index]}
+            frameKey={frameKey} onReady={setReadyRadar}
             caption={`${NAME[target.id]} parcel, NISAR HH/HV color composite, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
         ) : (
-          <Radar testId="rice-radar" display={display} src={images[index][display]}
+          <Radar testId="rice-radar" display={display} sources={images[index]}
+            frameKey={frameKey} onReady={setReadyRadar}
             caption={`${NAME[target.id]} parcel, NISAR ${display.toUpperCase()}, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
         )}
         <div>
@@ -90,7 +94,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} display={display} setDisplay={setDisplay} frames={frameSrcs}
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} display={display} setDisplay={setDisplay} ready={readyRadar === frameKey}
             sounds={target.nisar.meanHvDb!.map((hv, i) => ({ low: note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]).at, rain: target.rainMm[i] }))}
             pitch="A higher pitch means a higher HV radar signal. Soft high notes show rain."
             notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />

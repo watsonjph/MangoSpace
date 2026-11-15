@@ -13,6 +13,43 @@ const signed = (value: number) => {
   return `${rounded > 0 ? "+" : rounded < 0 ? "−" : ""}${Math.abs(rounded)}%`;
 };
 
+type ComparisonFrame = { date: string; sensor: string; src: string; base: string; change: number };
+
+function Comparison({ frames }: { frames: ComparisonFrame[] }) {
+  const [then, setThen] = useState(() => Math.max(0, frames.findIndex((frame) => frame.date === "2016-03-20")));
+  const [now, setNow] = useState(frames.length - 1);
+  const [split, setSplit] = useState(50);
+  const left = frames[then], right = frames[now];
+
+  return (
+    <section className="dam-comparison" aria-labelledby="comparison-heading">
+      <h2 id="comparison-heading">Then and now</h2>
+      <div className="dam-comparison-dates">
+        {[{ label: "Then", index: then, setIndex: setThen }, { label: "Now", index: now, setIndex: setNow }].map(({ label, index, setIndex }) => (
+          <label key={label}>{label}
+            <select aria-label={`${label} date`} value={index} onChange={(event) => setIndex(Number(event.target.value))}>
+              {frames.map((frame, i) => <option key={`${frame.sensor}-${frame.date}`} value={i}>{fmt(frame.date)} · {frame.sensor}</option>)}
+            </select>
+          </label>
+        ))}
+      </div>
+      <div className="dam-swipe" data-testid="dam-swipe">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`/data/${right.src}`} alt={`Now: ${fmt(right.date)}, ${right.sensor}`} width={440} height={440} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="dam-swipe-before" src={`/data/${left.src}`} alt={`Then: ${fmt(left.date)}, ${left.sensor}`} width={440} height={440}
+          style={{ clipPath: `inset(0 ${100 - split}% 0 0)` }} />
+        <span className="dam-swipe-line" style={{ left: `${split}%` }} aria-hidden="true" />
+        <input type="range" min={0} max={100} value={split} aria-label="Image comparison divider"
+          aria-valuetext={`${split}% then, ${100 - split}% now`} onChange={(event) => setSplit(Number(event.target.value))} />
+      </div>
+      <p className="dam-note">Drag the line, or focus it and use the arrow keys. Dark areas can be water, flooded fields, or radar shadow.</p>
+      <p className="dam-note" data-testid="dam-comparison-change">Then: {signed(left.change)} against {fmt(left.base)}. Now: {signed(right.change)} against {fmt(right.base)}.</p>
+      <p className="dam-note">Sentinel-1 VV and NISAR HH are different sensors and polarizations. Each percentage is relative to the first date of its own period. Compare changes within each period, not water areas between sensors.</p>
+    </section>
+  );
+}
+
 export default function DamView({ dam }: { dam: Target }) {
   const { dates, images } = dam.nisar;
   const areas = dam.nisar.waterAreaKm2 ?? [];
@@ -20,6 +57,7 @@ export default function DamView({ dam }: { dam: Target }) {
   const [picked, setPicked] = useState<number>();
   const ready = useHydrated();
   const [display, setDisplay] = useState<RadarDisplay>("hh");
+  const [readyRadar, setReadyRadar] = useState("");
 
   if (!areas.length) return (
     <main className="dam-page" data-ready={ready}>
@@ -62,6 +100,7 @@ export default function DamView({ dam }: { dam: Target }) {
     ...past.map((item) => [item.src]),
     ...images.map((image) => display === "color" ? [image.hh, image.hv] : [image[display]]),
   ];
+  const frameKey = frameSrcs[frame]?.join("|") ?? "";
   const periods = [
     ...events.map((event, i) => ({ label: event.event, index: events.slice(0, i).reduce((count, earlier) => count + earlier.dates.length, 0) })),
     { label: "2026", index: past.length },
@@ -106,18 +145,23 @@ export default function DamView({ dam }: { dam: Target }) {
       {scenarios.length > 0 && <p className="dam-note" data-testid="scenario-note">Dashed lines: this is what happened before. It is not a forecast. Each line applies past monthly-average changes to the latest NISAR area, so it can differ from the lowest reading on any one date of that event.</p>}
       {events[0] && <p className="dam-note">Past event: {fmt(events[0].lowDate)}, {signed(events[0].fall)}. This historical reading is not a point on the 2026 chart.</p>}
 
+      <Comparison frames={[
+        ...past.map((item) => ({ ...item, sensor: `${item.sensor} VV` })),
+        ...dates.map((date, i) => ({ date, sensor: "NISAR HH", src: images[i].hh, base: dates[0], change: pct(areas[i], areas[0]) })),
+      ]} />
+
       <h2>The radar image of each date</h2>
       <div className="dam-image">
         {old ? (
-          <Radar testId="dam-radar" display="history" src={old.src} caption={radarCaption} />
+          <Radar testId="dam-radar" display="history" src={old.src} frameKey={frameKey} onReady={setReadyRadar} caption={radarCaption} />
         ) : display === "color" ? (
-          <Radar testId="dam-radar" display="color" sources={images[index]} caption={radarCaption} />
+          <Radar testId="dam-radar" display="color" sources={images[index]} frameKey={frameKey} onReady={setReadyRadar} caption={radarCaption} />
         ) : (
-          <Radar testId="dam-radar" display={display} src={images[index][display]} caption={radarCaption} />
+          <Radar testId="dam-radar" display={display} sources={images[index]} frameKey={frameKey} onReady={setReadyRadar} caption={radarCaption} />
         )}
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
-            periods={periods} frames={frameSrcs}
+            periods={periods} ready={readyRadar === frameKey}
             sounds={frames.map((share, i) => ({ low: note(share, span).at, rain: i < past.length ? undefined : dam.rainMm[i - past.length] }))}
             pitch="A higher pitch means a larger water area relative to the first date of that period. Soft high notes show rain."
             display={display} setDisplay={old ? undefined : setDisplay}>

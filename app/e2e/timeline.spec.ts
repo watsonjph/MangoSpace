@@ -50,7 +50,7 @@ test("the dam radar images play as a timelapse", async ({ page, request }) => {
   const frames = (dam.history ?? []).reduce((count, event) => count + event.dates.length, 0) + dam.nisar.dates.length;
   await page.goto("/dam");
   await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
-  const slider = page.locator("#date");
+  const slider = page.getByRole("slider", { name: "Date", exact: true });
   await expect(slider).toHaveAttribute("max", String(frames - 1));
   const image = page.getByTestId("dam-radar").locator("img");
   await page.getByRole("button", { name: "Play", exact: true }).click();

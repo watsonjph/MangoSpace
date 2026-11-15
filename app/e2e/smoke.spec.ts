@@ -39,7 +39,6 @@ test("map loads, slider and town panel work, no console errors", async ({ page, 
   expect((await page.locator(".map canvas").boundingBox())!.height).toBeGreaterThan(300);
   await expect(page.locator(".tag")).toContainText("provisional");
 
-  // A click on the town shape opens its panel.
   await page.locator(".map canvas").click({ position: await bogoPoint(page) });
   await expect(page.getByLabel("Town")).toHaveValue(BOGO);
   await expect(page.getByTestId("rank")).toHaveText(rankText(town(BOGO)));
