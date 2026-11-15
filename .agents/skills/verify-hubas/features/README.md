@@ -36,13 +36,12 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Method and navigation](./method-navigation.md): the top bar, the `/method` page, source credits and the map credits.
 - [Malinao Dam](./dam.md): the `/dam` page, its water area chart with rain and "if it repeats" lines, and the radar image of each date.
 - [Rank map](./rank-map.md): rank colors, the preview legend, rank parts, stable towns and unranked towns.
+- [Rice parcels](./rice.md): the `/rice` page, the HV lines of the Ubay and Pilar parcels, and the radar image of each date.
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
 
 ## Not built yet
 
 From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature file when each one lands.
 
-- Rice-field views at Ubay and Pilar (wave 2). Real same-track images and HV series for two selected paddy parcels are in `public/data/targets.json` and `public/data/targets/`, with a Sentinel-1 (C-band) VV and VH pair from 2026-10-13 next to the NISAR date 2026-10-12. No screen shows them yet. The dates of planting and growth are not ground-verified.
 - Radar explainer: click a pixel for HH and HV (wave 2)
-
-- Then and now, L-band vs C-band, RADARSAT-1 (wave 3). The dam's "if it repeats" lines and past-event images already ship on `/dam`.
+- Then and now, L-band vs C-band, RADARSAT-1 (wave 3). The Sentinel-1 (C-band) pair of each rice parcel from 2026-10-13 is in `targets.json` (`cBand`), but no screen shows it yet. The dam's "if it repeats" lines and past-event images already ship on `/dam`.

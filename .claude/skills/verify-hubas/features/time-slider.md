@@ -25,11 +25,13 @@ Preconditions:
 
 - **Move the slider.** Set window 10. Run `node scripts/control-hubas.mjs drive --window 10 --name slider-10`. `window.index` is `10` and `window.range` matches the last entry of `manifest.json` `windows` (`2026-10-19 → 2026-10-31`).
 - **Panel follows.** Open a town and move the slider. Run `node scripts/control-hubas.mjs drive --town 0702211000 --name slider-bogo-0` and `node scripts/control-hubas.mjs drive --town 0702211000 --window 10 --name slider-bogo-10`. `panel["Soil water"]` matches `soilMoisture[0]` and `soilMoisture[10]` for that town in `lgus.json`. The two values differ when the data differs.
-- **No soil water in a window.** Run `node scripts/control-hubas.mjs drive --town 0701245000 --window 3 --name slider-tubigon-3`. `panel["Soil water"]` is `No data`, because `soilMoisture[3]` is `null` for Tubigon: no Bohol track has a file in that window.
+- **No soil water in a window.** Run `node scripts/control-hubas.mjs drive --town 0701245000 --window 3 --name slider-tubigon-3`. `panel["Soil water"]` is `No data` and `panel["Pixels with data"]` is `0%`, because Tubigon has no pixels with data in window 3. Other Bohol towns do have readings in that window.
 - **Out of range.** Run `node scripts/control-hubas.mjs drive --window 99`. The command fails with `--window must be 0 to 10.`
 
 ## Gotchas
 
 - `drive` sets the slider value directly and fires its change event. It does not test dragging with the mouse or the arrow keys.
 - The keyboard entry point, Play/Pause and opening a `?window=` link are not covered by `drive`. Use the Playwright MCP (focus `Window`, press `ArrowRight`, read `.slider output`; click Play and read the slider value after a second), or run `npx playwright test e2e/sound.spec.ts e2e/map-selection.spec.ts`.
+- No spec covers the pause when the tab is hidden. Check it with the Playwright MCP: click Play, then dispatch `visibilitychange` with `document.hidden` true.
+- The URL updates about 300 ms after the slider stops, so read `?window=` after a short wait.
 - The window count comes from the manifest. Real data can have a different count.
