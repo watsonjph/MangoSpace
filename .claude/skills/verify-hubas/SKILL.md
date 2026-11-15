@@ -29,6 +29,7 @@ node scripts/control-hubas.mjs up --no-build   # reuse the current out/
 - Ready means the page and its data answer. The map itself loads in the browser: `drive` waits for it.
 - State goes in `app/.verify/state.json`; the server log in `app/.verify/server.log`.
 - `up` refuses to start if its own server is already running or the port is taken. It never touches a server it did not start.
+- While waiting for readiness, `up` checks that its own child process remains alive before accepting a response. If a shared port is taken during the build and the child exits, it fails with the server log tail and a hint to choose another port; do not treat another server's response as proof that this build is ready.
 
 ## Doctor
 
