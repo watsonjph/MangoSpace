@@ -157,7 +157,7 @@ export default function DamView({ dam }: { dam: Target }) {
         ) : display === "color" ? (
           <Radar testId="dam-radar" display="color" sources={images[index]} frameKey={frameKey} onReady={setReadyRadar} caption={radarCaption} />
         ) : (
-          <Radar testId="dam-radar" display={display} src={images[index][display]} frameKey={frameKey} onReady={setReadyRadar} caption={radarCaption} />
+          <Radar testId="dam-radar" display={display} sources={images[index]} frameKey={frameKey} onReady={setReadyRadar} caption={radarCaption} />
         )}
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}

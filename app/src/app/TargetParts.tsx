@@ -2,6 +2,7 @@
 
 import { type ReactNode, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Timeline, { type Note, usePlayback } from "./Timeline";
+import RadarInspector from "./RadarInspector";
 import SoundTimeline, { type SoundFrame } from "./SoundTimeline";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
@@ -135,8 +136,8 @@ export type Band = "hh" | "hv";
 export type RadarDisplay = Band | "color";
 type RadarImages = { hh: string; hv: string };
 type RadarProps = { caption: string; testId?: string; frameKey: string; onReady: (frameKey: string) => void } & (
-  | { display: "color"; sources: RadarImages }
-  | { display: "history" | Band; src: string }
+  | { display: "history"; src: string }
+  | { display: RadarDisplay; sources: RadarImages }
 );
 
 function ColorComposite({ sources, caption, onReady }: { sources: RadarImages; caption: string; onReady: () => void }) {
@@ -212,19 +213,23 @@ function ColorLegend() {
 export function Radar(props: RadarProps) {
   const image = useRef<HTMLImageElement>(null);
   const { display, frameKey, onReady } = props;
+  const src = props.display === "history" ? props.src : props.display === "color" ? null : props.sources[props.display];
   const markReady = useCallback(() => onReady(frameKey), [frameKey, onReady]);
   useEffect(() => {
     if (display !== "color" && image.current?.complete && image.current.naturalWidth > 0) markReady();
   }, [display, frameKey, markReady]);
-
+  // The img stays one element across dates, bands and historic frames, so playback and its load listeners follow every frame.
   return (
     <figure className="dam-radar" data-testid={props.testId}>
       {props.display === "color" ? (
         <ColorComposite sources={props.sources} caption={props.caption} onReady={markReady} />
       ) : (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img ref={image} src={`/data/${props.src}`} alt={props.caption} width={440} height={440} onLoad={markReady} onError={markReady} />
+        <img ref={image} src={`/data/${src}`} alt={props.caption} width={440} height={440} onLoad={markReady} onError={markReady} />
       )}
+      {props.display === "history" ? <p className="dam-note">Pixel inspection needs an HH and HV pair. This historic image has one band.</p>
+        : props.display === "color" ? <p className="dam-note">Switch to HH or HV to inspect a pixel.</p>
+          : <RadarInspector image={image} images={props.sources} />}
       <figcaption>{props.caption}</figcaption>
       {props.display === "color" && <ColorLegend />}
     </figure>
