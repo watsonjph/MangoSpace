@@ -55,6 +55,8 @@ test("rank preview colors, parts, and missing soil water are clear", async ({ pa
   await page.getByLabel("Window").fill("3");
   await expect(page.getByTestId("moisture")).toHaveText("No data");
   await expect(page.getByTestId("rank")).toContainText(`#${tubigon.rank!.position} of ${tubigon.rank!.of} ranked`);
+  expect(tubigon.rank!.position).toBeGreaterThan(10);
+  await expect(page.getByTestId("rank")).not.toContainText("look here first");
   await page.getByRole("button", { name: "Soil water" }).click();
   await expect(page.getByRole("button", { name: "Soil water" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByTestId("map-legend")).toContainText("Gray: less than half the pixels have data");

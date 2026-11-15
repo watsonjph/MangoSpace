@@ -11,7 +11,7 @@ const BOGO = "0702211000";
 const CARMEN_BOHOL = "0701212000"; // Cebu has a Carmen too
 
 // The panel text for a town, from the data and not from fixed values: the pipeline changes the values.
-const rankText = (lgu: Lgu) => (lgu.rank ? `#${lgu.rank.position} of ${lgu.rank.of} ranked · look here first${lgu.rank.stable ? " Stable" : ""}` : "Not ranked");
+const rankText = (lgu: Lgu) => (lgu.rank ? `#${lgu.rank.position} of ${lgu.rank.of} ranked${lgu.rank.position <= 10 ? " · look here first" : ""}${lgu.rank.stable ? " Stable" : ""}` : "Not ranked");
 const moistureText = (lgu: Lgu, i: number) => (lgu.soilMoisture[i] == null ? "No data" : `${lgu.soilMoisture[i]!.toFixed(3)} m³/m³`);
 
 // Screen position of a point inside the City of Bogo, from the map's own projection.

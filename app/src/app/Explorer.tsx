@@ -186,8 +186,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
             <dt>Rank preview{rankWin && `, ${rankWin.start} → ${rankWin.end}`}</dt>
             <dd className="rank-value" data-testid="rank">
               {lgu.rank ? <>
-                <span>#{lgu.rank.position} of {lgu.rank.of} ranked · look here first</span>
-                {lgu.rank.stable && <><span> </span><span className="stable-mark" aria-label="Stable, stayed in the top 10 in every check">Stable</span></>}
+                <span>#{lgu.rank.position} of {lgu.rank.of} ranked{lgu.rank.position <= 10 && " · look here first"}</span>
+                {lgu.rank.stable && <><span> </span><span className="stable-mark" title="Stayed in the top 10 in every check">Stable</span></>}
               </> : "Not ranked"}
             </dd>
             {lgu.rank && <>

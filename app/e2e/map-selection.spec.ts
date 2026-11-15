@@ -36,18 +36,18 @@ for (const width of [1280, 375]) {
     await navigation.getByRole("button", { name: "Rank" }).click();
     await expect(page).toHaveURL(/mode=rank$/);
     await selection("rank");
-    await navigation.getByRole("link", { name: "Method" }).click();
-    await expect(page.getByRole("heading", { name: "Measured, not forecast" })).toBeVisible();
     await page.reload();
-    await page.getByRole("link", { name: "Soil water", exact: true }).click();
     await selection("rank");
+    // Links from other pages are named for the Soil water view, so they open it.
     for (const returnLink of ["Back to soil water", "Soil water", "Hubas home"]) {
       await navigation.getByRole("link", { name: "Method" }).click();
       await expect(page.getByRole("heading", { name: "Measured, not forecast" })).toBeVisible();
       await page.reload();
       await page.getByRole("link", { name: returnLink, exact: true }).click();
-      await selection("rank");
+      await selection("soil");
     }
+    await navigation.getByRole("button", { name: "Rank" }).click();
+    await expect(page).toHaveURL(/mode=rank/);
     const sharedUrl = page.url();
     await page.goto("/method");
     await page.goto(sharedUrl);
