@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { type Band, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated, VIOLET } from "../TargetParts";
+import { type RadarDisplay, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated, VIOLET } from "../TargetParts";
 
 const EVENT_COLOR: Record<string, string> = { "2015–16": DRY, "2023–24": VIOLET };
 const pct = (value: number, base: number) => (value / base - 1) * 100;
@@ -30,7 +30,7 @@ export default function DamView({ dam }: { dam: Target }) {
   const last = dates.length - 1;
   const [picked, setPicked] = useState<number>();
   const ready = useHydrated();
-  const [band, setBand] = useState<Band>("hh");
+  const [display, setDisplay] = useState<RadarDisplay>("hh");
 
   if (!areas.length) return (
     <main className="dam-page" data-ready={ready}>
@@ -73,6 +73,8 @@ export default function DamView({ dam }: { dam: Target }) {
   // Each period is a share of its own first date: Sentinel-1 and NISAR areas do not compare in km².
   const frames = [...past.map((item) => item.share), ...areas.map((area) => area / areas[0])];
   const span: [number, number] = [Math.min(...frames) - 0.05, Math.max(...frames) + 0.05];
+  const radarLabel = old ? `${old.sensor} VV` : display === "color" ? "NISAR HH/HV color composite" : `NISAR ${display.toUpperCase()}`;
+  const radarCaption = `${radarLabel}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`;
 
   return (
     <main className="dam-page" data-ready={ready}>
@@ -103,11 +105,16 @@ export default function DamView({ dam }: { dam: Target }) {
 
       <h2>The radar image of each date</h2>
       <div className="dam-image">
-        <Radar testId="dam-radar" src={old ? old.src : images[index][band]}
-          caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`} />
+        {old ? (
+          <Radar testId="dam-radar" display="history" src={old.src} caption={radarCaption} />
+        ) : display === "color" ? (
+          <Radar testId="dam-radar" display="color" sources={images[index]} caption={radarCaption} />
+        ) : (
+          <Radar testId="dam-radar" display={display} src={images[index][display]} caption={radarCaption} />
+        )}
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
-            band={band} setBand={old ? undefined : setBand}>
+            display={display} setDisplay={old ? undefined : setDisplay}>
             {past.length > 0 && (
               <div role="group" aria-label="Go to">
                 {jumps.map((jump) => (

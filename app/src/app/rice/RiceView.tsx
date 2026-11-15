@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { type Band, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated } from "../TargetParts";
+import { type RadarDisplay, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated } from "../TargetParts";
 
 const NAME: Record<string, string> = { "ubay-rice": "Ubay", "pilar-rice": "Pilar" };
 const COLOR = [NOW, DRY];
@@ -12,7 +12,7 @@ const db = (value: number) => `${value.toFixed(1).replace("-", "−")} dB`;
 export default function RiceView({ parcels }: { parcels: Target[] }) {
   const [parcel, setParcel] = useState(0);
   const [picked, setPicked] = useState<number>();
-  const [band, setBand] = useState<Band>("hh");
+  const [display, setDisplay] = useState<RadarDisplay>("hh");
   const ready = useHydrated();
 
   if (!parcels.length) return (
@@ -63,8 +63,13 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
 
       <h2>The radar image behind each point</h2>
       <div className="dam-image">
-        <Radar src={images[index][band]} testId="rice-radar"
-          caption={`${NAME[target.id]} parcel, NISAR ${band.toUpperCase()}, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
+        {display === "color" ? (
+          <Radar testId="rice-radar" display="color" sources={images[index]}
+            caption={`${NAME[target.id]} parcel, NISAR HH/HV color composite, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
+        ) : (
+          <Radar testId="rice-radar" display={display} src={images[index][display]}
+            caption={`${NAME[target.id]} parcel, NISAR ${display.toUpperCase()}, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
+        )}
         <div>
           <div className="dam-picker" role="group" aria-label="Parcel">
             <div>
@@ -73,7 +78,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand}
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} display={display} setDisplay={setDisplay}
             notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />
           <dl className="dam-stats">
             <div><dt>Mean HV signal</dt><dd data-testid="rice-hv">{db(target.nisar.meanHvDb![index])}</dd></div>

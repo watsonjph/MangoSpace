@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { Target } from "../lib/data";
 import { saveProof } from "./proof";
+import { expectColorComposite } from "./radar-color";
 
 const day = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
@@ -36,7 +37,8 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await expect(page.getByTestId("dam-event")).toHaveCount(dam.history!.length);
     await expect(page.getByTestId("dam-event").first()).toContainText("−52%");
 
-    const radar = page.getByTestId("dam-radar").locator("img");
+    const radarFigure = page.getByTestId("dam-radar");
+    const radar = radarFigure.locator("img");
     const loaded = () => radar.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth);
     const past = dam.history!.flatMap((event) => event.dates.map((date, i) => ({
       date, image: event.images[i], change: (event.waterAreaKm2![i] / event.waterAreaKm2![0] - 1) * 100,
@@ -49,6 +51,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
       await expect(page.locator(".dam-picker output")).toHaveText(day(frame.date));
       await expect(radar).toHaveAttribute("src", `/data/${frame.image}`);
       await expect.poll(loaded).toBe(440);
+      await expect(page.getByRole("button", { name: "Color" })).toHaveCount(0);
       const rounded = Math.round(frame.change);
       const percent = `${rounded > 0 ? "+" : rounded < 0 ? "−" : ""}${Math.abs(rounded)}%`;
       await expect(page.getByTestId("dam-change")).toHaveText(percent);
@@ -66,6 +69,21 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await page.getByRole("button", { name: "HV" }).click();
     await expect(radar).toHaveAttribute("src", `/data/${images.at(-1)!.hv}`);
     await expect.poll(loaded).toBe(440);
+    await page.getByRole("button", { name: "Color" }).click();
+    await expectColorComposite(radarFigure, images.at(-1)!);
+    await expect(radarFigure.locator(".radar-color-legend")).toContainText("HH return from −30 to 0 dB");
+    await expect(radarFigure.locator(".radar-color-legend")).toContainText("HV return from −30 to 0 dB");
+    await expect(radarFigure.locator(".radar-color-legend")).toContainText("fixed 0–15 dB stretch");
+    await expect(radarFigure.locator(".radar-color-legend")).toContainText("do not identify land cover");
+    await expect(page.getByRole("button", { name: "Color" })).toHaveAttribute("aria-pressed", "true");
+    await saveProof(page, `sc-463-dam-color-${viewport.name}.png`);
+    await page.getByRole("slider").fill("0");
+    await expect(radar).toHaveAttribute("src", `/data/${past[0].image}`);
+    await expect(radarFigure.locator("canvas")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Color" })).toHaveCount(0);
+    await page.getByRole("slider").fill(String(past.length));
+    await expectColorComposite(radarFigure, images[0]);
+    await expect(page.getByRole("button", { name: "Color" })).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("button", { name: "HH" }).click();
 
     await page.getByRole("button", { name: "Lowest in 2015–16" }).click();

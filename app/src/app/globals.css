@@ -270,8 +270,20 @@ input[type="range"]::-moz-range-thumb {
 .dam-stats dt { letter-spacing: 0.04em; text-transform: uppercase; }
 .dam-stats dd { margin: 4px 0; font: 600 30px/1.1 var(--mono); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .dam-radar { margin: 0; }
-.dam-radar img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; background: #000; }
+.dam-radar img, .dam-radar canvas { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; background: #000; }
+.dam-radar canvas[hidden] { display: none; }
 .dam-radar figcaption { font: 11px var(--mono); color: var(--muted); margin-top: 6px; }
+.radar-composite { display: grid; aspect-ratio: 1; place-items: center; }
+.radar-composite > * { grid-area: 1 / 1; }
+.radar-status { display: block; margin-top: 6px; color: var(--muted); font: 11px var(--mono); }
+.radar-color-legend { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.radar-color-legend ul { display: grid; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.radar-color-legend li { display: flex; gap: 7px; align-items: baseline; }
+.radar-color-legend p { margin: 8px 0 0; }
+.radar-swatch { display: inline-block; flex: 0 0 8px; height: 8px; border-radius: 50%; }
+.radar-red { background: #e3635f; }
+.radar-green { background: #53a976; }
+.radar-blue { background: #5489df; }
 .dam-picker { display: grid; gap: 10px; margin-bottom: 12px; }
 .dam-picker .timeline { grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
 .dam-picker .timeline .play { width: 44px; height: 44px; }
@@ -280,7 +292,7 @@ input[type="range"]::-moz-range-thumb {
 .dam-picker [role="group"] { display: flex; flex-wrap: wrap; gap: 6px; }
 .dam-image { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 28px; align-items: start; }
 .dam-image .dam-stats { grid-template-columns: 1fr; }
-.rice-page .dam-radar img { image-rendering: pixelated; }
+.rice-page .dam-radar img, .rice-page .dam-radar canvas { image-rendering: pixelated; }
 
 /* The score: three staves and the rain on one date axis. The range thumb is the playhead through all of them. */
 .score-page .timeline { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
