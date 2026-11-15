@@ -28,7 +28,7 @@ export default function MethodPage() {
           the average for each town. One pass shows mostly Cebu; another shows mostly Bohol.</p>
         <p>Soil water is measured in m³/m³: cubic metres of water per cubic metre of soil.
           The map colour scale runs from 0.10 (drier) to 0.45 (wetter). Gray means less than half the pixels have data.</p>
-        <p>“Good pixels” in the town panel means the share of a town with a valid reading in that window.
+        <p>“Pixels with data” in the town panel means the share of a town with a valid reading in that window.
           It is coverage, not an accuracy score. A town is “not ranked” if less than half of it has data.</p>
         <p data-testid="smap-check">We compared the NISAR soil water with NASA’s SMAP satellite for the same
           12-day windows over Cebu and Bohol. NISAR is lower than SMAP by 0.07 m³/m³ on average, and the
