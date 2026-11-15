@@ -9,7 +9,7 @@
   --water: #4cc3cf;
   --mid: #dcd9b4;
   --dry: #e6a94e;
-  --no-data: #4b5a5e;
+  --no-data: #5d6e72;
   --violet: #b6a1ea;
   --stable: #f2b33d;
   --display: var(--font-display), "Segoe UI", system-ui, sans-serif;
@@ -60,7 +60,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
   color: var(--muted);
   white-space: nowrap;
 }
-.topbar nav a::before { content: counter(step, decimal-leading-zero); color: var(--line); }
+.topbar nav a::before { content: counter(step, decimal-leading-zero); color: var(--muted); }
 .topbar nav a:hover { color: var(--ink); }
 .topbar nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--water); }
 .topbar nav a[aria-current="page"]::before { color: var(--water); }
