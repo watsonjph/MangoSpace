@@ -54,7 +54,7 @@ export default function SoilWaterLine({ name, values, shares, windows, index }: 
           />
         ))}
         <text className="tick" x={LEFT} y={HEIGHT - 6}>{day(windows[0].start)}</text>
-        <text className="tick" x={WIDTH - RIGHT} y={HEIGHT - 6} textAnchor="end">{day(windows[windows.length - 1].start)}</text>
+        <text className="tick" x={WIDTH - RIGHT} y={HEIGHT - 6} textAnchor="end">{day(windows[windows.length - 1].end)}</text>
       </svg>
       <figcaption>
         Soil water in m³/m³ for each 12-day window. A gap is a window with no data.
