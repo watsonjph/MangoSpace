@@ -38,7 +38,8 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   return (
     <main className="dam-page rice-page" data-ready={ready}>
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
-      <h1>The radar signal of both rice parcels rose to its highest in September or October, then fell on 5 November.</h1>
+      <h1 data-testid="view-finding">The radar signal of 2 rice parcels rose to its highest in September or October, then fell on 5 Nov 2026.</h1>
+      <p className="dam-note">No field observations confirm the crop or its growth stage. <MapLink href="/method">Read the method and limits</MapLink></p>
       <dl className="dam-stats">
         {parcels.map((item, i) => {
           const values = item.nisar.meanHvDb!;
