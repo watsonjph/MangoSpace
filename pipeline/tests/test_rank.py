@@ -32,6 +32,10 @@ class RankTest(unittest.TestCase):
         self.assertFalse(result["crowded"]["stable"])
         self.assertTrue(result["dry-0"]["stable"])
 
+    def test_a_town_with_no_soil_water_now_has_no_rank(self):
+        lgus = [town("a", [0.3] * 4, 1_000), town("b", [0.2] * 4, 2_000), town("gap", [0.2, 0.2, 0.2, None], 3_000)]
+        self.assertIsNone(rank.ranks(lgus)["gap"])
+
     def test_the_rank_uses_the_latest_window_with_the_most_towns(self):
         lgus = [town("a", [0.3] * 5, 1_000), town("b", [0.2] * 5, 2_000)]
         lgus[1]["validShare"][4] = 0.1
