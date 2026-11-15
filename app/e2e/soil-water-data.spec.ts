@@ -114,5 +114,5 @@ test("the method page gives the SMAP check numbers", async ({ page }) => {
   await expect(check).toContainText("correlation 0.70");
   await expect(page.getByTestId("rank-smap")).toContainText("SMAP does not confirm which towns are drier");
   await check.scrollIntoViewIfNeeded();
-  await page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-163-method-smap.png") });
+  await saveProof(page, "sc-163-method-smap.png", { fullPage: false });
 });
