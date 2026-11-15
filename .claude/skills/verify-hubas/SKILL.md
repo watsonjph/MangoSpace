@@ -67,7 +67,7 @@ Two more options: `--viewport 375x812` gives the phone layout, and `--offline-ba
 
 It prints `steps`, the map label, the legend lines, the slider value and range, the selected town, every row of the town panel (`Rank preview, <start> → <end>`, `Soil water`, `Pixels with data`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
 
-`drive` always starts on `/`. Add `--nav Dam` or `--nav Method` to open `/dam` or `/method`. It prints `path` and the page `heading`, and `window`, `town` and `panel` are `null` off the map. For anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
+`drive` always starts on `/`. Add `--nav Dam`, `--nav Rice` or `--nav Method` to open that page. It prints `path` and the page `heading`, and `window`, `town` and `panel` are `null` off the map. For anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
 
 ## Evidence
 
@@ -98,5 +98,5 @@ node scripts/control-hubas.mjs down
 
 ## Known limits
 
-- The 101 towns and their soil water are real (sc-71, all valid NISAR readings, provisional). The rank is real too (sc-120): 99 towns have a rank from the window of 7 Oct; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey, because no Bohol track has a file there. `outlook.json` has PAGASA's El Niño Advisory No. 6 (issued 2026-11-03), the November 2026 rainfall outlook for Cebu and Bohol (sc-61). Get town IDs with `towns`. The Malinao Dam data in `targets.json` is real and shown on `/dam`.
+- The 101 towns and their soil water are real (sc-71, all valid NISAR readings, provisional). The rank is real too (sc-120): 99 towns have a rank from the window of 7 Oct; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey, because only part of Bohol has readings there (29 of 48 Bohol towns have none). `outlook.json` has PAGASA's El Niño Advisory No. 6 (issued 2026-11-03), the November 2026 rainfall outlook for Cebu and Bohol (sc-61). Get town IDs with `towns`. The Malinao Dam data in `targets.json` is real and shown on `/dam`.
 - Features from the plan that are not built yet (explainer, history) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.

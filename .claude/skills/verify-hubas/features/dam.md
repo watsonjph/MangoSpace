@@ -15,7 +15,7 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 
 - Click Dam in the top bar, or open `/dam`.
 - Move the Date slider, click a point of the chart, or use the Go to buttons. Switch HH and HV on a 2026 date.
-- On a phone the stats, chart and image stack in one column.
+- On a phone the chart and image stack in one column. The stats sit two to a row.
 
 ## Driving it with control-hubas
 
@@ -23,7 +23,7 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - **Open the dam.** Run `node scripts/control-hubas.mjs drive --nav Dam --name dam` and again with `--viewport 375x812`. `path` is `/dam`, `heading` is `The water area is steady now. In past dry events it fell in March.`, and `consoleErrors` is empty. In `aria.yml`: `Now, 5 Nov 2026` with `0.82 km²`, `Lowest in 2015–16` `−52%` (20 Mar 2016), `Lowest in 2023–24` `−19%` (26 Mar 2024).
 - **Selection kept.** Run `drive --town 0701246000 --window 3 --nav Dam --name dam-sel`. In `aria.yml` the Soil water, Dam and Method links carry `?town=0701246000&window=3`.
 - `drive` cannot move the Date slider or press the dam buttons. Use the Playwright MCP against the URL from `up`: open `/dam`, wait for `.dam-page[data-ready=true]`, then click `Lowest in 2015–16`. The `.dam-picker output` reads `20 Mar 2016` and the change reads `−52%`. Click `Now`, then `HV`: the image `src` ends in the HV file of 5 Nov 2026.
-- Run `npx playwright test e2e/dam.spec.ts` for every date of the past events and of 2026, both bands, the jumps and a chart click on desktop and phone. It writes `docs/proof/sc-104-dam-desktop.png` and `-mobile.png`.
+- Run `npx playwright test e2e/dam.spec.ts` for every date of the past events and of 2026, both bands, the jumps and a chart click on desktop and phone. With `PROOF=1` it also rewrites `docs/proof/sc-104-dam-desktop.png` and `-mobile.png`.
 
 ## Gotchas
 
