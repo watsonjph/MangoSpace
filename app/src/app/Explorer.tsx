@@ -5,6 +5,7 @@ import { Map as MapLibreMap, setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Lgu, Manifest, Outlook } from "../../lib/data";
 import { setMapSelection, useMapSearch } from "./map-selection";
+import SeasonSound from "./SeasonSound";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -23,6 +24,22 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
   const windowIndex = Number.isInteger(requestedWindow) && requestedWindow >= 0 && requestedWindow < manifest.windows.length
     ? requestedWindow : 0;
   const psgc = lgus.find(lgu => lgu.psgc === search.get("town"))?.psgc ?? "";
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    if (!playing) return;
+    const timer = window.setTimeout(() => {
+      if (windowIndex >= manifest.windows.length - 1) setPlaying(false);
+      else setMapSelection("window", String(windowIndex + 1));
+    }, 1000);
+    return () => window.clearTimeout(timer);
+  }, [playing, windowIndex, manifest.windows.length]);
+
+  useEffect(() => {
+    const pauseWhenHidden = () => { if (document.hidden) setPlaying(false); };
+    document.addEventListener("visibilitychange", pauseWhenHidden);
+    return () => document.removeEventListener("visibilitychange", pauseWhenHidden);
+  }, []);
 
   useEffect(() => {
     const m = new MapLibreMap({
@@ -108,6 +125,10 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
       </section>
 
       <form className="slider" onSubmit={(e) => e.preventDefault()}>
+        <button type="button" aria-pressed={playing} onClick={() => {
+          if (!playing && windowIndex === manifest.windows.length - 1) setMapSelection("window", "0");
+          setPlaying(!playing);
+        }}>{playing ? "Pause" : "Play"}</button>
         <label htmlFor="window">
           Window <output htmlFor="window">{win.start} → {win.end}</output>
         </label>
@@ -129,7 +150,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
             <option key={l.psgc} value={l.psgc}>{l.name}, {l.province}</option>
           ))}
         </select>
-        {lgu && (
+        {lgu && <>
           <dl>
             <dt>Rank{rankWin && `, ${rankWin.start} → ${rankWin.end}`}</dt>
             <dd data-testid="rank">{lgu.rank ? `#${lgu.rank.position} of ${lgu.rank.of}` : "Not ranked"}</dd>
@@ -140,7 +161,11 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
             <dt>PAGASA, {lgu.province}</dt>
             <dd>{outlook ? `${outlook.summary} (${outlook.advisory}, ${outlook.issued})` : "No outlook"}</dd>
           </dl>
-        )}
+          <SeasonSound key={lgu.psgc} value={moisture} index={windowIndex} playing={playing} onStart={() => {
+            setMapSelection("window", "0");
+            setPlaying(true);
+          }} />
+        </>}
       </aside>
     </main>
   );
