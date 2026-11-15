@@ -75,11 +75,14 @@ test("rapid slider changes stay under Safari's replaceState limit", async ({ pag
   await useOfflineBasemap(page);
   await page.goto("/?town=0702211000&window=0");
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
+  await page.clock.install({ time: new Date("2026-11-15T00:00:00Z") });
+  await page.clock.pauseAt(new Date("2026-11-15T00:00:01Z"));
   const slider = page.getByLabel("Window", { exact: false });
   await slider.focus();
   const before = await page.evaluate(() => window.replaceCalls);
   for (let i = 0; i < 150; i++) await page.keyboard.press(i % 20 < 10 ? "ArrowRight" : "ArrowLeft");
   await expect(slider).toHaveValue("10");
+  await page.clock.runFor(350);
   await expect(page).toHaveURL(/\?town=0702211000&window=10$/);
   const writes = await page.evaluate(() => window.replaceCalls) - before;
   expect(writes).toBeLessThan(20);

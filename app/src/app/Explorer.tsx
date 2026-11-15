@@ -9,6 +9,7 @@ import SeasonSound from "./SeasonSound";
 import SoilWaterLine from "./SoilWaterLine";
 import { HIGH, LOW, soilMeans } from "./soil-mean";
 import Timeline, { usePlayback } from "./Timeline";
+import MapLink from "./MapLink";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -150,7 +151,9 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         <div className="hud">
           <div className="tag">
             <strong>Soil water before El Niño</strong>
+            <p className="opening-question">What happened to water before El Niño?</p>
             <span>Cebu and Bohol · NISAR, each 12 days · {manifest.sme2Status}</span>
+            <MapLink className="opening-link" href="/start">Follow the soil, the dam and the rice</MapLink>
           </div>
           <section className="legend" aria-labelledby="legend-title" data-testid="map-legend">
             <h2 id="legend-title">Soil water</h2>

@@ -53,3 +53,4 @@ From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature
 These were in the plan and were removed on purpose. Do not report them as missing.
 
 - Rank map colors and the `Rank` button (sc-126). Removed in sc-450: the rank is in the town panel only. See [Rank preview](./rank-preview.md).
+Opening: /start gives the soil, dam and rice sequence. opening.spec.ts checks each link, numeric/source sentences, selection retention and the first-screen question at 1280/390 px.
