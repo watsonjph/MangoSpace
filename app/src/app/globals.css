@@ -351,6 +351,11 @@ input[type="range"]::-moz-range-thumb {
   .topbar nav a { padding: 0 5px; font-size: 10px; letter-spacing: 0; }
 }
 
+/* At 360 px and less the date and the speed and loop buttons do not fit on one row. */
+@media (max-width: 360px) {
+  .explorer > .timeline .readout { grid-template-columns: 1fr; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }

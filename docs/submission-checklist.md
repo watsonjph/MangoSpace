@@ -44,7 +44,7 @@ Include this disclosure with the project description and repository documentatio
 
 ## Handoff before submission
 
-- sc-482: keep English as the default and keep Method in English. Translate the opening, findings and main controls only after the English screen text is final. A Cebuano-speaking teammate must check every sentence and be named in the story before publication. This change does not claim a shipped language selection.
+- sc-482: dropped for the submission. The app is English only, with no language selection. Do not mention a Cebuano option in the submission text.
 - sc-201: the user selected a PowerPoint demo instead of video. The seven-slide deck is in PR #71; sc-201 packages a public download and HTML preview.
 - sc-31: done. The public URL is https://hubas.vercel.app/. Vercel deploys it from `main`. Check it again after the last merge, before sc-205.
 - Team owner: supply the actual Space Apps project-page URL and verify registration, required fields and declarations there. The Claude artifact URL is the build plan, not the project page.
