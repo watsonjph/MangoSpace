@@ -9,7 +9,7 @@ export default function MethodPage() {
   const hasSoilWater = lgus.some((town) => town.soilMoisture.some((value) => value !== null));
 
   return (
-    <main className="method-page">
+    <main className="method-page" lang="en">
       <p className="eyebrow">Cebu + Bohol · Data and limits</p>
       <h1>Measured, not forecast</h1>
       <p>Hubas shows satellite measurements of soil water and explains what they can tell us.

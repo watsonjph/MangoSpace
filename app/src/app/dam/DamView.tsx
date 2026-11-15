@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "../language";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
 import { type Band, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated, VIOLET } from "../TargetParts";
@@ -25,6 +26,7 @@ function Causes() {
 }
 
 export default function DamView({ dam }: { dam: Target }) {
+  const { t } = useLanguage();
   const { dates, images } = dam.nisar;
   const areas = dam.nisar.waterAreaKm2 ?? [];
   const last = dates.length - 1;
@@ -77,7 +79,7 @@ export default function DamView({ dam }: { dam: Target }) {
   return (
     <main className="dam-page" data-ready={ready}>
       <p className="eyebrow">Malinao Dam · Pilar, Bohol</p>
-      <h1>The water area is steady now. In past dry events it fell in March.</h1>
+      <h1>{t("The water area is steady now. In past dry events it fell in March.")}</h1>
       <dl className="dam-stats">
         <div>
           <dt>Now, {fmt(dates[last])}</dt>

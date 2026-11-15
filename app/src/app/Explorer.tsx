@@ -9,6 +9,7 @@ import SeasonSound from "./SeasonSound";
 import SoilWaterLine from "./SoilWaterLine";
 import { HIGH, LOW, soilMeans } from "./soil-mean";
 import Timeline, { usePlayback } from "./Timeline";
+import LanguageReview, { useLanguage } from "./language";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -26,6 +27,7 @@ const range = (win: Manifest["windows"][number]) => `${day(win.start)} to ${day(
 setWorkerUrl(new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url).href);
 
 export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manifest; lgus: Lgu[]; outlooks: Outlook[] }) {
+  const { t } = useLanguage();
   const container = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<MapLibreMap | null>(null);
   const search = new URLSearchParams(useMapSearch());
@@ -141,7 +143,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
   const outlook = outlooks.find((o) => o.province === lgu?.province);
   const moisture = lgu?.soilMoisture[windowIndex];
   const here = means[windowIndex];
-  const reading = (value: number | null | undefined) => value == null ? "No data" : <>{value.toFixed(3)} <span>m³/m³</span></>;
+  const reading = (value: number | null | undefined) => value == null ? t("No data") : <>{value.toFixed(3)} <span>m³/m³</span></>;
 
   return (
     <main className="explorer">
@@ -149,24 +151,25 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         <div ref={container} className="map" data-ready={map ? "true" : "false"} />
         <div className="hud">
           <div className="tag">
-            <strong>Soil water before El Niño</strong>
+            <strong>{t("Soil water before El Niño")}</strong>
             <span>Cebu and Bohol · NISAR, each 12 days · {manifest.sme2Status}</span>
           </div>
           <section className="legend" aria-labelledby="legend-title" data-testid="map-legend">
-            <h2 id="legend-title">Soil water</h2>
+            <h2 id="legend-title">{t("Soil water")}</h2>
             <div className="legend-ramp" aria-hidden="true" />
             <div className="legend-values">
-              <span>{LOW.toFixed(2)} m³/m³ · drier</span>
-              <span>{HIGH.toFixed(2)} m³/m³ · wetter</span>
+              <span>{LOW.toFixed(2)} m³/m³ · {t("drier")}</span>
+              <span>{HIGH.toFixed(2)} m³/m³ · {t("wetter")}</span>
             </div>
-            <p><span className="no-data-swatch" aria-hidden="true" /> Gray: less than half the pixels have data</p>
+            <p><span className="no-data-swatch" aria-hidden="true" /> {t("Gray: less than half the pixels have data")}</p>
           </section>
         </div>
 
         <aside className="panel">
-          <label htmlFor="town">Town</label>
+          <LanguageReview />
+          <label htmlFor="town">{t("Town")}</label>
           <select id="town" value={psgc} onChange={(e) => setMapSelection("town", e.target.value)}>
-            <option value="">Select a town</option>
+            <option value="">{t("Select a town")}</option>
             {lgus.map((l) => (
               <option key={l.psgc} value={l.psgc}>{l.name}, {l.province}</option>
             ))}
@@ -174,22 +177,22 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           {lgu ? <>
             <h2 data-testid="town-name">{lgu.name}<span>{lgu.province}</span></h2>
             <dl className="reading">
-              <dt>Soil water, {range(win)}</dt>
+              <dt>{t("Soil water")}, {range(win)}</dt>
               <dd className="big" data-testid="moisture">{reading(moisture)}</dd>
-              <dt>Pixels with data</dt>
+              <dt>{t("Pixels with data")}</dt>
               <dd>{Math.round(lgu.validShare[windowIndex] * 100)}%</dd>
             </dl>
             <SoilWaterLine name={lgu.name} values={lgu.soilMoisture} shares={lgu.validShare} windows={manifest.windows} index={windowIndex} />
             <dl>
-              <dt>Rank preview{rankWin && `, ${range(rankWin)}`}</dt>
+              <dt>{t("Rank preview")}{rankWin && `, ${range(rankWin)}`}</dt>
               <dd className="rank-value" data-testid="rank">
                 {lgu.rank ? <>
                   <span>#{lgu.rank.position} of {lgu.rank.of} ranked{lgu.rank.position <= 10 && " · look here first"}</span>
                   {lgu.rank.stable && <><span> </span><span className="stable-mark" title="Stayed in the top 10 in every check">Stable</span></>}
-                </> : "Not ranked"}
+                </> : t("Not ranked")}
               </dd>
               {lgu.rank && <>
-                <dt>Rank parts</dt>
+                <dt>{t("Rank parts")}</dt>
                 <dd className="rank-parts">
                   {([
                     ["dryness", "Dryness"],
@@ -198,7 +201,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
                   ] as const).map(([key, label]) => {
                     const percent = Math.round(lgu.rank!.parts[key] * 100);
                     return <label className="rank-part" key={key}>
-                      <span>{label}</span><span>{percent}%</span>
+                      <span>{t(label)}</span><span>{percent}%</span>
                       <progress max={100} value={percent} aria-label={`${label}: ${percent}%`} />
                     </label>;
                   })}
@@ -211,11 +214,11 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
             </dl>
             <SeasonSound key={lgu.psgc} value={moisture} index={windowIndex} playing={play.playing} onStart={play.start} />
           </> : <>
-            <p className="hint">Select a town on the map or in the list. Push play to see the season.</p>
+            <p className="hint">{t("Select a town on the map or in the list. Push play to see the season.")}</p>
             <dl className="reading">
-              <dt>All towns, mean soil water, {range(win)}</dt>
+              <dt>{t("All towns, mean soil water")}, {range(win)}</dt>
               <dd className="big" data-testid="mean">{reading(here.mean)}</dd>
-              <dt>Towns with data</dt>
+              <dt>{t("Towns with data")}</dt>
               <dd>{here.towns} of {lgus.length}</dd>
             </dl>
           </>}

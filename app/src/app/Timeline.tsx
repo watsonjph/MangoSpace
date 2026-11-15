@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useState } from "react";
+import { useLanguage } from "./language";
 
 export const STEP_MS = 450;
 const SPEEDS = [1, 2, 0.5] as const;
@@ -64,6 +65,7 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
   className?: string;
   children?: ReactNode;
 }) {
+  const { t } = useLanguage();
   const at = (i: number) => axis ? axis.at[i] : i;
   const max = axis ? axis.max : count - 1;
   const left = (i: number) => place(at(i), max);
@@ -92,7 +94,7 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
         <svg viewBox="0 0 16 16" aria-hidden="true">
           {play.playing ? <path d="M4 3h3v10H4zM9 3h3v10H9z" /> : <path d="M5 3l8 5-8 5z" />}
         </svg>
-        <span className="sr">{play.playing ? "Pause" : "Play"}</span>
+        <span className="sr">{t(play.playing ? "Pause" : "Play")}</span>
       </button>
       <div className="track">
         {staff ?? (
@@ -112,10 +114,10 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
         )}
       </div>
       <div className="readout">
-        <label htmlFor={id}>{name} <output htmlFor={id}>{label}</output></label>
+        <label htmlFor={id}>{t(name)} <output htmlFor={id}>{label}</output></label>
         <div className="controls">
           <button type="button" onClick={play.nextSpeed} aria-label={`Speed ${play.speed}×. Change the speed.`}>{play.speed}×</button>
-          <button type="button" aria-pressed={play.loop} onClick={play.toggleLoop}>Loop</button>
+          <button type="button" aria-pressed={play.loop} onClick={play.toggleLoop}>{t("Loop")}</button>
           {children}
         </div>
       </div>

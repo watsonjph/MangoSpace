@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "../language";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
 import { type Band, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated } from "../TargetParts";
@@ -10,6 +11,7 @@ const COLOR = [NOW, DRY];
 const db = (value: number) => `${value.toFixed(1).replace("-", "−")} dB`;
 
 export default function RiceView({ parcels }: { parcels: Target[] }) {
+  const { t } = useLanguage();
   const [parcel, setParcel] = useState(0);
   const [picked, setPicked] = useState<number>();
   const [band, setBand] = useState<Band>("hh");
@@ -37,7 +39,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   return (
     <main className="dam-page rice-page" data-ready={ready}>
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
-      <h1>The radar signal of both rice parcels rose to its highest in September or October, then fell on 5 November.</h1>
+      <h1>{t("The radar signal of both rice parcels rose to its highest in September or October, then fell on 5 November.")}</h1>
       <dl className="dam-stats">
         {parcels.map((item, i) => {
           const values = item.nisar.meanHvDb!;

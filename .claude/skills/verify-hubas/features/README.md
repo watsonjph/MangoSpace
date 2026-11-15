@@ -53,3 +53,4 @@ From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature
 These were in the plan and were removed on purpose. Do not report them as missing.
 
 - Rank map colors and the `Rank` button (sc-126). Removed in sc-450: the rank is in the town panel only. See [Rank preview](./rank-preview.md).
+Review-only: [Language draft](./language-review.md) is gated behind NEXT_PUBLIC_CEBUANO_REVIEW=1 until named speaker approval.

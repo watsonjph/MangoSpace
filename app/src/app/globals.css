@@ -30,6 +30,12 @@ body {
 }
 
 a { color: var(--water); text-underline-offset: 3px; }
+html[data-language-review="true"] { --bar: 96px; }
+.topbar:has(.language-picker) { flex-wrap: wrap; align-content: center; row-gap: 6px; }
+.topbar:has(.language-picker) nav { order: 3; flex-basis: 100%; justify-content: space-between; }
+.language-picker { margin-left: auto; display: flex; align-items: center; gap: 6px; font: 11px var(--mono); }
+.language-picker select { max-width: 145px; padding: 4px; }
+.language-review { border-left: 2px solid var(--dry); padding: 8px; margin-bottom: 12px; font-size: 12px; }
 a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 

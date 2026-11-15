@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${display.variable} ${mono.variable}`}>
+    <html lang="en" data-language-review={process.env.NEXT_PUBLIC_CEBUANO_REVIEW === "1"} className={`${display.variable} ${mono.variable}`}>
       <body><Navigation />{children}</body>
     </html>
   );
