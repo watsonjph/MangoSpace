@@ -22,7 +22,7 @@ Preconditions:
 
 - **Move the slider.** Set window 10. Run `node scripts/control-hubas.mjs drive --window 10 --name slider-10`. `window.index` is `10` and `window.range` matches the last entry of `manifest.json` `windows` (mock: `2026-10-19 → 2026-10-31`).
 - **Panel follows.** Open a town and move the slider. Run `node scripts/control-hubas.mjs drive --town 0702211000 --name slider-bogo-0` and `node scripts/control-hubas.mjs drive --town 0702211000 --window 10 --name slider-bogo-10`. `panel["Soil water"]` matches `soilMoisture[0]` and `soilMoisture[10]` for that town in `lgus.json`. The two values differ when the data differs. Until sc-71 both are `No good pixels` and `panel["Good pixels"]` is `0%` in every window.
-- **No soil water in a window.** Run `node scripts/control-hubas.mjs drive --town 0730600000 --window 4 --name slider-cebu-4`. `panel["Soil water"]` is `No good pixels` when `soilMoisture[4]` is `null` for that town.
+- **No soil water in a window.** Run `node scripts/control-hubas.mjs drive --town 0701245000 --window 3 --name slider-tubigon-3`. `panel["Soil water"]` is `No good pixels`, because `soilMoisture[3]` is `null` for Tubigon: no Bohol track has a file in that window.
 - **Out of range.** Run `node scripts/control-hubas.mjs drive --window 99`. The command fails with `--window must be 0 to 10.`
 
 ## Gotchas
