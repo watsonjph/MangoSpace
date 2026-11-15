@@ -41,7 +41,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
   const notes = means.map((m) => m.note);
   const ticks = manifest.windows.flatMap((win, index) =>
     index === 0 || win.start.slice(5, 7) !== manifest.windows[index - 1].start.slice(5, 7)
-      ? [{ index, label: new Date(`${win.start}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }) }] : []);
+      ? [{ index: (index + manifest.windows.findLastIndex((other) => other.start.slice(0, 7) === win.start.slice(0, 7))) / 2,
+        label: new Date(`${win.start}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }) }] : []);
 
   useEffect(() => {
     const css = getComputedStyle(document.documentElement);
