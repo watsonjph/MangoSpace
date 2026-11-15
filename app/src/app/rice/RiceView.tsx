@@ -26,6 +26,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const target = parcels[parcel];
   const { dates, images } = target.nisar;
   const index = Math.min(picked ?? dates.length - 1, dates.length - 1);
+  const frameSrcs = images.map((image) => image[band]);
   const lines: Line[] = parcels.map((item, i) => ({
     label: `${NAME[item.id]}, NISAR HV`,
     color: COLOR[i],
@@ -73,7 +74,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand}
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand} frames={frameSrcs}
             notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />
           <dl className="dam-stats">
             <div><dt>Mean HV signal</dt><dd data-testid="rice-hv">{db(target.nisar.meanHvDb![index])}</dd></div>

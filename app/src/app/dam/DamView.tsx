@@ -69,6 +69,11 @@ export default function DamView({ dam }: { dam: Target }) {
     })),
     { label: "Now", frame: past.length + last },
   ];
+  const frameSrcs = [...past.map((item) => item.src), ...images.map((image) => image[band])];
+  const periods = [
+    ...events.map((event, i) => ({ label: event.event, index: events.slice(0, i).reduce((count, earlier) => count + earlier.dates.length, 0) })),
+    { label: "2026", index: past.length },
+  ];
   const lowest = Math.min(...areas, ...scenarios.flatMap((line) => line.points.map(([, value]) => value)));
   // Each period is a share of its own first date: Sentinel-1 and NISAR areas do not compare in km².
   const frames = [...past.map((item) => item.share), ...areas.map((area) => area / areas[0])];
@@ -107,6 +112,7 @@ export default function DamView({ dam }: { dam: Target }) {
           caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`} />
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
+            periods={periods} frames={frameSrcs}
             band={band} setBand={old ? undefined : setBand}>
             {past.length > 0 && (
               <div role="group" aria-label="Go to">
