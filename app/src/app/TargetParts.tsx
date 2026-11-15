@@ -56,9 +56,11 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label, 
   };
   const reading = hover === undefined ? undefined : lines[0].points[hover];
   const findingPoint = lines[0].points.find(([time]) => time === finding.time);
-  const ends = lines.map((line) => ({ line, y: y(line.points.at(-1)![1]) })).sort((a, b) => a.y - b.y);
+  // A line that stops before the chart does (2026 before its scenarios) is named above its last point, not into the lines that go on.
+  const early = (line: Line) => line.points.at(-1)![0] < t1;
+  const ends = lines.filter((line) => !early(line)).map((line) => ({ line, y: y(line.points.at(-1)![1]) })).sort((a, b) => a.y - b.y);
   ends.forEach((end, i) => { end.y = Math.max(end.y, i ? ends[i - 1].y + 32 : top); });
-  const overflow = Math.max(0, ends.at(-1)!.y - (top + plot - 20));
+  const overflow = Math.max(0, (ends.at(-1)?.y ?? 0) - (top + plot - 20));
 
   return (
     <div ref={box} className="dam-chart chart" data-testid="dam-chart">
@@ -97,13 +99,14 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label, 
             <polyline className="line" fill="none" stroke={line.color} strokeDasharray={line.dashed ? "6 5" : undefined}
               points={line.points.map(([time, value]) => `${x(time)},${y(value)}`).join(" ")} />
             {!line.dashed && line.points.map(([time, value]) => <circle key={time} cx={x(time)} cy={y(value)} r={3} fill={line.color} />)}
+            {early(line) ? <text className="line-label" x={x(line.points.at(-1)![0]) - 10} y={y(line.points.at(-1)![1]) - 10} textAnchor="end" style={{ fill: line.color }}>{line.label}</text> : <>
             <line x1={x(line.points.at(-1)![0])} x2={x(line.points.at(-1)![0]) + 6} y1={y(line.points.at(-1)![1])} y2={ends.find((end) => end.line === line)!.y - overflow} stroke={line.color} />
             <text className="line-label" x={x(line.points.at(-1)![0]) + 8} y={ends.find((end) => end.line === line)!.y - overflow + 4} style={{ fill: line.color }}>
               {line.label.split(" ").reduce<string[][]>((rows, word) => {
                 if (rows.at(-1)!.join(" ").length + word.length > (width < 500 ? 12 : 20)) rows.push([]);
                 rows.at(-1)!.push(word); return rows;
               }, [[]]).map((row, i) => <tspan key={i} x={x(line.points.at(-1)![0]) + 8} dy={i ? 12 : 0}>{row.join(" ")}</tspan>)}
-            </text>
+            </text></>}
           </g>
         ))}
         {picked && <circle className="selected" cx={x(picked[0])} cy={y(picked[1])} r={6} fill={lines[0].color} />}

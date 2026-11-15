@@ -51,6 +51,23 @@ for (const width of [1280, 390]) {
         const a = (await labels[i - 1].boundingBox())!, b = (await labels[i].boundingBox())!;
         expect(a.y + a.height <= b.y || b.y + b.height <= a.y || a.x + a.width <= b.x || b.x + b.width <= a.x).toBe(true);
       }
+      const crossed = await chart.locator("svg").evaluate((svg) => {
+        const boxes = [...svg.querySelectorAll(".line-label")].map((label) => ({ name: label.textContent, r: label.getBoundingClientRect() }));
+        const hits = new Set<string>();
+        for (const line of svg.querySelectorAll("polyline")) {
+          const m = (line as SVGPolylineElement).getScreenCTM()!;
+          const pts = [...(line as SVGPolylineElement).points].map((p) => new DOMPoint(p.x, p.y).matrixTransform(m));
+          for (let k = 1; k < pts.length; k++) {
+            const steps = Math.ceil(Math.hypot(pts[k].x - pts[k - 1].x, pts[k].y - pts[k - 1].y));
+            for (let t = 0; t <= steps; t++) {
+              const px = pts[k - 1].x + (pts[k].x - pts[k - 1].x) * t / steps, py = pts[k - 1].y + (pts[k].y - pts[k - 1].y) * t / steps;
+              for (const { name, r } of boxes) if (px > r.left && px < r.right && py > r.top && py < r.bottom) hits.add(name!);
+            }
+          }
+        }
+        return [...hits];
+      });
+      expect(crossed, "no line runs through a line label").toEqual([]);
       const circle = chart.locator("circle").first();
       const box = (await circle.boundingBox())!;
       await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
