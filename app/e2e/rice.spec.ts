@@ -12,6 +12,7 @@ test("the data still supports the rice heading", async ({ request }) => {
   for (const { id, nisar } of targets.filter((target) => target.kind === "rice")) {
     const hv = nisar.meanHvDb!;
     const high = hv.indexOf(Math.max(...hv));
+    expect(hv[high], `${id} rises above its first date`).toBeGreaterThan(hv[0]);
     expect([8, 9], `${id} peaks in September or October`).toContain(new Date(nisar.dates[high]).getUTCMonth());
     expect(nisar.dates.at(-1), `${id} ends on 5 November`).toBe("2026-11-05");
     expect(hv.at(-1)!, `${id} is lower on the last date`).toBeLessThan(hv.at(-2)!);

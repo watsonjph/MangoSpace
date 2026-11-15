@@ -45,7 +45,8 @@ test("map loads, slider and town panel work, no console errors", async ({ page, 
   await expect(page.getByTestId("moisture")).toHaveText(moistureText(town(BOGO), 0));
 
   await page.getByLabel("Window").fill(String(last));
-  await expect(page.locator("output")).toContainText(manifest.windows[last].start);
+  await expect(page.locator("output")).toHaveText("19 Oct to 31 Oct 2026");
+  expect(manifest.windows[last].start).toBe("2026-10-19");
   await expect(page.getByTestId("moisture")).toHaveText(moistureText(town(BOGO), last));
 
   await page.getByLabel("Town").selectOption({ label: "Carmen, Bohol" });

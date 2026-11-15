@@ -56,7 +56,7 @@ test("the map and the panel show a town with data and a town with no data in a w
       const layer = window.hubasMap!.queryRenderedFeatures({ layers: ["soil"] }).find((f) => f.id === id)?.layer;
       return layer?.type === "fill" ? String(layer.paint?.["fill-color"]) : undefined;
     }, psgc);
-  const grey = "rgba(154,165,162,1)"; // #9aa5a2 in Explorer.tsx
+  const grey = "rgba(75,90,94,1)"; // --no-data in globals.css
   await expect.poll(() => fill(MANDAUE)).toBe(grey);
   expect(await fill(BOGO)).not.toBe(grey);
   await page.waitForFunction(() => window.hubasMap!.loaded());
@@ -101,7 +101,8 @@ test("the rank is a full order of the towns with data, and the panel shows it", 
   await page.getByLabel("Town").selectOption(first.psgc);
   await expect(page.getByTestId("rank")).toContainText(`#1 of ${ranked.length} ranked · look here first`);
   const rankWin = manifest.windows[manifest.rankWindow!];
-  await expect(page.locator(".panel dt").first()).toHaveText(`Rank preview, ${rankWin.start} → ${rankWin.end}`);
+  expect(rankWin.start).toBe("2026-10-07");
+  await expect(page.locator(".panel dt").filter({ hasText: "Rank preview" })).toHaveText("Rank preview, 7 Oct to 19 Oct 2026");
   await page.waitForFunction(() => window.hubasMap!.loaded());
   await saveProof(page, "sc-120-rank-first-town.png");
 });
