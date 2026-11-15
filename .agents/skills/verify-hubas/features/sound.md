@@ -19,7 +19,8 @@ The selected town's soil-water series can be heard as short tones while the slid
 ## Driving it with control-hubas
 
 - Start the static export with `node scripts/control-hubas.mjs up` and run `doctor`.
-- Open a town with `drive --town 0702211000 --name sound-start`; check the panel says Sound off.
+- Open a town with `drive --town 0702211000 --name sound-start`. `drive` cannot press Hear the season, and the sound line is outside the `panel` JSON: check `aria.yml` for the `Hear the season` button and "Sound off".
+- To opt in live, use the Playwright MCP against the URL from `up`: open `/?town=0702211000&window=10`, click the button named `Hear the season`. Expect it pressed, "Sound on", a `Pause` button, the window reset to 0 and moving about once a second. Click `Pause`: the window holds. Pick another town in `Town`: the button is not pressed and the text says "Sound off".
 - Run `npx playwright test e2e/sound.spec.ts --workers=1` for desktop/phone opt-in, shared playback, end stop, keyboard control, missing readings, town changes and startup failure. Screenshots, traces and video are in test-results.
 - The same spec renders the production tone function through OfflineAudioContext and checks pitch, silence and the end of each tone. It uses actual Web Audio, without substituting fake oscillators.
 
@@ -29,3 +30,5 @@ The selected town's soil-water series can be heard as short tones while the slid
 - One second represents one window. The pitch mapping is an explanatory choice over the map's 0.10–0.45 scale, not a scientific alarm or forecast.
 - Audio requires a user click. Browser/device sound settings can still mute the output; a browser startup failure is shown without disabling the slider.
 - Backgrounding the page pauses playback. Returning does not start it automatically.
+- Turning sound off does not pause the slider, and changing towns turns sound off while playback continues. Moving the slider while paused is silent.
+- Hear the season always restarts from window 0, even when another window is selected.

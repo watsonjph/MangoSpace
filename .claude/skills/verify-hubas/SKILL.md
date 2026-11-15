@@ -25,7 +25,7 @@ node scripts/control-hubas.mjs up --no-build   # reuse the current out/
 ```
 
 - `up` builds the static export, starts a small static server in the background, and waits until `/data/manifest.json` answers. It prints the URL.
-- It serves the built `out/`, the same files Vercel serves. It does not use `next dev`.
+- It serves the built `out/`, the same static files the host serves. It does not use `next dev`.
 - Ready means the page and its data answer. The map itself loads in the browser: `drive` waits for it.
 - State goes in `app/.verify/state.json`; the server log in `app/.verify/server.log`.
 - `up` refuses to start if its own server is already running or the port is taken. It never touches a server it did not start.
