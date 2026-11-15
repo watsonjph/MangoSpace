@@ -77,6 +77,25 @@ export default function MethodPage() {
             SME2 is the source for the soil water method; GCOV supplies the packaged dam and rice images.
             Science data is freely available under NASA’s open data policy.
             {" "}<a href="https://nisar-docs.asf.alaska.edu/">NISAR Data User Guide and data policy</a>.</li>
+          <li><strong>GPM IMERG rain.</strong> NASA GES DISC, GPM_3IMERGDL version 07 (daily Late Run).
+            The dam and rice charts show the rain total for the 12 days before each radar date.
+            Data is freely available; acknowledge NASA and the dataset producers.
+            {" "}<a href="https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDL_07/summary">GPM IMERG dataset</a> ·
+            {" "}<a href="https://gpm.nasa.gov/data/policy">GPM data policy and citation</a>.</li>
+          <li><strong>Copernicus Sentinel-1 radar.</strong> European Union Copernicus, processed through
+            ASF HyP3 and OPERA RTC-S1. The dam view uses Sentinel-1 for the 2015–16 and 2023–24 history.
+            Sentinel-1 rice comparison images are also included in the packaged data.
+            Contains modified Copernicus Sentinel data 2015–2016, 2023–2024 and 2026.
+            Access and use are free, full and open under the Copernicus Sentinel legal notice.
+            {" "}<a href="https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-1">Sentinel-1 dataset</a> ·
+            {" "}<a href="https://cds.climate.copernicus.eu/licences/ec-sentinel">Copernicus Sentinel legal notice</a> ·
+            {" "}<a href="https://hyp3-docs.asf.alaska.edu/">ASF HyP3 processing</a> ·
+            {" "}<a href="https://www.jpl.nasa.gov/go/opera/products/rtc-product/">OPERA RTC-S1 processing</a>.</li>
+          <li><strong>SMAP soil water check.</strong> NASA NSIDC DAAC, SPL3SMP_E enhanced daily
+            soil water on a 9 km grid. Used for the NISAR comparison above, not to confirm the town rank.
+            Data is free to access; cite the dataset and the version used.
+            {" "}<a href="https://nsidc.org/data/spl3smp_e">SMAP dataset and citation</a> ·
+            {" "}<a href="https://nsidc.org/data/data-programs/nsidc-daac/citing-nsidc-daac">NSIDC citation policy</a>.</li>
           <li><strong>Town borders.</strong> NAMRIA and the Philippine Statistics Authority (PSA),
             through OCHA’s COD-AB. Converted by James Faeldon’s philippines-json-maps v1.1.1,
             with PSGC 3Q 2026 codes, simplified to 1% of vertices and rounded to five decimal places.
