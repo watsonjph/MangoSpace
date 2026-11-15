@@ -60,7 +60,8 @@ node scripts/control-hubas.mjs drive --nav Method --name sc-123-method
 | `--click-town <psgc>` | Click the town shape on the map | MapLibre `window.hubasMap`, layer `soil`, feature id = psgc. The tool finds a point inside the shape that is not under the slider or the panel. |
 | `--town <psgc or "Name, Province">` | Pick the town in the dropdown | label `Town` |
 | `--window <n>` | Move the slider to window n | label `Window`; range text in `.slider output` |
-| `--nav <link>` | Click a link in the top bar: `Soil water`, `Dam` or `Method` | `navigation` named `Main`; waits until that link has `aria-current="page"` |
+| `--view <soil\|rank>` | Press `Soil water` or `Rank` in the top bar of the map | `navigation` named `Main`, buttons with `aria-pressed` |
+| `--nav <link>` | Click a link in the top bar: `Dam`, `Rice` or `Method` (on `/`, Soil water is a button; use `--view`) | `navigation` named `Main`; waits until that link has `aria-current="page"` |
 
 Two more options: `--viewport 375x812` gives the phone layout, and `--offline-basemap yes` replaces the outside base map with a plain background (the same stub as `app/e2e/offline-basemap.ts`) for runs without internet.
 

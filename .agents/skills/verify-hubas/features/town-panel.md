@@ -6,7 +6,7 @@ The panel at the top right shows one town: its rank preview or "Not ranked", ran
 
 - `panel-open-map` opens a town by clicking its shape on the map.
 - `panel-open-list` opens a town from the `Town` dropdown.
-- `panel-rank` shows `#n of m ranked · look here first`, or `Not ranked` when the town has no rank. The rank preview shows the window it uses and stays fixed as the slider moves.
+- `panel-rank` shows `#n of m ranked`, with `· look here first` for the top 10, or `Not ranked` when the town has no rank. The rank preview shows the window it uses and stays fixed as the slider moves.
 - `panel-rank-parts` shows a bar and percentage for Dryness, Drying speed and People; a stable town has a visible Stable mark.
 - `panel-values` shows soil water in m³/m³ (or "No data" when the selected window has no reading) and pixels with data in %.
 - `panel-line` shows an SVG line of the soil water in all windows on the scale of the map legend (0.10 to 0.45 m³/m³). A dashed line and a larger circle mark the selected window. A window with `null` makes a gap. An open grey circle is a window with data on less than half of the town.
@@ -24,7 +24,7 @@ Preconditions:
 - `doctor` reports `ok: true`.
 - `rank.py` (sc-120) ranks 99 towns; City of Mandaue and City of Lapu-Lapu have `rank: null`. The row is labelled `Rank preview, <start> → <end>` using `manifest.rankWindow`; it includes the position, total, first-check cue and part bars. The rank does not change with the slider. Two towns are named Carmen: `0701212000` in Bohol and `0702215000` in Cebu.
 
-- **Open from the map.** Click the City of Bogo on the map. Run `node scripts/control-hubas.mjs drive --click-town 0702211000 --name panel-map`. `town` is `0702211000` and the `Rank preview, …` row matches the town's `rank` in `lgus.json`: `#<position> of <of> ranked · look here first`, or `Not ranked` for `null`.
+- **Open from the map.** Click the City of Bogo on the map. Run `node scripts/control-hubas.mjs drive --click-town 0702211000 --name panel-map`. `town` is `0702211000` and the `Rank preview, …` row matches the town's `rank` in `lgus.json`: `#<position> of <of> ranked`, plus ` · look here first` when the position is 10 or less, or `Not ranked` for `null`.
 - **Open from the list.** Choose Carmen in the dropdown. Run `node scripts/control-hubas.mjs drive --town "Carmen, Bohol" --name panel-list`. `town` is `0701212000`, not the Carmen in Cebu.
 - **Values.** In either run, `panel["Soil water"]` equals the town's `soilMoisture` at `window.index`, to 3 decimals, or `No data` for a null value. `panel["Pixels with data"]` equals `validShare` × 100, rounded.
 - **Line.** Run `node scripts/control-hubas.mjs drive --town 0701245000 --window 3 --name panel-line` (Tubigon). `aria.yml` has an `img` whose name starts with `Soil water of Tubigon: 11 values` and ends with `Selected: no data.` The screenshot shows a line in two pieces (windows 0–2 and 4–9): windows 3 and 10 have no circle.

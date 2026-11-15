@@ -23,12 +23,13 @@ const HELP = `control-hubas <command> [options]   (run from app/)
       --click-town <psgc>         Click the town's shape on the map canvas.
       --town <psgc|"Name, Prov">  Pick the town in the "Town" dropdown.
       --window <n>                Set the "Window" slider to index n (0 = first 12-day window).
-      --nav <link>                Click a link in the top bar, e.g. "Method" or "Soil water".
+      --view <soil|rank>          Press the Soil water or Rank button in the top bar of the map.
+      --nav <link>                Click a link in the top bar, e.g. "Dam" or "Method".
       --name <label>              Evidence folder name (default: timestamp).
       --viewport <WxH>            Browser size (default 1280x800). 375x812 gives the phone layout.
       --offline-basemap yes       Replace the OpenFreeMap base map with a plain background,
                                   the same stub the e2e specs use. For runs without internet.
-    Actions run in this order: click-town, town, window, nav.
+    Actions run in this order: click-town, town, window, view, nav.
     Prints the panel, the slider and console errors. Saves screenshot.png, aria.yml, result.json.
   down                            Stop the server that "up" started. Evidence stays.
 
@@ -207,6 +208,14 @@ async function drive(o) {
       await page.getByLabel("Window").fill(String(o.window));
       steps.push(`set window ${o.window}`);
     }
+    if (o.view) {
+      const name = { soil: "Soil water", rank: "Rank" }[o.view];
+      if (!name) throw new Error(`--view must be soil or rank.`);
+      const button = page.getByRole("navigation", { name: "Main" }).getByRole("button", { name, exact: true });
+      await button.click();
+      await page.waitForFunction((n) => [...document.querySelectorAll("nav button[aria-pressed=true]")].some((b) => b.textContent.trim() === n), name);
+      steps.push(`chose ${name} view`);
+    }
     if (o.nav) {
       const link = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: o.nav, exact: true });
       if (!(await link.count())) throw new Error(`No top bar link "${o.nav}". Links: ${(await page.getByRole("navigation", { name: "Main" }).getByRole("link").allInnerTexts()).join(", ")}`);
@@ -229,8 +238,8 @@ async function drive(o) {
       heading: await text(page.locator("h1")),
       steps,
       label: await text(page.locator(".tag")),
-      legend: await page.getByTestId("soil-water-legend").count()
-        ? (await page.getByTestId("soil-water-legend").innerText()).split("\n").map((t) => t.trim()).filter(Boolean)
+      legend: await page.getByTestId("map-legend").count()
+        ? (await page.getByTestId("map-legend").innerText()).split("\n").map((t) => t.trim()).filter(Boolean)
         : null,
       window: onMap ? { index: Number(await page.getByLabel("Window").inputValue()), range: await text(page.locator(".slider output")) } : null,
       town: onMap ? (await page.getByLabel("Town").inputValue()) || null : null,

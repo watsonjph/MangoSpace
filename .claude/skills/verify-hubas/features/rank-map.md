@@ -16,11 +16,15 @@ Choose Rank in the top bar to color towns by their place in the rank preview. Th
 
 ## Driving it with control-hubas
 
-- `control-hubas` does not select a map view. Run `npx playwright test e2e/rank-map.spec.ts` from `app/` to drive Rank and Soil water through the top bar.
+- **Rank view.** Run `node scripts/control-hubas.mjs drive --town 0702209000 --view rank --name rank`. `steps` ends with `chose Rank view`, `legend` is `["Rank preview", "Later on the list", "Look here first", "Not ranked", "Gold outline: stable in checks"]`, and the `Rank preview, …` row reads `#2 of 99 ranked · look here first Stable`.
+- **No cue below the top 10.** Run `drive --town 0701245000 --view rank --name rank-later`. The row reads `#84 of 99 ranked`, without `look here first`.
+- Run `npx playwright test e2e/rank-map.spec.ts` from `app/` for the full flow: map paint, part bars, an unranked town and the phone layout.
 - The spec checks a stable town's rank and part bars, an unranked town, Tubigon with no soil water in window 3, and the phone layout. Run `PROOF=1 npm test -- e2e/rank-map.spec.ts` to write `sc-126-rank-map-desktop.png`, `sc-126-rank-map-mobile.png` and `sc-233-no-data-desktop.png` to `docs/proof/`.
 
 ## Gotchas
 
 - The rank preview uses its own fixed window. Moving the slider changes Soil water values but does not change the rank position or Rank map colors.
+- `look here first` shows only for the top 10, the same cut the pipeline uses for Stable.
+- Links from Dam, Rice and Method open the Soil water view. `mode=rank` survives reload and shared URLs on `/`.
 - A town can have a rank while its soil water is missing for the selected slider window. It stays ranked in Rank view; Soil water view shows it grey and the panel says `No data`.
 - Rank describes an order of towns to check first. The rank is provisional.
