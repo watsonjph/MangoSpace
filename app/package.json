@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "playwright test",
+    "test": "node --test scripts/control-hubas.test.mjs && playwright test --workers=2",
     "control": "node scripts/control-hubas.mjs"
   },
   "dependencies": {
