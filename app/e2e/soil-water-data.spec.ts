@@ -1,7 +1,7 @@
-import path from "node:path";
 import { expect, test } from "@playwright/test";
 import type { Lgu, Manifest } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { saveProof } from "./proof";
 
 const BOGO = "0702211000";
 const TUBIGON = "0701245000";
@@ -36,7 +36,6 @@ test("the map and the panel show a town with data and a town with no data in a w
   expect(bogo.soilMoisture[0]).not.toBeNull();
   expect(tubigon.soilMoisture[3]).toBeNull();
   const state = (psgc: string) => page.evaluate((id) => window.hubasMap!.getFeatureState({ source: "lgus", id }).sm, psgc);
-  const proof = (name: string) => page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", name), fullPage: true });
 
   await useOfflineBasemap(page);
   await page.setViewportSize({ width: 1280, height: 800 });
@@ -48,7 +47,7 @@ test("the map and the panel show a town with data and a town with no data in a w
   await expect(page.getByTestId("moisture")).toHaveText(`${bogo.soilMoisture[0]!.toFixed(3)} m³/m³`);
   await expect.poll(() => state(BOGO)).toBe(bogo.soilMoisture[0]);
   await page.waitForFunction(() => window.hubasMap!.loaded());
-  await proof("sc-71-map-window-1.png");
+  await saveProof(page, "sc-71-map-window-1.png");
 
   await page.getByLabel("Window").fill("3");
   await page.getByLabel("Town").selectOption(TUBIGON);
@@ -56,5 +55,5 @@ test("the map and the panel show a town with data and a town with no data in a w
   await expect.poll(() => state(TUBIGON)).toBeNull();
   await expect.poll(() => state(BOGO)).toBe(bogo.soilMoisture[3]);
   await page.waitForFunction(() => window.hubasMap!.loaded());
-  await proof("sc-71-map-window-4.png");
+  await saveProof(page, "sc-71-map-window-4.png");
 });

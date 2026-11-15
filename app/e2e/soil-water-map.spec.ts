@@ -1,8 +1,8 @@
-import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import type { Lgu } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { saveProof } from "./proof";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -79,10 +79,7 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   await page.getByLabel("Window").fill("0");
 
   await expectIslandsVisible(page);
-  await page.screenshot({
-    path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-78-map-desktop.png"),
-    fullPage: true,
-  });
+  await saveProof(page, "sc-78-map-desktop.png");
 
   await page.setViewportSize({ width: 375, height: 812 });
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
@@ -95,9 +92,6 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   expect(panelBox!.y).toBeGreaterThanOrEqual(mapBox!.y + mapBox!.height);
   expect(sliderBox!.y).toBeGreaterThanOrEqual(panelBox!.y + panelBox!.height);
 
-  await page.screenshot({
-    path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-78-map-mobile.png"),
-    fullPage: true,
-  });
+  await saveProof(page, "sc-78-map-mobile.png");
   expect(errors).toEqual([]);
 });
