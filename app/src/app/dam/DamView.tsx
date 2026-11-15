@@ -6,6 +6,7 @@ import MapLink from "../MapLink";
 import { type RadarDisplay, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated, VIOLET } from "../TargetParts";
 
 const EVENT_COLOR: Record<string, string> = { "2015–16": DRY, "2023–24": VIOLET };
+const month = (date: string) => new Date(date).toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" });
 const pct = (value: number, base: number) => (value / base - 1) * 100;
 const signed = (value: number) => {
   const rounded = Math.round(value);
@@ -57,6 +58,14 @@ export default function DamView({ dam }: { dam: Target }) {
     })),
     { label: "Now", frame: past.length + last },
   ];
+  const frameSrcs = [
+    ...past.map((item) => [item.src]),
+    ...images.map((image) => display === "color" ? [image.hh, image.hv] : [image[display]]),
+  ];
+  const periods = [
+    ...events.map((event, i) => ({ label: event.event, index: events.slice(0, i).reduce((count, earlier) => count + earlier.dates.length, 0) })),
+    { label: "2026", index: past.length },
+  ];
   const lowest = Math.min(...areas, ...scenarios.flatMap((line) => line.points.map(([, value]) => value)));
   // Each period is a share of its own first date: Sentinel-1 and NISAR areas do not compare in km².
   const frames = [...past.map((item) => item.share), ...areas.map((area) => area / areas[0])];
@@ -73,12 +82,12 @@ export default function DamView({ dam }: { dam: Target }) {
   return (
     <main className="dam-page" data-ready={ready}>
       <p className="eyebrow">Malinao Dam · Pilar, Bohol</p>
-      <h1>The water area is steady now. In past dry events it fell in March.</h1>
+      <h1 data-testid="view-finding">The water area stayed between {Math.min(...areas).toFixed(2)} and {Math.max(...areas).toFixed(2)} km² in 2026.{events[0] && events[0].fall < 0 && ` In ${events[0].event} it fell ${Math.abs(Math.round(events[0].fall))}% by ${month(events[0].lowDate)}.`}</h1>
+      <p className="dam-note">Radar alone does not establish the cause of a change. <MapLink href="/method">Read the method and limits</MapLink></p>
       <dl className="dam-stats">
         <div>
           <dt>Now, {fmt(dates[last])}</dt>
           <dd data-testid="dam-now">{areas[last].toFixed(2)} km²</dd>
-          <small>2026 so far: {Math.min(...areas).toFixed(2)} to {Math.max(...areas).toFixed(2)} km²</small>
         </div>
         {events.map((event) => (
           <div key={event.event} data-testid="dam-event">
@@ -108,7 +117,7 @@ export default function DamView({ dam }: { dam: Target }) {
         )}
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
-            display={display} setDisplay={old ? undefined : setDisplay}>
+            display={display} setDisplay={old ? undefined : setDisplay} periods={periods} frames={frameSrcs}>
             {past.length > 0 && (
               <div role="group" aria-label="Go to">
                 {jumps.map((jump) => (

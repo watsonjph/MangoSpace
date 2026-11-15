@@ -224,14 +224,30 @@ const FRAME_MS = 300;
 // The height of a value on the timeline staff, inside the same range as its chart.
 export const note = (value: number, [low, high]: [number, number]): Note => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
 
-export function Picker({ label, max, index, setIndex, notes, display, setDisplay, children }: {
-  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[];
+// frames: the image of each step. They load up front, and play waits on a frame until it has loaded, so no frame is skipped.
+export function Picker({ label, max, index, setIndex, notes, frames, periods, display, setDisplay, children }: {
+  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[]; frames: string[][];
   display: RadarDisplay; setDisplay?: (display: RadarDisplay) => void; children?: ReactNode;
+  periods?: { index: number; label: string }[];
 }) {
-  const play = usePlayback(max + 1, index, setIndex, FRAME_MS);
+  const [loaded, setLoaded] = useState<ReadonlySet<string>>(new Set());
+  // Each frame can use one band or both bands for a color composite.
+  const list = frames.map((frame) => frame.join(" ")).join("|");
+  useEffect(() => {
+    for (const src of new Set(list.split("|").flatMap((frame) => frame.split(" ")))) {
+      const image = new Image();
+      // A frame that fails to load must not stop play.
+      image.onload = image.onerror = () => setLoaded((done) => new Set(done).add(src));
+      image.src = `/data/${src}`;
+    }
+  }, [list]);
+  const frame = list.split("|")[index]?.split(" ") ?? [];
+  const play = usePlayback(max + 1, index, setIndex, FRAME_MS, frame.every((src) => loaded.has(src)));
   return (
     <div className="dam-picker">
-      <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes} />
+      <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes}
+        breaks={periods?.slice(1).map((period) => period.index)}
+        ticks={periods?.map((period, i) => ({ label: period.label, index: (period.index + (periods[i + 1]?.index ?? max + 1) - 1) / 2 }))} />
       {children}
       {setDisplay && (
         <div role="group" aria-label="Radar display">

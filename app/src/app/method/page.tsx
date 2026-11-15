@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import MapLink from "../MapLink";
 import lgus from "../../../public/data/lgus.json";
+import manifest from "../../../public/data/manifest.json";
 import outlooks from "../../../public/data/outlook.json";
 import targets from "../../../public/data/targets.json";
+import { dateLabel } from "../date-label";
 
 export const metadata: Metadata = { title: "Method · Hubas" };
 
@@ -29,7 +31,7 @@ export default function MethodPage() {
     <main className="method-page">
       <p className="eyebrow">Cebu + Bohol · Data and limits</p>
       <h1>Measured, not forecast</h1>
-      <p>Hubas shows satellite measurements of soil water and explains what they can tell us.
+      <p data-testid="view-finding">Hubas shows {manifest.windows.length} windows of satellite soil water measurements for {lgus.length} towns and cities.
         The app makes no forecast of its own. An official PAGASA outlook is separate from the measurements.</p>
       <p className="notice">The NISAR soil water data is provisional. The rank is a preview,
         not a drought risk score. {hasSoilWater
@@ -148,7 +150,7 @@ export default function MethodPage() {
             {" "}<a href="https://github.com/faeldon/philippines-psgc-shapefiles/blob/v1.0.1/data/psgc/2026-3q/psgc.csv">Pinned population table</a>.</li>
           <li><strong>PAGASA rain outlook.</strong> DOST-PAGASA. Public-domain government advisory,
             unless otherwise stated; credit PAGASA.
-            {outlooks.map((outlook) => <span key={outlook.province}> {outlook.province}: {outlook.advisory}, issued {outlook.issued}.</span>)}
+            {outlooks.map((outlook) => <span key={outlook.province}> {outlook.province}: {outlook.advisory}, issued {dateLabel(outlook.issued)}.</span>)}
             {" "}<a href="https://www.pagasa.dost.gov.ph/climate/el-nino-la-nina/advisories">Official advisories</a>.</li>
           <li><strong>Base map.</strong> <a href="https://openfreemap.org/">OpenFreeMap</a>,
             <a href="https://openmaptiles.org/"> OpenMapTiles</a>, and © OpenStreetMap contributors.
