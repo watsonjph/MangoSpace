@@ -6,6 +6,7 @@ import { createReadStream, existsSync, mkdirSync, openSync, readFileSync, readdi
 import { createServer } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { waitForLgusSource } from "./wait-for-lgus-source.mjs";
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(APP, "out");
@@ -174,7 +175,7 @@ async function drive(o) {
     }
     await page.goto(s.url);
     await page.locator(".map[data-ready=true] canvas").waitFor({ timeout: 20000 });
-    await page.waitForFunction(() => window.hubasMap?.getSource("lgus") && window.hubasMap.isSourceLoaded("lgus"), null, { timeout: 20000 });
+    await waitForLgusSource(page, { timeout: 20000 });
     steps.push("map ready");
 
     if (o["click-town"]) {

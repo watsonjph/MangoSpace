@@ -26,6 +26,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const target = parcels[parcel];
   const { dates, images } = target.nisar;
   const index = Math.min(picked ?? dates.length - 1, dates.length - 1);
+  const frameSrcs = images.map((image) => display === "color" ? [image.hh, image.hv] : [image[display]]);
   const lines: Line[] = parcels.map((item, i) => ({
     label: `${NAME[item.id]}, NISAR HV`,
     color: COLOR[i],
@@ -37,7 +38,8 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   return (
     <main className="dam-page rice-page" data-ready={ready}>
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
-      <h1>The radar signal of both rice parcels rose to its highest in September or October, then fell on 5 November.</h1>
+      <h1 data-testid="view-finding">The radar signal of 2 rice parcels rose to its highest in September or October, then fell on 5 Nov 2026.</h1>
+      <p className="dam-note">No field observations confirm the crop or its growth stage. <MapLink href="/method">Read the method and limits</MapLink></p>
       <dl className="dam-stats">
         {parcels.map((item, i) => {
           const values = item.nisar.meanHvDb!;
@@ -78,7 +80,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} display={display} setDisplay={setDisplay}
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} display={display} setDisplay={setDisplay} frames={frameSrcs}
             notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />
           <dl className="dam-stats">
             <div><dt>Mean HV signal</dt><dd data-testid="rice-hv">{db(target.nisar.meanHvDb![index])}</dd></div>
