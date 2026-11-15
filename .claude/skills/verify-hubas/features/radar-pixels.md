@@ -8,7 +8,7 @@ The NISAR images on `/dam` and `/rice` let you select a pixel and read its HH an
 - Focus the `Inspect radar pixel` button. Enter or Space selects the center; the arrow keys move one pixel and stop at the image edges.
 - Switching HH and HV keeps the selected coordinate and both readings. Changing the date or rice parcel clears the selection.
 - The result can describe a dark, vegetation-like, or bright return. Unmatched or clipped values say `Not sure`.
-- The HH and HV pair loads only after a pixel is picked, so playback makes no extra requests and the readout stays empty until then. Loading, missing, or mismatched images never show an old reading. Historic single-band dam images have no inspection button.
+- The HH and HV pair loads only after a pixel is picked, so playback makes no extra requests and the readout stays empty until then. Loading, missing, or mismatched images never show an old reading. Historic single-band dam images and the Color view have no inspection button; Color says to switch to HH or HV.
 
 ## How to get to it (user POV)
 
