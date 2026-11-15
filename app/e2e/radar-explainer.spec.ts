@@ -38,6 +38,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 900, touch: fals
       await button.press("ArrowRight");
       await expect(result).toContainText("Pixel (221, 220)");
       await pickPixel(page, image, 0, 0, viewport.touch);
+      await expect(button).toBeEnabled();
       await button.focus();
       await button.press("ArrowLeft");
       await button.press("ArrowUp");
@@ -66,7 +67,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 900, touch: fals
       await expect(image).toHaveAttribute("src", `/data/${dam.nisar.images[dam.nisar.dates.indexOf("2026-10-12")].hv}`);
       await expect(result).toHaveText(reading, { useInnerText: true });
       await page.getByRole("slider", { name: "Date" }).fill(String(date - 1));
-      await expect(result).toContainText("Select a pixel");
+      await expect(result).toHaveText("");
       await expect(result).not.toContainText("Pixel (");
       await page.getByRole("button", { name: "Lowest in 2015–16" }).click();
       await expect(button).toHaveCount(0);
@@ -96,13 +97,14 @@ test("rice pixels follow the selected parcel and date", async ({ page }) => {
   await page.getByRole("button", { name: "HV", exact: true }).click();
   await expect(result).toHaveText(first, { useInnerText: true });
   await page.getByRole("button", { name: "Pilar", exact: true }).click();
-  await expect(result).toContainText("Select a pixel");
+  await expect(result).toHaveText("");
+  await expect(button).toBeEnabled();
   await button.focus();
   await button.press("Enter");
   await expect(result).toContainText("Pixel (12, 12)");
   await expect(result).toContainText("HH −8.5 dB · HV −19.3 dB");
   await page.getByRole("slider", { name: "Date" }).fill("0");
-  await expect(result).toContainText("Select a pixel");
+  await expect(result).toHaveText("");
   expect(errors).toEqual([]);
 });
 
@@ -116,15 +118,21 @@ test("a late previous-date image cannot replace the current pair", async ({ page
     await held;
     await route.continue();
   });
-  await page.goto("/dam", { waitUntil: "domcontentloaded" });
+  await page.goto("/dam");
   await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
-  await started;
-  await page.getByRole("slider", { name: "Date" }).press("ArrowLeft");
   const button = page.getByRole("button", { name: "Inspect radar pixel" });
   const result = page.getByTestId("radar-pixel-result");
   await expect(button).toBeEnabled();
   await button.focus();
   await button.press("Enter");
+  await started;
+  await expect(result).toContainText("Loading HH and HV pixels");
+  await page.getByRole("slider", { name: "Date" }).press("ArrowLeft");
+  await expect(result).toHaveText("");
+  await expect(button).toBeEnabled();
+  await button.focus();
+  await button.press("Enter");
+  await expect(result).toContainText(" dB");
   const current = await result.innerText();
   const finished = page.waitForResponse("**/data/targets/malinao-dam-2026-11-05-hv.png");
   release();
@@ -151,6 +159,10 @@ for (const problem of ["missing", "mismatched"] as const) {
       }
     });
     await page.getByRole("slider", { name: "Date" }).press("ArrowLeft");
+    await expect(result).toHaveText("");
+    await expect(button).toBeEnabled();
+    await button.focus();
+    await button.press("Enter");
     await expect(result).toHaveText("Not sure. HH and HV are unavailable for this image.");
     await expect(button).toBeDisabled();
     await expect(result).not.toContainText("Pixel (");

@@ -134,13 +134,14 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label, 
 export function Radar({ src, caption, testId, images }: {
   src: string; caption: string; testId?: string; images?: Target["nisar"]["images"][number];
 }) {
+  const image = useRef<HTMLImageElement>(null);
+  // The img stays one element across dates and bands, so playback and its load listeners follow every frame.
   return (
     <figure className="dam-radar" data-testid={testId}>
-      {images ? <RadarInspector key={`${images.hh}:${images.hv}`} src={src} caption={caption} images={images} /> : <>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`/data/${src}`} alt={caption} width={440} height={440} />
-        <p className="dam-note">Pixel inspection needs an HH and HV pair. This historic image has one band.</p>
-      </>}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img ref={image} src={`/data/${src}`} alt={caption} width={440} height={440} />
+      {images ? <RadarInspector image={image} images={images} />
+        : <p className="dam-note">Pixel inspection needs an HH and HV pair. This historic image has one band.</p>}
       <figcaption>{caption}</figcaption>
     </figure>
   );

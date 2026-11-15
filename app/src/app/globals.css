@@ -286,15 +286,17 @@ input[type="range"]::-moz-range-thumb {
 .dam-stats dt, .dam-stats small { display: block; font: 11px var(--mono); color: var(--muted); }
 .dam-stats dt { letter-spacing: 0.04em; text-transform: uppercase; }
 .dam-stats dd { margin: 4px 0; font: 600 30px/1.1 var(--mono); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.dam-radar { margin: 0; }
+.dam-radar { display: grid; margin: 0; }
+.dam-radar > img, .radar-pixel-target { grid-area: 1 / 1; }
 .dam-radar img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; background: #000; }
 .dam-radar figcaption { font: 11px var(--mono); color: var(--muted); margin-top: 6px; }
-.radar-pixel-target { position: relative; display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: crosshair; }
+.radar-pixel-target { position: relative; padding: 0; border: 0; background: transparent; cursor: crosshair; }
 .radar-pixel-target:disabled { cursor: wait; }
 .radar-pixel-marker { position: absolute; width: 13px; height: 13px; translate: -50% -50%; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 2px black; pointer-events: none; }
 .radar-pixel-result { padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid var(--water); background: var(--surface); }
 .radar-pixel-result p { margin: 0 0 6px; }
 .radar-pixel-result p:last-child { margin-bottom: 0; }
+.radar-pixel-result:empty { padding: 0; border: 0; }
 .radar-pixel-values { font: 12px var(--mono); }
 .dam-picker { display: grid; gap: 10px; margin-bottom: 12px; }
 .dam-picker .timeline { grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }

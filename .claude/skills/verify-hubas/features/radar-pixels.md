@@ -8,7 +8,7 @@ The NISAR images on `/dam` and `/rice` let you select a pixel and read its HH an
 - Focus the `Inspect radar pixel` button. Enter or Space selects the center; the arrow keys move one pixel and stop at the image edges.
 - Switching HH and HV keeps the selected coordinate and both readings. Changing the date or rice parcel clears the selection.
 - The result can describe a dark, vegetation-like, or bright return. Unmatched or clipped values say `Not sure`.
-- Loading, missing, or mismatched images never show an old reading. Historic single-band dam images have no inspection button.
+- The HH and HV pair loads only after a pixel is picked, so playback makes no extra requests and the readout stays empty until then. Loading, missing, or mismatched images never show an old reading. Historic single-band dam images have no inspection button.
 
 ## How to get to it (user POV)
 
@@ -29,5 +29,6 @@ The NISAR images on `/dam` and `/rice` let you select a pixel and read its HH an
 - These are provisional radar-return cues, not validated water, crop, or building classes. The roof-context sample does not establish that a building caused the return.
 - Either channel at −30 or 0 dB can be clipped or unavailable. The readout preserves the numeric value and gives no class cue.
 - The readout uses the original PNG pixels, not the enlarged display. Pointer selection preserves fractional coordinates; keyboard movement can reach every pixel.
-- Wait for `.dam-page[data-ready=true]` before changing the date, and for the inspection button to become enabled before selecting a pixel.
+- Wait for `.dam-page[data-ready=true]` before changing the date, and for the inspection button to become enabled before selecting a pixel. It is enabled once the shown image has decoded.
+- The radar `<img>` is one element across dates, bands and historic frames, with the inspection button laid over it. `e2e/timelapse.spec.ts` listens for `load` on that element, so do not remount it.
 - The two bands must have the same dimensions and belong to the same target and date. A single-band historic frame cannot supply HH and HV.
