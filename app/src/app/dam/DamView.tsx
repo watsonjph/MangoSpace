@@ -13,7 +13,7 @@ const RAIN = "#8fb4d9";
 const fmt = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const pct = (value: number, base: number) => (value / base - 1) * 100;
-const signed = (value: number) => `${value > 0 ? "+" : "−"}${Math.abs(value).toFixed(0)}%`;
+const signed = (value: number) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(0)}%`;
 
 function Chart({ lines, domain, unit, rain, selected, onSelect, label }: {
   lines: Line[];
@@ -118,7 +118,7 @@ export default function DamView({ dam }: { dam: Target }) {
   const { dates, images } = dam.nisar;
   const areas = dam.nisar.waterAreaKm2 ?? [];
   const last = dates.length - 1;
-  const [index, setIndex] = useState(last);
+  const [picked, setPicked] = useState<number>();
   const [band, setBand] = useState<"hh" | "hv">("hh");
 
   if (!areas.length) return (
@@ -142,8 +142,22 @@ export default function DamView({ dam }: { dam: Target }) {
   const events = (dam.history ?? []).filter((event) => event.waterAreaKm2?.length).map((event) => {
     const values = event.waterAreaKm2!;
     const low = values.indexOf(Math.min(...values));
-    return { ...event, lowDate: event.dates[low], lowImage: event.images[low], fall: pct(values[low], values[0]) };
+    return { ...event, values, low, lowDate: event.dates[low], fall: pct(values[low], values[0]) };
   });
+  // One slider runs through the past events and then 2026. The past frames come first.
+  const past = events.flatMap((event) => event.dates.map((date, i) => ({
+    date, sensor: event.sensor, src: event.images[i], change: pct(event.values[i], event.values[0]), base: event.dates[0],
+  })));
+  const frame = picked ?? past.length + last;
+  const old = past.at(frame);
+  const index = Math.max(frame - past.length, 0);
+  const jumps = [
+    ...events.map((event, i) => ({
+      label: `Lowest in ${event.event}`,
+      frame: events.slice(0, i).reduce((count, earlier) => count + earlier.dates.length, 0) + event.low,
+    })),
+    { label: "Now", frame: past.length + last },
+  ];
   const lowest = Math.min(...areas, ...scenarios.flatMap((line) => line.points.map(([, value]) => value)));
 
   return (
@@ -167,43 +181,51 @@ export default function DamView({ dam }: { dam: Target }) {
 
       <h2>{scenarios.length ? "Measured this year, and if a past event repeats" : "Measured this year"}</h2>
       <Chart lines={[observed, ...scenarios]} domain={[Math.min(0.6, Math.floor(lowest * 10 - 2) / 10), 0.9]} unit="km²"
-        rain={rain} selected={index} onSelect={setIndex}
+        rain={rain} selected={old ? undefined : index} onSelect={(i) => setPicked(past.length + i)}
         label="Water area of Malinao Dam on each radar date of 2026, with lines for a repeat of two past dry events" />
       {scenarios.length > 0 && <p className="dam-note" data-testid="scenario-note">Dashed lines: this is what happened before. It is not a forecast.</p>}
 
-      {events.length > 0 && (
-        <>
-          <h2>Now, and the lowest date of each past event</h2>
-          <div className="dam-then">
-            <Radar src={images[last].hh} caption={`Now · ${fmt(dates[last])} · NISAR`} testId="dam-then" />
-            {events.map((event) => (
-              <Radar key={event.event} src={event.lowImage} caption={`${fmt(event.lowDate)} · ${event.sensor} · ${signed(event.fall)}`} testId="dam-then" />
-            ))}
-          </div>
-          <p className="dam-note">NISAR and Sentinel-1 can give different areas in km², so the past events are compared as percentages.</p>
-        </>
-      )}
-
-      <h2>The radar image behind each point</h2>
+      <h2>The radar image of each date</h2>
       <div className="dam-image">
-        <Radar src={images[index][band]} caption={`NISAR ${band.toUpperCase()}, ${fmt(dates[index])}. Dark is smooth water.`} testId="dam-radar" />
+        <Radar testId="dam-radar" src={old ? old.src : images[index][band]}
+          caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark is smooth water.`} />
         <div>
           <div className="dam-picker">
             <label>
-              <span>Date <output>{fmt(dates[index])}</output></span>
-              <input type="range" min={0} max={last} value={index} onChange={(e) => setIndex(Number(e.target.value))} />
+              <span>Date <output>{fmt(old ? old.date : dates[index])}</output></span>
+              <input type="range" min={0} max={past.length + last} value={frame} onChange={(e) => setPicked(Number(e.target.value))} />
             </label>
-            <div role="group" aria-label="Radar band">
-              {(["hh", "hv"] as const).map((b) => (
-                <button key={b} type="button" aria-pressed={band === b} onClick={() => setBand(b)}>{b.toUpperCase()}</button>
-              ))}
-            </div>
+            {past.length > 0 && (
+              <div role="group" aria-label="Go to">
+                {jumps.map((jump) => (
+                  <button key={jump.label} type="button" aria-pressed={frame === jump.frame} onClick={() => setPicked(jump.frame)}>{jump.label}</button>
+                ))}
+              </div>
+            )}
+            {!old && (
+              <div role="group" aria-label="Radar band">
+                {(["hh", "hv"] as const).map((b) => (
+                  <button key={b} type="button" aria-pressed={band === b} onClick={() => setBand(b)}>{b.toUpperCase()}</button>
+                ))}
+              </div>
+            )}
           </div>
-          <dl className="dam-stats">
-            <div><dt>Water area</dt><dd data-testid="dam-area">{areas[index].toFixed(2)} km²</dd></div>
-            {rain && <div><dt>Rain in the 12 days before</dt><dd data-testid="dam-rain">{dam.rainMm[index].toFixed(0)} mm</dd></div>}
-          </dl>
-          <p className="dam-note">The area of one date is uncertain by about 0.09 km². Click a point of the chart, or move the slider.</p>
+          {old ? (
+            <>
+              <dl className="dam-stats">
+                <div><dt>Water area, against {fmt(old.base)}</dt><dd data-testid="dam-change">{signed(old.change)}</dd></div>
+              </dl>
+              <p className="dam-note">Sentinel-1 and NISAR can give different areas in km², so a past event is given as a change in percent.</p>
+            </>
+          ) : (
+            <>
+              <dl className="dam-stats">
+                <div><dt>Water area</dt><dd data-testid="dam-area">{areas[index].toFixed(2)} km²</dd></div>
+                {rain && <div><dt>Rain in the 12 days before</dt><dd data-testid="dam-rain">{dam.rainMm[index].toFixed(0)} mm</dd></div>}
+              </dl>
+              <p className="dam-note">The area of one date is uncertain by about 0.09 km². Click a point of the chart, or move the slider.</p>
+            </>
+          )}
         </div>
       </div>
       <Causes />
