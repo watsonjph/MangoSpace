@@ -6,6 +6,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { Lgu, Manifest, Outlook } from "../../lib/data";
 import { setMapSelection, useMapSearch } from "./map-selection";
 import SeasonSound from "./SeasonSound";
+import SoilWaterLine from "./SoilWaterLine";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -151,12 +152,14 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           ))}
         </select>
         {lgu && <>
+          <h2 data-testid="town-name">{lgu.name}<span>{lgu.province}</span></h2>
+          <SoilWaterLine name={lgu.name} values={lgu.soilMoisture} shares={lgu.validShare} windows={manifest.windows} index={windowIndex} />
           <dl>
             <dt>Rank{rankWin && `, ${rankWin.start} → ${rankWin.end}`}</dt>
             <dd data-testid="rank">{lgu.rank ? `#${lgu.rank.position} of ${lgu.rank.of}` : "Not ranked"}</dd>
             <dt>Soil water</dt>
             <dd data-testid="moisture">{moisture == null ? "No good pixels" : `${moisture.toFixed(3)} m³/m³`}</dd>
-            <dt>Good pixels</dt>
+            <dt>Pixels with data</dt>
             <dd>{Math.round(lgu.validShare[windowIndex] * 100)}%</dd>
             <dt>PAGASA, {lgu.province}</dt>
             <dd>{outlook ? `${outlook.summary} (${outlook.advisory}, ${outlook.issued})` : "No outlook"}</dd>

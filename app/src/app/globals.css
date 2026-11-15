@@ -116,11 +116,24 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .slider input { width: 100%; accent-color: var(--accent); }
 .slider output { font-family: "Cascadia Code", Consolas, monospace; }
 
-.panel { top: 12px; right: 12px; width: 320px; display: grid; gap: 8px; }
+/* Stops above the map attribution, which the OpenStreetMap licence needs visible; a short screen scrolls the panel. */
+.panel { top: 12px; right: 12px; width: 320px; max-height: calc(100% - 48px); overflow-y: auto; display: grid; gap: 8px; }
 .panel select { font: inherit; padding: 6px; }
 .panel dl { margin: 0; display: grid; gap: 2px; }
 .panel dt { font-size: 12px; color: var(--muted); margin-top: 6px; }
 .panel dd { margin: 0; }
+.panel h2 { margin: 4px 0 0; font-size: 18px; font-weight: 650; }
+.panel h2 span { margin-left: 8px; font-size: 13px; font-weight: 400; color: var(--muted); }
+.soil-line { margin: 0; }
+.soil-line svg { display: block; width: 100%; height: auto; }
+.soil-line .grid { stroke: var(--line); stroke-width: 1; }
+.soil-line .guide { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.55; }
+.soil-line .line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.soil-line circle { fill: var(--accent); stroke: var(--surface); stroke-width: 1.5; }
+.soil-line circle.low { fill: var(--surface); stroke: var(--no-data); stroke-width: 2; }
+.soil-line circle.selected { stroke: var(--ink); stroke-width: 2; }
+.soil-line .tick { font: 10px "Cascadia Code", Consolas, monospace; fill: var(--muted); }
+.soil-line figcaption { margin-top: 2px; font-size: 12px; color: var(--muted); }
 .slider button, .season-sound button {
   width: fit-content;
   min-height: 40px;
@@ -153,6 +166,8 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
     position: static;
     grid-row: 2;
     width: auto;
+    max-height: none;
+    overflow: visible;
     margin: 12px 12px 0;
   }
 

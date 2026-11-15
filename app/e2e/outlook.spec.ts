@@ -20,6 +20,6 @@ for (const width of [1280, 375]) {
     for (const province of ["Cebu", "Bohol"]) {
       await expect(sources).toContainText(`${province}: El Niño Advisory No. 6, issued 2026-11-03`);
     }
-    await expect(sources).not.toContainText("current outlook is mock");
+    await expect(sources).not.toContainText(/mock/i);
   });
 }

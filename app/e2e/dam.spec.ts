@@ -20,6 +20,8 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await page.goto("/method");
     await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Dam" }).click();
     await expect(page).toHaveURL(/\/dam\/?$/);
+    // A fill before hydration is lost, and React then ignores a second fill to the same value.
+    await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toContainText("water area");
     await expect(page.getByRole("link", { name: "Dam" })).toHaveAttribute("aria-current", "page");
 
