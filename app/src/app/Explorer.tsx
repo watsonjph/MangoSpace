@@ -155,8 +155,10 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         <div className="hud">
           <div className="tag">
             <strong>Soil water before El Niño</strong>
+            <p>What happened to water before El Niño?</p>
             <p data-testid="view-finding">Mean soil water fell from about 0.35 to 0.25 m³/m³ at the end of July.</p>
             <span>Cebu and Bohol · NISAR, each 12 days · {manifest.sme2Status}</span>
+            <MapLink className="opening-link" href="/start">Follow the soil, the dam and the rice</MapLink>
             <MapLink href="/method">Read the method and limits</MapLink>
           </div>
           <section className="legend" aria-labelledby="legend-title" data-testid="map-legend">
