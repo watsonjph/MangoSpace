@@ -124,6 +124,7 @@ test("Color stays on screen while play steps through the 2026 dates", async ({ p
     };
     new MutationObserver(check).observe(node, { subtree: true, childList: true, attributes: true });
   });
+  await page.getByRole("button", { name: "Loop", exact: true }).click();
   await page.getByRole("button", { name: "Play" }).click();
   await expect(page.locator(".dam-picker output")).toHaveText(day(dates.at(-1)!), { timeout: 15_000 });
   expect(await page.evaluate(() => (window as unknown as { colorBlink: { hidden: number } }).colorBlink.hidden)).toBe(0);

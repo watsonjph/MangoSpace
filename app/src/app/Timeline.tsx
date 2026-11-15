@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 export const STEP_MS = 450;
 const SPEEDS = [1, 2, 0.5] as const;
@@ -8,21 +8,35 @@ const SPEEDS = [1, 2, 0.5] as const;
 export type Playback = ReturnType<typeof usePlayback>;
 
 // ready: false holds the current step until it is ready, for example until its image has loaded.
-export function usePlayback(count: number, index: number, setIndex: (index: number) => void, stepMs = STEP_MS, ready = true) {
+export function usePlayback(count: number, index: number, setIndex: (index: number) => void, stepMs = STEP_MS, ready = true, onLoop?: (loopCount: number) => void) {
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
-  const [loop, setLoop] = useState(false);
+  const [loop, setLoop] = useState(true);
+  const [loopCount, setLoopCount] = useState(0);
+  const lastTimerIndex = useRef<number | null>(null);
+  const visited = useRef(new Set<number>());
   const last = count - 1;
 
   useEffect(() => {
     if (!playing || !ready) return;
     const timer = window.setTimeout(() => {
+      const expected = lastTimerIndex.current === null ? null : lastTimerIndex.current === last ? 0 : lastTimerIndex.current + 1;
+      if (expected !== null && index !== expected) visited.current.clear();
+      visited.current.add(index);
+      lastTimerIndex.current = index;
       if (index < last) setIndex(index + 1);
-      else if (loop) setIndex(0);
+      else if (loop) {
+        if (visited.current.size === count) {
+          const nextLoop = loopCount + 1;
+          setLoopCount(nextLoop); onLoop?.(nextLoop);
+        }
+        visited.current.clear();
+        setIndex(0);
+      }
       else setPlaying(false);
     }, stepMs / speed);
     return () => window.clearTimeout(timer);
-  }, [playing, ready, index, last, loop, speed, stepMs, setIndex]);
+  }, [playing, ready, index, last, count, loop, loopCount, onLoop, speed, stepMs, setIndex]);
 
   useEffect(() => {
     const pauseWhenHidden = () => { if (document.hidden) setPlaying(false); };
@@ -31,15 +45,21 @@ export function usePlayback(count: number, index: number, setIndex: (index: numb
   }, []);
 
   const toggle = () => {
-    if (!playing && index === last) setIndex(0);
+    if (!playing && index === last) {
+      lastTimerIndex.current = null; visited.current.clear(); setLoopCount(0); setIndex(0);
+    }
     setPlaying(!playing);
   };
 
+  const start = () => {
+    lastTimerIndex.current = null; visited.current.clear(); setLoopCount(0); setIndex(0); setPlaying(true);
+  };
+
   return {
-    playing, speed, loop, toggle,
-    start: () => { setIndex(0); setPlaying(true); },
+    playing, speed, loop, loopCount, toggle,
+    start,
     nextSpeed: () => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]),
-    toggleLoop: () => setLoop(!loop),
+    toggleLoop: () => setLoop((value) => !value),
   };
 }
 

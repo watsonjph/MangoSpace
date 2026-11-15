@@ -56,6 +56,10 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 900 }, { name: "
     await expect(output).toHaveText(day(steps[0]));
     await expect(page.getByTestId("score-soil")).toHaveText("No reading yet");
     await expect(page.getByTestId("score-dam")).toHaveText(`${dam.nisar.waterAreaKm2![0].toFixed(2)} km²`);
+    await expect(page.getByRole("button", { name: "Loop", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("button", { name: "Soil voice" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("button", { name: "Dam voice" })).toHaveAttribute("aria-pressed", "false");
+    await expect(page.getByRole("button", { name: "Rice voice" })).toHaveAttribute("aria-pressed", "false");
     await page.getByRole("button", { name: "Play", exact: true }).click();
     await expect(output).not.toHaveText(day(steps[0]));
     await expect(stave("soil").locator("i.now").or(stave("dam").locator("i.now"))).not.toHaveCount(0);
@@ -68,7 +72,9 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 900 }, { name: "
     await page.keyboard.press("ArrowLeft");
     await expect(output).toHaveText(day(steps.at(-2)!));
 
-    for (const name of ["Soil voice", "Dam voice", "Rice voice"]) {
+    await page.getByRole("button", { name: "Soil voice" }).click();
+    await expect(page.getByRole("button", { name: "Soil voice" })).toHaveAttribute("aria-pressed", "false");
+    for (const name of ["Dam voice", "Rice voice"]) {
       const voice = page.getByRole("button", { name });
       await expect(voice).toHaveAttribute("aria-pressed", "false");
       await voice.click();
@@ -83,6 +89,39 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 900 }, { name: "
   });
 }
 
+test("the score adds dam after one loop and rice after the next", async ({ page }) => {
+  test.setTimeout(30_000);
+  await page.goto("/score");
+  await expect(page.locator(".score-page[data-ready=true]")).toBeVisible();
+  const dam = page.getByRole("button", { name: "Dam voice" });
+  const rice = page.getByRole("button", { name: "Rice voice" });
+  await expect(page.getByRole("button", { name: "Soil voice" })).toHaveAttribute("aria-pressed", "true");
+  await expect(dam).toHaveAttribute("aria-pressed", "false");
+  await expect(rice).toHaveAttribute("aria-pressed", "false");
+  await page.getByRole("button", { name: /^Speed 1/ }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect.poll(async () => dam.getAttribute("aria-pressed"), { timeout: 15_000 }).toBe("true");
+  await expect(rice).toHaveAttribute("aria-pressed", "false");
+  await dam.click();
+  await expect(dam).toHaveAttribute("aria-pressed", "false");
+  await expect.poll(async () => rice.getAttribute("aria-pressed"), { timeout: 15_000 }).toBe("true");
+  await expect(dam).toHaveAttribute("aria-pressed", "false");
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+});
+
+test("scrubbing to the end does not add score voices", async ({ page }) => {
+  await page.goto("/score");
+  await expect(page.locator(".score-page[data-ready=true]")).toBeVisible();
+  const dam = page.getByRole("button", { name: "Dam voice" });
+  const rice = page.getByRole("button", { name: "Rice voice" });
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await page.getByLabel("Date").fill((await page.getByLabel("Date").getAttribute("max"))!);
+  await page.waitForTimeout(STEP_MS + 100);
+  await expect(dam).toHaveAttribute("aria-pressed", "false");
+  await expect(rice).toHaveAttribute("aria-pressed", "false");
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+});
+
 test("the score plays through the season with its voices on", async ({ browser }) => {
   const proof = process.env.PROOF === "1";
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, recordVideo: proof ? { dir: test.info().outputPath("video"), size: { width: 1280, height: 900 } } : undefined });
@@ -92,7 +131,8 @@ test("the score plays through the season with its voices on", async ({ browser }
   page.on("console", (message) => message.type() === "error" && errors.push(message.text()));
   await page.goto("/score");
   await expect(page.locator(".score-page[data-ready=true]")).toBeVisible();
-  for (const name of ["Soil voice", "Dam voice", "Rice voice"]) await page.getByRole("button", { name }).click();
+  for (const name of ["Dam voice", "Rice voice"]) await page.getByRole("button", { name }).click();
+  await page.getByRole("button", { name: "Loop", exact: true }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await expect(page.locator(".score-page output")).toHaveText("5 Nov 2026", { timeout: 12_000 });
   await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible({ timeout: 2000 });

@@ -28,6 +28,8 @@ for (const route of ["dam", "rice"]) {
       Object.assign(window, { loadedFrames: frames });
       img.addEventListener("load", () => { if (img.naturalWidth) frames.push(img.getAttribute("src")!); });
     });
+    await expect(page.getByRole("button", { name: "Loop", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("button", { name: "Loop", exact: true }).click();
     await page.getByRole("button", { name: "Play", exact: true }).click();
     await expect(page.getByRole("slider", { name: "Date", exact: true })).toHaveValue("0");
     await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible({ timeout: 45_000 });

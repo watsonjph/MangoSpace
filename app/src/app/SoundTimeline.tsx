@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Playback } from "./Timeline";
 import { STEP_MS } from "./Timeline";
 import { playTone } from "./season-instrument";
@@ -15,8 +15,46 @@ export default function SoundTimeline({ frames, index, play, stepMs = STEP_MS, d
   const beat = useRef<{ index: number; at: number } | null>(null);
   const live = useRef({ frames, speed: play.speed, stepMs });
   useEffect(() => { live.current = { frames, speed: play.speed, stepMs }; });
-  const [enabled, setEnabled] = useState(false), [starting, setStarting] = useState(false), [volume, setVolume] = useState(35), [error, setError] = useState("");
+  const [enabled, setEnabled] = useState(true), [starting, setStarting] = useState(false), [volume, setVolume] = useState(35), [audioReady, setAudioReady] = useState(false), [error, setError] = useState("");
   useEffect(() => () => { void audio.current?.close().catch(() => {}); audio.current = null; }, []);
+
+  const ensureAudio = useCallback(async () => {
+    const fail = (context: AudioContext | null) => {
+      if (context ? audio.current !== context : audio.current) return false;
+      void context?.close().catch(() => {});
+      audio.current = null; master.current = null; setAudioReady(false); setEnabled(false);
+      setError("Sound could not start in this browser. The slider still works.");
+      return false;
+    };
+    const current = audio.current;
+    if (current) {
+      try {
+        await current.resume();
+        if (audio.current !== current) return false;
+        if (current.state !== "running" || !master.current) throw new Error("Audio unavailable");
+        setAudioReady(true);
+        return true;
+      } catch {
+        return fail(current);
+      }
+    }
+    let context: AudioContext | undefined;
+    try {
+      context = new AudioContext(); audio.current = context;
+      await context.resume();
+      if (audio.current !== context) return false;
+      if (context.state !== "running") throw new Error("Audio unavailable");
+      const gain = context.createGain(); gain.gain.value = volume / 100; gain.connect(context.destination); master.current = gain;
+      setAudioReady(true);
+      return true;
+    } catch {
+      return fail(context ?? null);
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    if (enabled && play.playing && (!audio.current || audio.current.state !== "running")) void ensureAudio();
+  }, [enabled, ensureAudio, play.playing]);
 
   // Each step the timeline shows plays its own note, so a jump, a slow image or a loop cannot put the sound on another step.
   // A step that follows the last one on time keeps the beat on the audio clock, so the rhythm does not take the timer's jitter.
@@ -39,7 +77,7 @@ export default function SoundTimeline({ frames, index, play, stepMs = STEP_MS, d
     add(frame.high, 220, Math.min(0.3, interval * 0.75));
     const rainNotes = Math.min(4, Math.ceil((frame.rain ?? 0) / 50));
     for (let i = 0; i < rainNotes; i++) add(0.5, 880, 0.06, when + i * interval / 5);
-  }, [enabled, play.playing, index]);
+  }, [audioReady, enabled, play.playing, index]);
 
   useEffect(() => {
     if (enabled && play.playing) return;
@@ -49,16 +87,13 @@ export default function SoundTimeline({ frames, index, play, stepMs = STEP_MS, d
   }, [enabled, play.playing]);
 
   async function toggle() {
-    if (audio.current) { const context = audio.current; audio.current = null; master.current = null; setEnabled(false); void context.close().catch(() => {}); return; }
+    if (enabled) {
+      const context = audio.current; audio.current = null; master.current = null; setAudioReady(false); setEnabled(false); void context?.close().catch(() => {}); return;
+    }
     setStarting(true); setError("");
     try {
-      const context = new AudioContext(); audio.current = context;
-      await context.resume();
-      if (audio.current !== context) return;
-      if (context.state !== "running") throw new Error("Audio unavailable");
-      const gain = context.createGain(); gain.gain.value = volume / 100; gain.connect(context.destination); master.current = gain;
-      setEnabled(true); play.start();
-    } catch { void audio.current?.close().catch(() => {}); audio.current = null; setError("Sound could not start in this browser. The slider still works."); }
+      if (await ensureAudio()) { setEnabled(true); play.start(); }
+    } catch { setError("Sound could not start in this browser. The slider still works."); }
     finally { setStarting(false); }
   }
   return <div className="timeline-sound">
