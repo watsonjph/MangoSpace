@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { Lgu, Manifest } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { waitForLgusSource } from "./wait-for-lgus-source";
 import { saveProof } from "./proof";
 
 const BOGO = "0702211000";
@@ -42,7 +43,7 @@ test("the map and the panel show a town with data and a town with no data in a w
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
-  await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"));
+  await waitForLgusSource(page);
 
   await page.getByLabel("Town").selectOption(BOGO);
   await expect(page.getByTestId("moisture")).toHaveText(`${bogo.soilMoisture[0]!.toFixed(3)} m³/m³`);
@@ -56,7 +57,7 @@ test("the map and the panel show a town with data and a town with no data in a w
       const layer = window.hubasMap!.queryRenderedFeatures({ layers: ["soil"] }).find((f) => f.id === id)?.layer;
       return layer?.type === "fill" ? String(layer.paint?.["fill-color"]) : undefined;
     }, psgc);
-  const grey = "rgba(154,165,162,1)"; // #9aa5a2 in Explorer.tsx
+  const grey = "rgba(75,90,94,1)"; // --no-data in globals.css
   await expect.poll(() => fill(MANDAUE)).toBe(grey);
   expect(await fill(BOGO)).not.toBe(grey);
   await page.waitForFunction(() => window.hubasMap!.loaded());
@@ -101,7 +102,8 @@ test("the rank is a full order of the towns with data, and the panel shows it", 
   await page.getByLabel("Town").selectOption(first.psgc);
   await expect(page.getByTestId("rank")).toContainText(`#1 of ${ranked.length} ranked · look here first`);
   const rankWin = manifest.windows[manifest.rankWindow!];
-  await expect(page.locator(".panel dt").first()).toHaveText(`Rank preview, ${rankWin.start} → ${rankWin.end}`);
+  expect(rankWin.start).toBe("2026-10-07");
+  await expect(page.locator(".panel dt").filter({ hasText: "Rank preview" })).toHaveText("Rank preview, 7 Oct to 19 Oct 2026");
   await page.waitForFunction(() => window.hubasMap!.loaded());
   await saveProof(page, "sc-120-rank-first-town.png");
 });

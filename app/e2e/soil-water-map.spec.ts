@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import type { Lgu } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { waitForLgusSource } from "./wait-for-lgus-source";
 import { saveProof } from "./proof";
 
 declare global {
@@ -61,14 +62,14 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
-  await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"));
+  await waitForLgusSource(page);
   await mapShows(bogo, 0);
 
   const colorExpression = JSON.stringify(await page.evaluate(() => window.hubasMap!.getPaintProperty("soil", "fill-color")));
-  expect(colorExpression).toContain("#9aa5a2");
-  expect(colorExpression).toContain("#b07a1f");
-  expect(colorExpression).toContain("#c8c48a");
-  expect(colorExpression).toContain("#0d6f7d");
+  expect(colorExpression).toContain("#4b5a5e");
+  expect(colorExpression).toContain("#e6a94e");
+  expect(colorExpression).toContain("#dcd9b4");
+  expect(colorExpression).toContain("#4cc3cf");
   await expect(page.getByTestId("map-legend")).toContainText("0.10 m³/m³ · drier");
   await expect(page.getByTestId("map-legend")).toContainText("0.45 m³/m³ · wetter");
   await expect(page.getByTestId("map-legend")).toContainText("Gray: less than half the pixels have data");

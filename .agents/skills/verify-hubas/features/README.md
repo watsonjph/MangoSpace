@@ -13,9 +13,9 @@ This directory is the maintained source for verifying what a Hubas user can see 
 ## Driving conventions
 
 - Each `drive` starts from a fresh page load: no town selected, window 0.
-- Use the `Soil water` and `Rank` buttons, the labels `Town` and `Window`, and the map layer `soil`. Do not use screen coordinates.
+- Use the labels `Town` and `Window`, the `Play` and `Pause` button, and the map layers `soil` and `selected`. Do not use screen coordinates.
 - Treat quoted names and IDs as literal.
-- Town, window and rank view selections are stored in the URL; a fresh `/` starts with no town, window 0 and Soil water view. No local data cleanup is needed. Run `down` at the end.
+- The town and the window are stored in the URL. A fresh `/` starts with no town and window 0. No local data cleanup is needed. Run `down` at the end.
 
 ## Proof and skip reporting
 
@@ -35,7 +35,7 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Town panel](./town-panel.md): opening a town from the map or the dropdown and reading its rank, soil water line, soil water, pixels with data and PAGASA outlook.
 - [Method and navigation](./method-navigation.md): the top bar, the `/method` page, source credits and the map credits.
 - [Malinao Dam](./dam.md): the `/dam` page, its water area chart with rain and "if it repeats" lines, and the radar image of each date.
-- [Rank map](./rank-map.md): rank colors, the preview legend, rank parts, stable towns and unranked towns.
+- [Rank preview](./rank-preview.md): the rank in the town panel, rank parts, stable towns and unranked towns.
 - [Rice parcels](./rice.md): the `/rice` page, the HV lines of the Ubay and Pilar parcels, and the radar image of each date.
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
 

@@ -117,6 +117,8 @@ export default function MethodPage() {
             OpenStreetMap data is under the <a href="https://www.openstreetmap.org/copyright">Open Database Licence (ODbL)</a>;
             OpenMapTiles cartography is <a href="https://github.com/openmaptiles/positron-gl-style/blob/master/LICENSE.md">CC BY 3.0</a>.
             The map also shows these credits.</li>
+          <li><strong>Fonts.</strong> Bricolage Grotesque and JetBrains Mono, served from this site.
+            Both are under the <a href="https://openfontlicense.org/">SIL Open Font License 1.1</a>.</li>
         </ul>
       </section>
       <p><MapLink href="/">Back to soil water</MapLink></p>

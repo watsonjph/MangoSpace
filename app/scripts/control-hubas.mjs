@@ -23,13 +23,12 @@ const HELP = `control-hubas <command> [options]   (run from app/)
       --click-town <psgc>         Click the town's shape on the map canvas.
       --town <psgc|"Name, Prov">  Pick the town in the "Town" dropdown.
       --window <n>                Set the "Window" slider to index n (0 = first 12-day window).
-      --view <soil|rank>          Press the Soil water or Rank button in the top bar of the map.
       --nav <link>                Click a link in the top bar, e.g. "Dam" or "Method".
       --name <label>              Evidence folder name (default: timestamp).
       --viewport <WxH>            Browser size (default 1280x800). 375x812 gives the phone layout.
       --offline-basemap yes       Replace the OpenFreeMap base map with a plain background,
                                   the same stub the e2e specs use. For runs without internet.
-    Actions run in this order: click-town, town, window, view, nav.
+    Actions run in this order: click-town, town, window, nav.
     Prints the panel, the slider and console errors. Saves screenshot.png, aria.yml, result.json.
   down                            Stop the server that "up" started. Evidence stays.
 
@@ -105,8 +104,13 @@ async function up(o) {
   const child = spawn(process.execPath, [fileURLToPath(import.meta.url), "serve", "--port", String(port)], { detached: true, stdio: ["ignore", log, log], windowsHide: true });
   child.unref();
   const url = `http://127.0.0.1:${port}`;
+  const logText = () => readFileSync(path.join(VERIFY, "server.log"), "utf8");
   for (let i = 0; i < 50; i++) {
-    if ((await get(`${url}/data/manifest.json`)).status === 200) {
+    if (child.exitCode !== null || child.signalCode !== null || !alive(child.pid)) {
+      fail("The server process exited before it became ready.", `The port may have been taken during the build or startup. Pick another with --port.\n${logText().trim().split("\n").slice(-12).join("\n")}`);
+    }
+    // Another server can answer on this port before our child even tries to bind, so only trust a response once the child says it is listening.
+    if (logText().includes(`serving ${OUT} on ${port}`) && (await get(`${url}/data/manifest.json`)).status === 200) {
       writeFileSync(STATE, JSON.stringify({ pid: child.pid, port, url, startedAt: new Date().toISOString() }, null, 2));
       return out({ ok: true, url, pid: child.pid, next: "node scripts/control-hubas.mjs doctor" });
     }
@@ -122,9 +126,10 @@ async function doctor() {
   const add = (name, ok, detail) => checks.push({ name, ok, detail });
   add("state", !!s, s ? STATE : 'No server started by "up". Run: node scripts/control-hubas.mjs up');
   if (s) {
-    add("process", alive(s.pid), `pid ${s.pid}`);
+    const processAlive = alive(s.pid);
+    add("process", processAlive, `pid ${s.pid}`);
     const page = await get(`${s.url}/`);
-    add("page", page.status === 200 && page.text.includes("Hubas"), `${s.url}/ → ${page.status}`);
+    add("page", processAlive && page.status === 200 && page.text.includes("Hubas"), processAlive ? `${s.url}/ → ${page.status}` : `pid ${s.pid} is not running; a response from this port cannot be trusted`);
     const m = await get(`${s.url}/data/manifest.json`);
     let manifest = null;
     try { manifest = JSON.parse(m.text); } catch { /* reported below */ }
@@ -169,7 +174,7 @@ async function drive(o) {
     }
     await page.goto(s.url);
     await page.locator(".map[data-ready=true] canvas").waitFor({ timeout: 20000 });
-    await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"), null, { timeout: 20000 });
+    await page.waitForFunction(() => window.hubasMap?.getSource("lgus") && window.hubasMap.isSourceLoaded("lgus"), null, { timeout: 20000 });
     steps.push("map ready");
 
     if (o["click-town"]) {
@@ -207,14 +212,6 @@ async function drive(o) {
       if (!(Number(o.window) >= 0 && Number(o.window) <= max)) throw new Error(`--window must be 0 to ${max}.`);
       await page.getByLabel("Window").fill(String(o.window));
       steps.push(`set window ${o.window}`);
-    }
-    if (o.view) {
-      const name = { soil: "Soil water", rank: "Rank" }[o.view];
-      if (!name) throw new Error(`--view must be soil or rank.`);
-      const button = page.getByRole("navigation", { name: "Main" }).getByRole("button", { name, exact: true });
-      await button.click();
-      await page.waitForFunction((n) => [...document.querySelectorAll("nav button[aria-pressed=true]")].some((b) => b.textContent.trim() === n), name);
-      steps.push(`chose ${name} view`);
     }
     if (o.nav) {
       const link = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: o.nav, exact: true });

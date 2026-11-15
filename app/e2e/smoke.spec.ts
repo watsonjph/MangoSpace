@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import type { Lgu, Manifest } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { waitForLgusSource } from "./wait-for-lgus-source";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -16,7 +17,7 @@ const moistureText = (lgu: Lgu, i: number) => (lgu.soilMoisture[i] == null ? "No
 
 // Screen position of a point inside the City of Bogo, from the map's own projection.
 async function bogoPoint(page: Page) {
-  await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"));
+  await waitForLgusSource(page);
   return page.evaluate(() => {
     const p = window.hubasMap!.project([123.995, 11.017]);
     return { x: p.x, y: p.y };
@@ -45,7 +46,8 @@ test("map loads, slider and town panel work, no console errors", async ({ page, 
   await expect(page.getByTestId("moisture")).toHaveText(moistureText(town(BOGO), 0));
 
   await page.getByLabel("Window").fill(String(last));
-  await expect(page.locator("output")).toContainText(manifest.windows[last].start);
+  await expect(page.locator("output")).toHaveText("19 Oct to 31 Oct 2026");
+  expect(manifest.windows[last].start).toBe("2026-10-19");
   await expect(page.getByTestId("moisture")).toHaveText(moistureText(town(BOGO), last));
 
   await page.getByLabel("Town").selectOption({ label: "Carmen, Bohol" });

@@ -1,10 +1,13 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import Timeline, { type Note, usePlayback } from "./Timeline";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
 
-export const NOW = "#0d6f7d";
+export const NOW = "var(--water)";
+export const DRY = "var(--dry)";
+export const VIOLET = "var(--violet)";
 const RAIN = "#8fb4d9";
 
 // True only after hydration, so tests know the slider and buttons respond.
@@ -48,7 +51,7 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
       <svg width={width} height={height} role="img" aria-label={label}>
         {ticks.map((tick) => (
           <g key={tick}>
-            <line x1={left} x2={width - right} y1={y(tick)} y2={y(tick)} stroke="#d3dcd9" />
+            <line x1={left} x2={width - right} y1={y(tick)} y2={y(tick)} stroke="var(--line)" />
             <text x={left - 6} y={y(tick) + 4} textAnchor="end">{format(tick)}</text>
           </g>
         ))}
@@ -70,7 +73,7 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
             {!line.dashed && line.points.map(([time, value]) => <circle key={time} cx={x(time)} cy={y(value)} r={2.5} fill={line.color} />)}
           </g>
         ))}
-        {picked && <circle cx={x(picked[0])} cy={y(picked[1])} r={6} fill={NOW} stroke="#fff" strokeWidth={2} />}
+        {picked && <circle cx={x(picked[0])} cy={y(picked[1])} r={6} fill={NOW} stroke="var(--ground)" strokeWidth={2} />}
         {onSelect && (
           <rect x={left - 12} width={x(lines[0].points.at(-1)![0]) - left + 24} y={top} height={plot + rainHeight} fill="transparent"
             style={{ cursor: "pointer" }}
@@ -102,18 +105,20 @@ export function Radar({ src, caption, testId }: { src: string; caption: string; 
 }
 
 export type Band = "hh" | "hv";
+const FRAME_MS = 300;
 
 // The band buttons are left out when setBand is absent: a Sentinel-1 date has one band.
-export function Picker({ label, max, index, setIndex, band, setBand, children }: {
-  label: string; max: number; index: number; setIndex: (index: number) => void;
+// The height of a value on the timeline staff, inside the same range as its chart.
+export const note = (value: number, [low, high]: [number, number]): Note => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
+
+export function Picker({ label, max, index, setIndex, notes, band, setBand, children }: {
+  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[];
   band: Band; setBand?: (band: Band) => void; children?: ReactNode;
 }) {
+  const play = usePlayback(max + 1, index, setIndex, FRAME_MS);
   return (
     <div className="dam-picker">
-      <label>
-        <span>Date <output>{label}</output></span>
-        <input type="range" min={0} max={max} value={index} onChange={(e) => setIndex(Number(e.target.value))} />
-      </label>
+      <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes} />
       {children}
       {setBand && (
         <div role="group" aria-label="Radar band">

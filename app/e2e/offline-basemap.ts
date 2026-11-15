@@ -18,7 +18,7 @@ export async function useOfflineBasemap(page: Page) {
       layers: [{
         id: "background",
         type: "background",
-        paint: { "background-color": "#e7ece9" },
+        paint: { "background-color": "#0a1214" },
       }, { id: "basemap-attribution", type: "fill", source: "basemap" }],
     }),
   }));
