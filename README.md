@@ -1,7 +1,7 @@
 # MangoSpace · Hubas
 
 NASA Space Apps 2026, [Dancing with the SARs](https://www.spaceappschallenge.org/2026/challenges/dancing-with-the-sars/).
-Hubas shows the soil water, a dam and the rice fields of Cebu and Bohol before El Niño, from NISAR radar data.
+Hubas is the score of the wet season before El Niño in Cebu and Bohol. NISAR passes each 12 days, and each pass is one note. You can see the season and hear it in three parts: the soil, the dam and the rice. It is the baseline for the dry months that come next.
 
 | Folder | What | Start |
 | --- | --- | --- |
