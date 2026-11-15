@@ -100,4 +100,4 @@ node scripts/control-hubas.mjs down
 ## Known limits
 
 - The 101 towns and their soil water are real (sc-71, all valid NISAR readings, provisional). The rank is real too (sc-120): 99 towns have a rank from the window of 7 Oct; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey, because only part of Bohol has readings there (29 of 48 Bohol towns have none). `outlook.json` has PAGASA's El Niño Advisory No. 6 (issued 2026-11-03), the November 2026 rainfall outlook for Cebu and Bohol (sc-61). Get town IDs with `towns`. The Malinao Dam data in `targets.json` is real and shown on `/dam`.
-- Features from the plan that are not built yet (explainer, history) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.
+- The feature map lists plan features that are not built yet (explainer, L-band vs C-band, RADARSAT-1) under "Not built yet", and features removed on purpose (the rank map) under "Cut". Update the map when one lands, or run `/pstack:maintain-verification-skill`.

@@ -44,4 +44,11 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature file when each one lands.
 
 - Radar explainer: click a pixel for HH and HV (wave 2)
-- Then and now, L-band vs C-band, RADARSAT-1 (wave 3). The Sentinel-1 (C-band) pair of each rice parcel from 2026-10-13 is in `targets.json` (`cBand`), but no screen shows it yet. The dam's "if it repeats" lines and past-event images already ship on `/dam`.
+- L-band vs C-band rice view (sc-193). The Sentinel-1 (C-band) pair of each rice parcel from 2026-10-13 is in `targets.json` (`cBand`), but no screen shows it yet.
+- RADARSAT-1 history for 1997–98 (sc-160).
+
+## Cut
+
+These were in the plan and were removed on purpose. Do not report them as missing.
+
+- Rank map colors and the `Rank` button (sc-126). Removed in sc-450: the rank is in the town panel only. See [Rank preview](./rank-preview.md).
