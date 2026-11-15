@@ -47,7 +47,8 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
       await expect(page.locator(".dam-picker output")).toHaveText(day(frame.date));
       await expect(radar).toHaveAttribute("src", `/data/${frame.image}`);
       await expect.poll(loaded).toBe(440);
-      const percent = `${frame.change > 0 ? "+" : frame.change < 0 ? "−" : ""}${Math.abs(frame.change).toFixed(0)}%`;
+      const rounded = Math.round(frame.change);
+      const percent = `${rounded > 0 ? "+" : rounded < 0 ? "−" : ""}${Math.abs(rounded)}%`;
       await expect(page.getByTestId("dam-change")).toHaveText(percent);
     }
     await expect(page.getByTestId("dam-area")).toHaveCount(0);
