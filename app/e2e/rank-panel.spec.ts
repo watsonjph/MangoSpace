@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import type { Lgu } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { waitForLgusSource } from "./wait-for-lgus-source";
 import { saveProof } from "./proof";
 
 declare global {
@@ -19,7 +20,7 @@ test("the rank preview is in the town panel only, and missing soil water is clea
   // An old shared link can still carry mode=rank. The map ignores it.
   await page.goto(`/?town=${stable.psgc}&window=3&mode=rank`);
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
-  await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"));
+  await waitForLgusSource(page);
 
   await expect(page.getByRole("button", { name: "Rank" })).toHaveCount(0);
   await expect(page.getByTestId("map-legend")).toContainText("0.10 m³/m³ · drier");

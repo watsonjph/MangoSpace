@@ -174,7 +174,7 @@ async function drive(o) {
     }
     await page.goto(s.url);
     await page.locator(".map[data-ready=true] canvas").waitFor({ timeout: 20000 });
-    await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"), null, { timeout: 20000 });
+    await page.waitForFunction(() => window.hubasMap?.getSource("lgus") && window.hubasMap.isSourceLoaded("lgus"), null, { timeout: 20000 });
     steps.push("map ready");
 
     if (o["click-town"]) {
