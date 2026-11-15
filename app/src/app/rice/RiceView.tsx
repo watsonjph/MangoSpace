@@ -36,7 +36,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   return (
     <main className="dam-page rice-page">
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
-      <h1>The radar signal of both rice parcels rose until October, then fell.</h1>
+      <h1>Both samples reached their highest measured HV in September or October, then were lower on 5 November.</h1>
       <dl className="dam-stats">
         {parcels.map((item, i) => {
           const values = item.nisar.meanHvDb!;
@@ -57,8 +57,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
         domain={[Math.floor(Math.min(...all) / 3) * 3, Math.ceil(Math.max(...all) / 3) * 3]}
         format={(value) => `${value.toFixed(0).replace("-", "−")} dB`} rain={rain} selected={index} onSelect={setPicked}
         label="Mean HV radar signal of the Ubay and Pilar rice parcels on each radar date of 2026" />
-      <p className="dam-note">A higher HV signal means more plant material or a rougher surface.
-        A flooded field with young plants gives a low signal.</p>
+      <p className="dam-note">Higher HV can come from more plant material or a rougher surface. Water and other vegetation also affect it.</p>
 
       <h2>The radar image behind each point</h2>
       <div className="dam-image">
@@ -82,9 +81,9 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
 
       <section>
         <h2>What this can and cannot tell</h2>
-        <p>A low signal that rises over weeks is what a wet field that fills with plants looks like to the radar.
-          No field visit confirms the crop, the planting date or the growth stage of these parcels,
-          and the cause of the fall on the last date is not known.</p>
+        <p>A low signal that rises over weeks is consistent with a wet field gaining vegetation.
+          No field observations confirm the crop, planting date or growth stage of these parcels,
+          and the cause of the fall on the latest date is not known.</p>
         <p className="dam-note">Each parcel is a small sample, not a whole town. Soil water, standing water,
           other plants and radar noise also change the signal. <MapLink href="/method">Method and limits</MapLink></p>
       </section>
