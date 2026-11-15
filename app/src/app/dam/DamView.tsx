@@ -58,7 +58,7 @@ function Chart({ lines, domain, unit, rain, selected, onSelect, label }: {
         ))}
         {months.map((month, i) => i % every === 0 && (
           <text key={month} x={x(month)} y={height - 6} textAnchor="middle">
-            {new Date(month).toLocaleDateString("en-GB", { month: "short", year: new Date(month).getUTCMonth() ? undefined : "2-digit", timeZone: "UTC" })}
+            {new Date(month).toLocaleDateString("en-GB", { month: "short", year: new Date(month).getUTCMonth() ? undefined : "numeric", timeZone: "UTC" })}
           </text>
         ))}
         {rain?.map(([time, mm]) => (
@@ -186,7 +186,7 @@ export default function DamView({ dam }: { dam: Target }) {
       <Chart lines={[observed, ...scenarios]} domain={[Math.min(0.6, Math.floor(lowest * 10 - 2) / 10), 0.9]} unit="km²"
         rain={rain} selected={old ? undefined : index} onSelect={(i) => setPicked(past.length + i)}
         label="Water area of Malinao Dam on each radar date of 2026, with lines for a repeat of two past dry events" />
-      {scenarios.length > 0 && <p className="dam-note" data-testid="scenario-note">Dashed lines: this is what happened before. It is not a forecast.</p>}
+      {scenarios.length > 0 && <p className="dam-note" data-testid="scenario-note">Dashed lines: this is what happened before. It is not a forecast. Each line applies past monthly-average changes to the latest NISAR area, so it can differ from an event's lowest single-date reading.</p>}
 
       <h2>The radar image of each date</h2>
       <div className="dam-image">
