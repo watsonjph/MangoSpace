@@ -37,6 +37,7 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Malinao Dam](./dam.md): the `/dam` page, its water area chart with rain and "if it repeats" lines, and the radar image of each date.
 - [Rank preview](./rank-preview.md): the rank in the town panel, rank parts, stable towns and unranked towns.
 - [Rice parcels](./rice.md): the `/rice` page, the HV lines of the Ubay and Pilar parcels, and the radar image of each date.
+- [The score](./score.md): the `/score` page, the soil, dam and rice staffs and the rain on one date axis, one playhead, and a sound voice for each staff.
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
 
 ## Not built yet

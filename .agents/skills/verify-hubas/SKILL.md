@@ -5,7 +5,7 @@ description: Launch, check and drive the Hubas web app (app/, Next.js static exp
 
 # Verify Hubas
 
-Hubas has four routes. `/` is a MapLibre map of Cebu and Bohol colored by soil water, a "Window" timeline with play, and a town panel that also holds the rank preview. `/dam` shows the water area of Malinao Dam with a chart and radar images. `/rice` shows the HV line of two rice parcels. `/method` explains the method and credits the sources. The top bar links the four pages. The dam and rice pages have the same timeline with play for their radar images. On a phone (640 px wide or less) the panel and slider sit below the map. All data comes from static files in `app/public/data`. There is no server code and no login.
+Hubas has five routes. `/` is a MapLibre map of Cebu and Bohol colored by soil water, a "Window" timeline with play, and a town panel that also holds the rank preview. `/dam` shows the water area of Malinao Dam with a chart and radar images. `/rice` shows the HV line of two rice parcels. `/score` plays the soil, the dam and the rice together: three staffs and the rain on one date axis with one playhead and a sound voice for each staff. `/method` explains the method and credits the sources. The top bar links the five pages. The dam and rice pages have the same timeline with play for their radar images. On a phone (640 px wide or less) the panel and slider sit below the map. All data comes from static files in `app/public/data`. There is no server code and no login.
 
 The control tool is `app/scripts/control-hubas.mjs`. Run every command from `app/`. Each command prints JSON. Read `ok` first; on `false`, follow `hint`.
 
@@ -62,13 +62,13 @@ node scripts/control-hubas.mjs drive --nav Method --name sc-123-method
 | `--click-town <psgc>` | Click the town shape on the map | MapLibre `window.hubasMap`, layer `soil`, feature id = psgc. The tool finds a point inside the shape that is not under the slider or the panel. |
 | `--town <psgc or "Name, Province">` | Pick the town in the dropdown | label `Town` |
 | `--window <n>` | Move the slider to window n | label `Window`; range text in `.slider output` |
-| `--nav <link>` | Click a link in the top bar: `Soil water`, `Dam`, `Rice` or `Method` | `navigation` named `Main`; waits until that link has `aria-current="page"` |
+| `--nav <link>` | Click a link in the top bar: `Soil water`, `Dam`, `Rice`, `Score` or `Method` | `navigation` named `Main`; waits until that link has `aria-current="page"` |
 
 Two more options: `--viewport 375x812` gives the phone layout, and `--offline-basemap yes` replaces the outside base map with a plain background (the same stub as `app/e2e/offline-basemap.ts`) for runs without internet.
 
 It prints `steps`, the map label, the legend lines, the slider value and range, the selected town, every row of the town panel (`Soil water, <window>`, `Pixels with data`, `Rank preview, <window>`, `Rank parts`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
 
-`drive` always starts on `/`. Add `--nav Dam`, `--nav Rice` or `--nav Method` to open that page. It prints `path` and the page `heading`, and `window`, `town` and `panel` are `null` off the map. For anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
+`drive` always starts on `/`. Add `--nav Dam`, `--nav Rice`, `--nav Score` or `--nav Method` to open that page. It prints `path` and the page `heading`, and `window`, `town` and `panel` are `null` off the map. For anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
 
 ## Evidence
 

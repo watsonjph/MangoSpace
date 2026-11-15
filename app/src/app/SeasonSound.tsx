@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { playSoilTone } from "./soil-tone";
+import { soilHeight } from "./soil-mean";
+import { playTone } from "./soil-tone";
 
 export default function SeasonSound({ value, index, playing, onStart }: {
   value: number | null | undefined;
@@ -23,7 +24,7 @@ export default function SeasonSound({ value, index, playing, onStart }: {
   useEffect(() => {
     const context = audio.current;
     if (!enabled || !playing || !context || context.state !== "running") return;
-    return playSoilTone(context, value);
+    return playTone(context, value == null || value < 0 || value > 1 ? null : soilHeight(value));
   }, [enabled, playing, value, index]);
 
   async function toggle() {

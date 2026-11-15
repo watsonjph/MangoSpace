@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { playSoilTone } from "../src/app/soil-tone";
+import { playTone } from "../src/app/soil-tone";
 import { STEP_MS } from "../src/app/Timeline";
 import type { Lgu, Manifest } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
@@ -7,7 +7,7 @@ import { useOfflineBasemap } from "./offline-basemap";
 declare global {
   interface Window {
     audioProbe: { contexts: number; tones: number; closed: number };
-    playSoilTone: typeof playSoilTone;
+    playTone: typeof playTone;
   }
 }
 
@@ -85,14 +85,14 @@ for (const width of [1280, 375]) {
   });
 }
 
-test("rendered tones follow soil water and missing readings are silent", async ({ page }) => {
+test("rendered tones follow the note height and missing notes are silent", async ({ page }) => {
   await page.goto("/method");
-  await page.addScriptTag({ content: `window.playSoilTone = ${playSoilTone.toString()}` });
+  await page.addScriptTag({ content: `window.playTone = ${playTone.toString()}` });
   const rendered = await page.evaluate(async () => {
     const results = [];
-    for (const value of [null, 0.1, 0.45, NaN, -1]) {
+    for (const value of [null, 0, 1, NaN, -1]) {
       const context = new OfflineAudioContext(1, 24000, 48000);
-      window.playSoilTone(context, value);
+      window.playTone(context, value);
       const data = (await context.startRendering()).getChannelData(0);
       let crossings = 0;
       for (let i = 1; i < 12000; i++) if (data[i - 1] < 0 && data[i] >= 0) crossings++;

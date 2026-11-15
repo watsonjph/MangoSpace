@@ -7,15 +7,14 @@ import type { Lgu, Manifest, Outlook } from "../../lib/data";
 import { setMapSelection, useMapSearch } from "./map-selection";
 import SeasonSound from "./SeasonSound";
 import SoilWaterLine from "./SoilWaterLine";
-import Timeline, { type Note, usePlayback } from "./Timeline";
+import { HIGH, LOW, soilMeans } from "./soil-mean";
+import Timeline, { usePlayback } from "./Timeline";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
 }
 
 const SOURCE = "lgus";
-const LOW = 0.1;
-const HIGH = 0.45;
 const BLEND_MS = 300;
 
 const setWindow = (index: number) => setMapSelection("window", String(index));
@@ -38,14 +37,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
   const { playing } = play;
   const shown = useRef(new Map<string, number | null>());
 
-  // The mean of the towns with data on half of their area or more, the same rule as the map colors.
-  const means = useMemo(() => manifest.windows.map((_, i) => {
-    const values = lgus.flatMap((lgu) => lgu.soilMoisture[i] != null && lgu.validShare[i] >= 0.5 ? [lgu.soilMoisture[i]!] : []);
-    return { towns: values.length, mean: values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null };
-  }), [manifest.windows, lgus]);
-  const mostTowns = Math.max(...means.map((m) => m.towns));
-  const notes: Note[] = means.map(({ mean, towns }) => mean == null ? null
-    : { at: Math.max(0, Math.min(1, (mean - LOW) / (HIGH - LOW))), weak: towns < mostTowns * 0.8 });
+  const means = useMemo(() => soilMeans(manifest.windows.length, lgus), [manifest.windows.length, lgus]);
+  const notes = means.map((m) => m.note);
   const ticks = manifest.windows.flatMap((win, index) =>
     index === 0 || win.start.slice(5, 7) !== manifest.windows[index - 1].start.slice(5, 7)
       ? [{ index, label: new Date(`${win.start}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }) }] : []);
