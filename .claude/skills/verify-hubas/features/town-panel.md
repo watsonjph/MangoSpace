@@ -33,4 +33,4 @@ Preconditions:
 
 - Before a town is chosen, the panel shows only the dropdown. `panel` is `null` in the output; that is correct.
 - `--click-town` fails with a clear error if no visible point of the shape is free of the slider and the panel. Use `--town` for that town, and report the map entry point as not reached.
-- Mock outlook text starts with "Mock text". Do not cite it as PAGASA's real advisory.
+- The outlook covers November 2026 only. Before you cite it as current, check `issued` and the month in `summary` in `outlook.json`. Nothing updates `outlook.json` automatically: when PAGASA issues a newer advisory, someone must edit it by hand.
