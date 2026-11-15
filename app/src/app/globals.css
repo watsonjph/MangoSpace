@@ -193,3 +193,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
   .dam-image { display: block; }
   .dam-image .dam-picker { margin-top: 12px; }
 }
+.rice-page .dam-radar img { image-rendering: pixelated; }
+.dam-picker button[aria-pressed="true"] { font-weight: 650; }
+@media (max-width: 640px) {
+  .topbar { gap: 8px; padding: 0 12px; }
+  .topbar nav { gap: 0; }
+  .topbar nav a { padding: 10px 8px; }
+}

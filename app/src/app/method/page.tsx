@@ -64,7 +64,7 @@ export default function MethodPage() {
         <p>Compare dates from the same satellite track for each target. Different radar viewing angles
           can change the image. NISAR and Sentinel-1 can give different water areas in km²,
           so compare changes between sensors as percentages rather than absolute areas.</p>
-        <p>The rice view is not available in this build. Rice sample measurements cover
+        <p>Rice sample measurements cover
           small field parcels, not whole towns, and do not establish crop identity or growth stage.</p>
         <p>In the dam view, dashed lines mean:
           “This is what happened before. It is not a forecast.”</p>
