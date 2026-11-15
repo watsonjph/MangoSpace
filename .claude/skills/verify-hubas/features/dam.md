@@ -10,6 +10,7 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - `dam-jumps` (group `Go to`): `Lowest in 2015–16`, `Lowest in 2023–24` and `Now`.
 - `dam-band` (group `Radar band`): `HH` and `HV`, only on 2026 frames.
 - `dam-causes` lists possible causes and links to the Method page.
+- Each line is named at its end. The chart marks the steady 2026 measurement; the March 2016 minimum is identified separately as historical. Rain has its own numeric axis in mm. Move a mouse or touch the chart for the nearest measured date and value.
 
 ## How to get to it (user POV)
 

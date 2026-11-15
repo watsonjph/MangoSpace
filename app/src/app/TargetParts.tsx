@@ -8,7 +8,7 @@ export type Line = { label: string; color: string; dashed?: boolean; points: [nu
 export const NOW = "var(--water)";
 export const DRY = "var(--dry)";
 export const VIOLET = "var(--violet)";
-const RAIN = "#8fb4d9";
+const RAIN = "var(--rain)";
 
 // True only after hydration, so tests know the slider and buttons respond.
 export const useHydrated = () => useSyncExternalStore(() => () => {}, () => true, () => false);
@@ -16,7 +16,7 @@ export const useHydrated = () => useSyncExternalStore(() => () => {}, () => true
 export const fmt = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 
-export function Chart({ lines, domain, format, rain, selected, onSelect, label }: {
+export function Chart({ lines, domain, format, rain, selected, onSelect, label, unit, finding }: {
   lines: Line[];
   domain: [number, number];
   format: (value: number) => string;
@@ -24,16 +24,19 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
   selected?: number;
   onSelect?: (index: number) => void;
   label: string;
+  unit: string;
+  finding: { time: number; text: string };
 }) {
   const box = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(640);
+  const [hover, setHover] = useState<number>();
   useEffect(() => {
-    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
+    const observer = new ResizeObserver(([entry]) => { if (entry.contentRect.width > 0) setWidth(entry.contentRect.width); });
     observer.observe(box.current!);
     return () => observer.disconnect();
   }, []);
 
-  const left = 44, right = 10, top = 8, plot = 170, rainHeight = rain ? 56 : 0, height = top + plot + rainHeight + 22;
+  const left = 44, right = width < 500 ? 104 : 150, top = 42, plot = 170, rainHeight = rain ? 76 : 0, height = top + plot + rainHeight + 22;
   const times = lines.flatMap((line) => line.points.map(([time]) => time));
   const t0 = Math.min(...times), t1 = Math.max(...times);
   const x = (time: number) => left + (t0 === t1 ? 0.5 : (time - t0) / (t1 - t0)) * (width - left - right);
@@ -41,17 +44,34 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
   const months: number[] = [];
   if (t0 === t1) months.push(t0);
   else for (let d = new Date(t0), m = Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1); m <= t1; m = Date.UTC(new Date(m).getUTCFullYear(), new Date(m).getUTCMonth() + 1, 1)) months.push(m);
-  const every = Math.ceil(months.length / ((width - left - right) / 38));
+  const every = Math.max(1, Math.ceil(months.length / ((width - left - right) / 38)));
   const ticks = [0, 1, 2, 3].map((i) => domain[0] + ((domain[1] - domain[0]) * i) / 3);
-  const rainMax = rain ? Math.max(...rain.map(([, mm]) => mm)) : 1;
+  const rainMax = Math.max(1, ...(rain ?? []).map(([, mm]) => mm));
   const picked = selected === undefined ? undefined : lines[0].points[selected];
+  const pointer = (event: React.PointerEvent<SVGSVGElement>) => {
+    const at = event.clientX - event.currentTarget.getBoundingClientRect().left;
+    const points = lines[0].points;
+    const distances = points.map(([time]) => Math.abs(x(time) - at));
+    setHover(distances.indexOf(Math.min(...distances)));
+  };
+  const reading = hover === undefined ? undefined : lines[0].points[hover];
+  const findingPoint = lines[0].points.find(([time]) => time === finding.time);
+  const ends = lines.map((line) => ({ line, y: y(line.points.at(-1)![1]) })).sort((a, b) => a.y - b.y);
+  ends.forEach((end, i) => { end.y = Math.max(end.y, i ? ends[i - 1].y + 32 : top); });
+  const overflow = Math.max(0, ends.at(-1)!.y - (top + plot - 20));
 
   return (
-    <div ref={box} className="dam-chart" data-testid="dam-chart">
-      <svg width={width} height={height} role="img" aria-label={label}>
+    <div ref={box} className="dam-chart chart" data-testid="dam-chart">
+      <svg width={width} height={height} role="img" aria-label={`${label}. Range: ${format(domain[0])} to ${format(domain[1])} ${unit}. Selected: ${picked ? `${fmt(new Date(picked[0]).toISOString())}, ${format(picked[1])} ${unit}` : "past event"}.`}
+        onPointerMove={pointer} onPointerDown={pointer} onPointerLeave={(event) => { if (event.pointerType === "mouse") setHover(undefined); }}>
+        <text x={left} y={14}>{unit}</text>
+        <g className="finding">
+          <text x={left} y={29}>{finding.text}</text>
+          {findingPoint && <line x1={x(findingPoint[0])} x2={x(findingPoint[0])} y1={top - 8} y2={y(findingPoint[1]) - 6} />}
+        </g>
         {ticks.map((tick) => (
           <g key={tick}>
-            <line x1={left} x2={width - right} y1={y(tick)} y2={y(tick)} stroke="var(--line)" />
+            <line className="grid" x1={left} x2={width - right} y1={y(tick)} y2={y(tick)} />
             <text x={left - 6} y={y(tick) + 4} textAnchor="end">{format(tick)}</text>
           </g>
         ))}
@@ -61,19 +81,32 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
           </text>
         ))}
         {rain?.map(([time, mm]) => (
-          <rect key={time} x={x(time) - 4} width={8} y={top + plot + 14 + (1 - mm / rainMax) * (rainHeight - 14)}
-            height={(mm / rainMax) * (rainHeight - 14)} fill={RAIN} />
+          <rect data-testid="rain-bar" key={time} x={x(time) - 4} width={8} y={top + plot + 28 + (1 - mm / rainMax) * (rainHeight - 28)}
+            height={(mm / rainMax) * (rainHeight - 28)} fill={RAIN} />
         ))}
-        {rain && <text x={left - 6} y={top + plot + 26} textAnchor="end">rain</text>}
-        {picked && <line x1={x(picked[0])} x2={x(picked[0])} y1={top} y2={top + plot + rainHeight} stroke={NOW} strokeDasharray="3 3" />}
+        {rain && <g className="rain-axis">
+          <text x={left} y={top + plot + 19}>Rain, mm (12 days, GPM)</text>
+          {[0, rainMax].map((mm) => <g key={mm}>
+            <line className="grid" x1={left} x2={width - right} y1={top + plot + rainHeight - mm / rainMax * (rainHeight - 28)} y2={top + plot + rainHeight - mm / rainMax * (rainHeight - 28)} />
+            <text x={left - 6} textAnchor="end" y={top + plot + rainHeight - mm / rainMax * (rainHeight - 28) + 4}>{Math.round(mm)}</text>
+          </g>)}
+        </g>}
+        {picked && <line className="guide" x1={x(picked[0])} x2={x(picked[0])} y1={top} y2={top + plot} />}
         {lines.map((line) => (
           <g key={line.label}>
-            <polyline fill="none" stroke={line.color} strokeWidth={2} strokeDasharray={line.dashed ? "6 5" : undefined}
+            <polyline className="line" fill="none" stroke={line.color} strokeDasharray={line.dashed ? "6 5" : undefined}
               points={line.points.map(([time, value]) => `${x(time)},${y(value)}`).join(" ")} />
-            {!line.dashed && line.points.map(([time, value]) => <circle key={time} cx={x(time)} cy={y(value)} r={2.5} fill={line.color} />)}
+            {!line.dashed && line.points.map(([time, value]) => <circle key={time} cx={x(time)} cy={y(value)} r={3} fill={line.color} />)}
+            <line x1={x(line.points.at(-1)![0])} x2={x(line.points.at(-1)![0]) + 6} y1={y(line.points.at(-1)![1])} y2={ends.find((end) => end.line === line)!.y - overflow} stroke={line.color} />
+            <text className="line-label" x={x(line.points.at(-1)![0]) + 8} y={ends.find((end) => end.line === line)!.y - overflow + 4} style={{ fill: line.color }}>
+              {line.label.split(" ").reduce<string[][]>((rows, word) => {
+                if (rows.at(-1)!.join(" ").length + word.length > (width < 500 ? 12 : 20)) rows.push([]);
+                rows.at(-1)!.push(word); return rows;
+              }, [[]]).map((row, i) => <tspan key={i} x={x(line.points.at(-1)![0]) + 8} dy={i ? 12 : 0}>{row.join(" ")}</tspan>)}
+            </text>
           </g>
         ))}
-        {picked && <circle cx={x(picked[0])} cy={y(picked[1])} r={6} fill={NOW} stroke="var(--ground)" strokeWidth={2} />}
+        {picked && <circle className="selected" cx={x(picked[0])} cy={y(picked[1])} r={6} fill={lines[0].color} />}
         {onSelect && (
           <rect x={left - 12} width={x(lines[0].points.at(-1)![0]) - left + 24} y={top} height={plot + rainHeight} fill="transparent"
             style={{ cursor: "pointer" }}
@@ -84,12 +117,10 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
             }} />
         )}
       </svg>
-      <ul className="dam-key">
-        {lines.map((line) => (
-          <li key={line.label}><span style={{ borderTop: `3px ${line.dashed ? "dashed" : "solid"} ${line.color}` }} />{line.label}</li>
-        ))}
-        {rain && <li><span style={{ borderTop: `8px solid ${RAIN}` }} />Rain in the 12 days before (GPM)</li>}
-      </ul>
+      <output className="chart-readout">{reading && <>{fmt(new Date(reading[0]).toISOString())}: {lines.map((line) => {
+        const point = line.points.find(([time]) => time === reading[0]);
+        return point ? `${line.label}: ${format(point[1])} ${unit}` : null;
+      }).filter(Boolean).join("; ")}</>}</output>
     </div>
   );
 }

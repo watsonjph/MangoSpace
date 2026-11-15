@@ -11,6 +11,7 @@ The panel at the top right shows one town: its rank preview or "Not ranked", ran
 - `panel-values` shows soil water in m³/m³ (or "No data" when the selected window has no reading) and pixels with data in %.
 - `panel-line` shows an SVG line of the soil water in all windows on the scale of the map legend (0.10 to 0.45 m³/m³). A dashed line and a larger circle mark the selected window. A window with `null` makes a gap. An open grey circle is a window with data on less than half of the town.
 - `panel-outlook` shows the PAGASA outlook for the town's province.
+- The chart labels the NISAR line and late-July reading. Move a mouse or touch the chart to read the nearest window's date and value; a missing reading says `No data`. Axis units appear once.
 
 ## How to get to it (user POV)
 
