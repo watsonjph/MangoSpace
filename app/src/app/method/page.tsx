@@ -7,7 +7,6 @@ export const metadata: Metadata = { title: "Method · Hubas" };
 
 export default function MethodPage() {
   const hasSoilWater = lgus.some((town) => town.soilMoisture.some((value) => value !== null));
-  const hasRealOutlook = outlooks.every((outlook) => !outlook.advisory.includes("MOCK"));
 
   return (
     <main className="method-page">
@@ -92,9 +91,7 @@ export default function MethodPage() {
             {" "}<a href="https://github.com/faeldon/philippines-psgc-shapefiles/blob/v1.0.1/data/psgc/2026-3q/psgc.csv">Pinned population table</a>.</li>
           <li><strong>PAGASA rain outlook.</strong> DOST-PAGASA. Public-domain government advisory,
             unless otherwise stated; credit PAGASA.
-            {hasRealOutlook
-              ? outlooks.map((outlook) => <span key={outlook.province}> {outlook.province}: {outlook.advisory}, issued {outlook.issued}.</span>)
-              : " The current outlook is mock text, not an official forecast."}
+            {outlooks.map((outlook) => <span key={outlook.province}> {outlook.province}: {outlook.advisory}, issued {outlook.issued}.</span>)}
             {" "}<a href="https://www.pagasa.dost.gov.ph/climate/el-nino-la-nina/advisories">Official advisories</a>.</li>
           <li><strong>Base map.</strong> <a href="https://openfreemap.org/">OpenFreeMap</a>,
             <a href="https://openmaptiles.org/"> OpenMapTiles</a>, and © OpenStreetMap contributors.
