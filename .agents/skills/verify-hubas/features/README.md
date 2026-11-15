@@ -39,6 +39,8 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Rice parcels](./rice.md): the `/rice` page, the HV lines of the Ubay and Pilar parcels, and the radar image of each date.
 - [The score](./score.md): the `/score` page, the soil, dam and rice staffs and the rain on one date axis, one playhead, and a sound voice for each staff.
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
+- Screen copy: `e2e/screen-copy.spec.ts` checks a numbered finding on every view, the data behind the fixed soil finding, and readable PAGASA dates. Canonical terms are in `docs/screen-terms.md`.
+- Opening: the map asks "What happened to water before El Niño?" and links to `/start`, which leads through the soil, the dam and the rice in order, each with a finding, a source and a link that keeps the town and window. `e2e/opening.spec.ts` follows it at 1280 and 390 px; `e2e/screen-copy.spec.ts` checks the data behind its numbers.
 
 ## Not built yet
 
