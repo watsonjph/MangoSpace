@@ -25,7 +25,7 @@ The selected town's soil-water series can be heard as short tones while the slid
 
 ## Gotchas
 
-- The town data on current main contains no soil-water readings. Silence is correct; it must not be described as measured dryness.
+- Town readings are real (sc-71). A null window is silent, for example most Bohol towns in windows 3 and 10; silence must not be described as measured dryness. City of Bogo (`0702211000`) has a reading in every window, so it plays a tone for each.
 - One second represents one window. The pitch mapping is an explanatory choice over the map's 0.10–0.45 scale, not a scientific alarm or forecast.
 - Audio requires a user click. Browser/device sound settings can still mute the output; a browser startup failure is shown without disabling the slider.
 - Backgrounding the page pauses playback. Returning does not start it automatically.
