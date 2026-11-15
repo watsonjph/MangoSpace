@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { RADAR_CUES, sampleRadarPixel, type RadarPair } from "../src/app/radar-pixels";
+import measurements from "../../docs/fixtures/sc-141-measurements.json";
+import { RADAR_CUES, loadRadarPair, sampleRadarPixel, type RadarPair } from "../src/app/radar-pixels";
 
 function image(value: number): ImageData {
   return { width: 1, height: 1, colorSpace: "srgb", data: new Uint8ClampedArray([value, value, value, 255]) };
@@ -49,6 +50,24 @@ test("missing, transparent, colored or out-of-bounds pixels are unavailable", ()
   const missing = { ...image(118), data: new Uint8ClampedArray() };
   expect(sampleRadarPixel({ hh: missing, hv: image(64) }, { x: 0, y: 0 })).toEqual({ kind: "unavailable" });
   expect(sampleRadarPixel({ hh: image(118), hv: { ...image(64), width: 2 } }, { x: 0, y: 0 })).toEqual({ kind: "unavailable" });
+});
+
+test("the browser reads every sc-141 reference pixel from the real PNGs as the calibration did", async ({ page }) => {
+  await page.goto("/method");
+  // The two functions use only browser globals, so their source runs unchanged in the page.
+  const readings = await page.evaluate(`(async () => {
+    const load = ${loadRadarPair}, sample = ${sampleRadarPixel};
+    const rows = ${JSON.stringify(measurements.map(({ images, x, y }) => ({ images, x, y })))};
+    return Promise.all(rows.map(async ({ images, x, y }) => sample(await load(images), { x, y })));
+  })()`) as ReturnType<typeof sampleRadarPixel>[];
+  expect(readings).toHaveLength(81);
+  measurements.forEach(({ id, date, hhDb, hvDb, cue }, i) => {
+    const reading = readings[i];
+    expect(reading, `${id} ${date}`).toMatchObject({ kind: "available", cue });
+    if (reading.kind !== "available") return;
+    expect(reading.hhDb, `${id} ${date} HH`).toBeCloseTo(hhDb, 3);
+    expect(reading.hvDb, `${id} ${date} HV`).toBeCloseTo(hvDb, 3);
+  });
 });
 
 test("reference roof and wooded contexts do not become building labels", () => {
