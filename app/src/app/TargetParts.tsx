@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Timeline, { type Note, usePlayback } from "./Timeline";
 import RadarInspector from "./RadarInspector";
 import SoundTimeline, { type SoundFrame } from "./SoundTimeline";
@@ -135,12 +135,12 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label, 
 export type Band = "hh" | "hv";
 export type RadarDisplay = Band | "color";
 type RadarImages = { hh: string; hv: string };
-type RadarProps = { caption: string; testId?: string } & (
+type RadarProps = { caption: string; testId?: string; frameKey: string; onReady: (frameKey: string) => void } & (
   | { display: "history"; src: string }
   | { display: RadarDisplay; sources: RadarImages }
 );
 
-function ColorComposite({ sources, caption }: { sources: RadarImages; caption: string }) {
+function ColorComposite({ sources, caption, onReady }: { sources: RadarImages; caption: string; onReady: () => void }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   // Not reset on a new date: the last drawn image stays visible until the next one is drawn, so play does not blink.
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -177,12 +177,16 @@ function ColorComposite({ sources, caption }: { sources: RadarImages; caption: s
       }
       output.putImageData(red, 0, 0);
       setStatus("ready");
+      onReady();
     }).catch(() => {
-      if (active) setStatus("error");
+      if (active) {
+        setStatus("error");
+        onReady();
+      }
     });
 
     return () => { active = false; };
-  }, [sources.hh, sources.hv]);
+  }, [sources.hh, sources.hv, onReady]);
 
   return (
     <div className="radar-composite" aria-busy={status === "loading"}>
@@ -208,15 +212,20 @@ function ColorLegend() {
 
 export function Radar(props: RadarProps) {
   const image = useRef<HTMLImageElement>(null);
+  const { display, frameKey, onReady } = props;
   const src = props.display === "history" ? props.src : props.display === "color" ? null : props.sources[props.display];
+  const markReady = useCallback(() => onReady(frameKey), [frameKey, onReady]);
+  useEffect(() => {
+    if (display !== "color" && image.current?.complete && image.current.naturalWidth > 0) markReady();
+  }, [display, frameKey, markReady]);
   // The img stays one element across dates, bands and historic frames, so playback and its load listeners follow every frame.
   return (
     <figure className="dam-radar" data-testid={props.testId}>
       {props.display === "color" ? (
-        <ColorComposite sources={props.sources} caption={props.caption} />
+        <ColorComposite sources={props.sources} caption={props.caption} onReady={markReady} />
       ) : (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img ref={image} src={`/data/${src}`} alt={props.caption} width={440} height={440} />
+        <img ref={image} src={`/data/${src}`} alt={props.caption} width={440} height={440} onLoad={markReady} onError={markReady} />
       )}
       {props.display === "history" ? <p className="dam-note">Pixel inspection needs an HH and HV pair. This historic image has one band.</p>
         : props.display === "color" ? <p className="dam-note">Switch to HH or HV to inspect a pixel.</p>
@@ -233,26 +242,15 @@ const FRAME_MS = 300;
 // The height of a value on the timeline staff, inside the same range as its chart.
 export const note = (value: number, [low, high]: [number, number]): NonNullable<Note> => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
 
-// frames: the image of each step. They load up front, and play waits on a frame until it has loaded, so no frame is skipped.
-export function Picker({ label, max, index, setIndex, notes, frames, periods, sounds, pitch, display, setDisplay, children }: {
-  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[]; frames: string[][];
+// Playback stays on a frame until the displayed image or composite is ready.
+export function Picker({ label, max, index, setIndex, notes, periods, sounds, pitch, display, setDisplay, ready, children }: {
+  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[];
   display: RadarDisplay; setDisplay?: (display: RadarDisplay) => void; children?: ReactNode;
   periods?: { index: number; label: string }[];
   sounds: SoundFrame[]; pitch: string;
+  ready: boolean;
 }) {
-  const [loaded, setLoaded] = useState<ReadonlySet<string>>(new Set());
-  // Each frame can use one band or both bands for a color composite.
-  const list = frames.map((frame) => frame.join(" ")).join("|");
-  useEffect(() => {
-    for (const src of new Set(list.split("|").flatMap((frame) => frame.split(" ")))) {
-      const image = new Image();
-      // A frame that fails to load must not stop play.
-      image.onload = image.onerror = () => setLoaded((done) => new Set(done).add(src));
-      image.src = `/data/${src}`;
-    }
-  }, [list]);
-  const frame = list.split("|")[index]?.split(" ") ?? [];
-  const play = usePlayback(max + 1, index, setIndex, FRAME_MS, frame.every((src) => loaded.has(src)));
+  const play = usePlayback(max + 1, index, setIndex, FRAME_MS, ready);
   return (
     <div className="dam-picker">
       <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes}

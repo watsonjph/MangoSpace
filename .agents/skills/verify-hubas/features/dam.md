@@ -9,6 +9,8 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - `dam-slider` (label `Date`) starts on the latest date. Lower values are the past Sentinel-1 frames: 2015–16, then 2023–24. A past frame shows a VV image and the change against the event's first date; a 2026 frame shows an HH or HV image, the area and the rain.
 - `dam-jumps` (group `Go to`): `Lowest in 2015–16`, `Lowest in 2023–24` and `Now`.
 - `dam-band` (group `Radar band`): `HH` and `HV`, only on 2026 frames.
+- `dam-comparison` shows Then and Now date selectors with sensor labels, defaulting to 20 Mar 2016 and the latest NISAR date. Drag the Image comparison divider or use its arrow keys. Each side gives percentage change against its own period baseline, with a sensor warning below.
+- `dam-causes` lists possible causes and links to the Method page.
 - `dam-interpretation` is the section "Why the water area can change". Its three lines give the 2026 range and historical lows, possible water-budget causes and nearby rain, and the limits. It links to Method.
 - Each line is named at its end. The chart marks the steady 2026 measurement; the March 2016 minimum is identified separately as historical. Rain has its own numeric axis in mm. Move a mouse or touch the chart for the nearest measured date and value.
 
@@ -27,6 +29,8 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - **Selection kept.** Run `drive --town 0701246000 --window 3 --nav Dam --name dam-sel`. In `aria.yml` the Soil water, Dam and Method links carry `?town=0701246000&window=3`.
 - `drive` cannot move the Date slider or press the dam buttons. Use the Playwright MCP against the URL from `up`: open `/dam`, wait for `.dam-page[data-ready=true]`, then click `Lowest in 2015–16`. The `.dam-picker output` reads `20 Mar 2016` and the change reads `−52%`. Click `Now`, then `HV`: the image `src` ends in the HV file of 5 Nov 2026.
 - Run `npx playwright test e2e/dam.spec.ts` for every date of the past events and of 2026, both bands, the jumps and a chart click on desktop and phone. With `PROOF=1` it also rewrites `docs/proof/sc-104-dam-desktop.png` and `-mobile.png`.
+
+- Run `npx playwright test e2e/dam-swipe.spec.ts` for mouse, keyboard and touch divider movement, independent date selection and sensor warnings at 1280 and 390 px. With `PROOF=1`, it writes `docs/proof/sc-470-dam-swipe-desktop.png`, `sc-470-dam-swipe-mobile.png` and changed-date screenshots.
 
 ## Gotchas
 

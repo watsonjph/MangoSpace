@@ -21,7 +21,6 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await page.goto("/method");
     await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Dam" }).click();
     await expect(page).toHaveURL(/\/dam\/?$/);
-    // A fill before hydration is lost, and React then ignores a second fill to the same value.
     await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toContainText("water area");
     await expect(page.getByRole("link", { name: "Dam" })).toHaveAttribute("aria-current", "page");
@@ -47,7 +46,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     // The slider starts on the latest date and runs through the past events first, then 2026.
     await expect(page.getByTestId("dam-area")).toHaveText(`${areas.at(-1)!.toFixed(2)} km²`);
     for (const [i, frame] of past.entries()) {
-      await page.locator("#date").fill(String(i));
+      await page.getByRole("slider", { name: "Date", exact: true }).fill(String(i));
       await expect(page.locator(".dam-picker output")).toHaveText(day(frame.date));
       await expect(radar).toHaveAttribute("src", `/data/${frame.image}`);
       await expect.poll(loaded).toBe(440);
@@ -59,7 +58,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await expect(page.getByTestId("dam-area")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "HV" })).toHaveCount(0);
     for (const [i, date] of dates.entries()) {
-      await page.locator("#date").fill(String(past.length + i));
+      await page.getByRole("slider", { name: "Date", exact: true }).fill(String(past.length + i));
       await expect(page.locator(".dam-picker output")).toHaveText(day(date));
       await expect(page.getByTestId("dam-area")).toHaveText(`${areas[i].toFixed(2)} km²`);
       await expect(page.getByTestId("dam-rain")).toHaveText(`${dam.rainMm[i].toFixed(0)} mm`);
@@ -77,11 +76,11 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await expect(radarFigure.locator(".radar-color-legend")).toContainText("do not identify land cover");
     await expect(page.getByRole("button", { name: "Color" })).toHaveAttribute("aria-pressed", "true");
     await saveProof(page, `sc-463-dam-color-${viewport.name}.png`);
-    await page.getByRole("slider", { name: "Date" }).fill("0");
+    await page.getByRole("slider", { name: "Date", exact: true }).fill("0");
     await expect(radar).toHaveAttribute("src", `/data/${past[0].image}`);
     await expect(radarFigure.locator("canvas")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Color" })).toHaveCount(0);
-    await page.getByRole("slider", { name: "Date" }).fill(String(past.length));
+    await page.getByRole("slider", { name: "Date", exact: true }).fill(String(past.length));
     await expectColorComposite(radarFigure, images[0]);
     await expect(page.getByRole("button", { name: "Color" })).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("button", { name: "HH" }).click();
@@ -93,7 +92,6 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await page.getByRole("button", { name: "Now" }).click();
     await expect(page.getByTestId("dam-area")).toHaveText(`${areas.at(-1)!.toFixed(2)} km²`);
 
-    // A click on a point of the chart selects that date.
     const box = (await chart.locator("svg").boundingBox())!;
     await chart.locator("svg").click({ position: { x: 46, y: box.height / 2 } });
     await expect(page.getByTestId("dam-area")).toHaveText(`${areas[0].toFixed(2)} km²`);
@@ -111,7 +109,7 @@ test("Color stays on screen while play steps through the 2026 dates", async ({ p
   const dates = dam.nisar.dates;
   await page.goto("/dam");
   await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
-  const slider = page.getByRole("slider", { name: "Date" });
+  const slider = page.getByRole("slider", { name: "Date", exact: true });
   const last = Number(await slider.getAttribute("max"));
   await slider.fill(String(last - dates.length + 1));
   await page.getByRole("button", { name: "Color" }).click();
