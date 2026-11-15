@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
 jobs:
+  skill-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Codex reads .agents/, Claude reads .claude/; symlinks break on Windows, so the copy is checked instead.
+      - run: diff -r .claude/skills/verify-hubas .agents/skills/verify-hubas
   app:
     runs-on: ubuntu-latest
     defaults:
