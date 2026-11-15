@@ -49,7 +49,7 @@ export type Note = { at: number; weak?: boolean } | null;
 export const place = (x: number, max: number) => `calc(5px + (100% - 10px) * ${x / Math.max(max, 1)})`;
 
 // axis: put step i at axis.at[i] on a 0 to axis.max scale (for example a day), not at i. staff replaces the one staff of notes.
-export default function Timeline({ id, name, count, index, onIndex, label, play, notes, ticks, axis, staff, className, children }: {
+export default function Timeline({ id, name, count, index, onIndex, label, play, notes, ticks, breaks, axis, staff, className, children }: {
   id: string;
   name: string;
   count: number;
@@ -59,6 +59,7 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
   play: Playback;
   notes?: Note[];
   ticks?: { index: number; label: string }[];
+  breaks?: number[];
   axis?: { at: number[]; max: number };
   staff?: ReactNode;
   className?: string;
@@ -97,6 +98,7 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
       <div className="track">
         {staff ?? (
           <div className="staff" aria-hidden="true">
+            {breaks?.map((index) => <span key={index} className="period-break" style={{ left: left(index - 0.5) }} />)}
             {notes?.map((note, i) => note && (
               <i key={i} className={[i === index ? "now" : "", note.weak ? "weak" : ""].join(" ").trim() || undefined}
                 style={{ left: left(i), bottom: `${note.at * 100}%` }} />

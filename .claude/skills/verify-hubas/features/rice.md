@@ -34,3 +34,5 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 - The Sentinel-1 VV and VH pair in `targets.json` (`cBand`) is not on this page.
 - Wait for `data-ready=true` before moving the slider. A fill before hydration is lost.
 - The page has no map, but `drive` starts on `/`, which loads the base map. Add `--offline-basemap yes` without internet.
+
+- timelapse.spec.ts plays the entire Ubay sequence, checks every loaded frame and saves proof with PROOF=1.

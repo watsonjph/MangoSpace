@@ -111,14 +111,17 @@ const FRAME_MS = 300;
 // The height of a value on the timeline staff, inside the same range as its chart.
 export const note = (value: number, [low, high]: [number, number]): Note => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
 
-export function Picker({ label, max, index, setIndex, notes, band, setBand, children }: {
+export function Picker({ label, max, index, setIndex, notes, periods, band, setBand, children }: {
   label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[];
   band: Band; setBand?: (band: Band) => void; children?: ReactNode;
+  periods?: { index: number; label: string }[];
 }) {
   const play = usePlayback(max + 1, index, setIndex, FRAME_MS);
   return (
     <div className="dam-picker">
-      <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes} />
+      <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes}
+        breaks={periods?.slice(1).map((period) => period.index)}
+        ticks={periods?.map((period, i) => ({ label: period.label, index: (period.index + (periods[i + 1]?.index ?? max + 1) - 1) / 2 }))} />
       {children}
       {setBand && (
         <div role="group" aria-label="Radar band">
