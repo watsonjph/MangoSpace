@@ -5,11 +5,12 @@ import { Map as MapLibreMap, setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Lgu, Manifest, Outlook } from "../../lib/data";
 import { setMapSelection, useMapSearch } from "./map-selection";
-import SeasonSound from "./SeasonSound";
+import SoundTimeline from "./SoundTimeline";
 import SoilWaterLine from "./SoilWaterLine";
-import { HIGH, LOW, soilMeans } from "./soil-mean";
+import { HIGH, LOW, soilMeans, soilHeight } from "./soil-mean";
 import Timeline, { usePlayback } from "./Timeline";
 import MapLink from "./MapLink";
+import { dateLabel } from "./date-label";
 
 declare global {
   interface Window { hubasMap?: MapLibreMap }
@@ -42,7 +43,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
   const notes = means.map((m) => m.note);
   const ticks = manifest.windows.flatMap((win, index) =>
     index === 0 || win.start.slice(5, 7) !== manifest.windows[index - 1].start.slice(5, 7)
-      ? [{ index, label: new Date(`${win.start}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }) }] : []);
+      ? [{ index: (index + manifest.windows.findLastIndex((other) => other.start.slice(0, 7) === win.start.slice(0, 7))) / 2,
+        label: new Date(`${win.start}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }) }] : []);
 
   useEffect(() => {
     const css = getComputedStyle(document.documentElement);
@@ -56,6 +58,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         customAttribution: '<a href="https://maplibre.org/" target="_blank">MapLibre</a>',
       },
     });
+    // The OpenFreeMap dark style names images its sprite lacks, such as the "circle-11" icon and "wood-pattern" fill. They draw nothing either way.
+    m.setMissingStyleImageResolver((id) => { m.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) }); });
     const fitRegion = () => {
       const compact = window.matchMedia("(max-width: 640px)").matches;
       m.fitBounds(manifest.bounds, {
@@ -151,9 +155,11 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         <div className="hud">
           <div className="tag">
             <strong>Soil water before El Niño</strong>
-            <p className="opening-question">What happened to water before El Niño?</p>
+            <p>What happened to water before El Niño?</p>
+            <p data-testid="view-finding">Mean soil water fell from about 0.35 to 0.25 m³/m³ at the end of July.</p>
             <span>Cebu and Bohol · NISAR, each 12 days · {manifest.sme2Status}</span>
             <MapLink className="opening-link" href="/start">Follow the soil, the dam and the rice</MapLink>
+            <MapLink href="/method">Read the method and limits</MapLink>
           </div>
           <section className="legend" aria-labelledby="legend-title" data-testid="map-legend">
             <h2 id="legend-title">Soil water</h2>
@@ -210,9 +216,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
             </dl>
             <dl className="outlook">
               <dt>PAGASA, {lgu.province}</dt>
-              <dd>{outlook ? `${outlook.summary} (${outlook.advisory}, ${outlook.issued})` : "No outlook"}</dd>
+              <dd>{outlook ? `${outlook.summary} (${outlook.advisory}, ${dateLabel(outlook.issued)})` : "No outlook"}</dd>
             </dl>
-            <SeasonSound key={lgu.psgc} value={moisture} index={windowIndex} playing={play.playing} onStart={play.start} />
           </> : <>
             <p className="hint">Select a town on the map or in the list. Push play to see the season.</p>
             <dl className="reading">
@@ -226,7 +231,10 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
       </div>
 
       <Timeline className="slider" id="window" name="Window" count={manifest.windows.length} index={windowIndex}
-        onIndex={setWindow} label={range(win)} play={play} notes={notes} ticks={ticks} />
+        onIndex={setWindow} label={range(win)} play={play} notes={notes} ticks={ticks}>
+        <SoundTimeline index={windowIndex} play={play} frames={means.map((mean, i) => ({ low: mean.note?.at ?? null, high: lgu?.soilMoisture[i] == null ? null : soilHeight(lgu.soilMoisture[i]!) }))}
+          description="Wetter soil has a higher pitch. The low voice is the mean of the towns; the high voice is the selected town." />
+      </Timeline>
     </main>
   );
 }

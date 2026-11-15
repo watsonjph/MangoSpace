@@ -57,7 +57,7 @@ test("the map and the panel show a town with data and a town with no data in a w
       const layer = window.hubasMap!.queryRenderedFeatures({ layers: ["soil"] }).find((f) => f.id === id)?.layer;
       return layer?.type === "fill" ? String(layer.paint?.["fill-color"]) : undefined;
     }, psgc);
-  const grey = "rgba(75,90,94,1)"; // --no-data in globals.css
+  const grey = "rgba(93,110,114,1)"; // --no-data in globals.css
   await expect.poll(() => fill(MANDAUE)).toBe(grey);
   expect(await fill(BOGO)).not.toBe(grey);
   await page.waitForFunction(() => window.hubasMap!.loaded());

@@ -39,6 +39,7 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Rice parcels](./rice.md): the `/rice` page, the HV lines of the Ubay and Pilar parcels, and the radar image of each date.
 - [The score](./score.md): the `/score` page, the soil, dam and rice staffs and the rain on one date axis, one playhead, and a sound voice for each staff.
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
+- Screen copy: `e2e/screen-copy.spec.ts` checks a numbered finding on every view, the data behind the fixed soil finding, and readable PAGASA dates. Canonical terms are in `docs/screen-terms.md`.
 
 ## Not built yet
 

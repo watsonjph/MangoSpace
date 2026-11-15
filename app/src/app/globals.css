@@ -9,12 +9,18 @@
   --water: #4cc3cf;
   --mid: #dcd9b4;
   --dry: #e6a94e;
-  --no-data: #4b5a5e;
+  --no-data: #5d6e72;
   --violet: #b6a1ea;
   --stable: #f2b33d;
   --display: var(--font-display), "Segoe UI", system-ui, sans-serif;
   --mono: var(--font-mono), "Cascadia Code", Consolas, monospace;
   --bar: 56px;
+  --rain: #8fb4d9;
+  --chart-font: 10px var(--mono);
+  --chart-line-width: 2;
+  --chart-grid-width: 1;
+  --chart-point-radius: 3px;
+  --chart-selected-radius: 6px;
 }
 
 * { box-sizing: border-box; }
@@ -30,8 +36,6 @@ body {
 }
 
 a { color: var(--water); text-underline-offset: 3px; }
-.opening-question { margin: 6px 0; font-size: 13px; }
-.opening-link { display: block; margin-top: 8px; font-size: 12px; pointer-events: auto; }
 .story-page { max-width: 1080px; margin: auto; padding: 32px 24px 64px; }
 .story-page h1 { max-width: 850px; font-size: clamp(34px, 5vw, 64px); line-height: 1.05; }
 .story-intro { max-width: 780px; font-size: 22px; line-height: 1.5; }
@@ -39,6 +43,13 @@ a { color: var(--water); text-underline-offset: 3px; }
 .story-steps li { border-top: 1px solid var(--line); padding-top: 20px; }
 .story-steps h2 { max-width: 900px; font-size: 26px; }
 .story-steps p, .story-page section { max-width: 780px; line-height: 1.6; }
+.timeline-sound { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 260px; text-align: left; }
+.timeline-sound label { display: flex; gap: 8px; align-items: center; font: 11px var(--mono); }
+.timeline-sound input[type="range"] { width: 100px; height: 24px; appearance: auto; }
+.timeline-sound input[type="range"]::-webkit-slider-runnable-track { height: auto; }
+.timeline-sound input[type="range"]::-webkit-slider-thumb { appearance: auto; height: auto; width: auto; }
+.timeline-sound p { flex-basis: 100%; font-size: 11px; line-height: 1.4; margin: 0; color: var(--muted); }
+.timeline .controls { flex-wrap: wrap; align-items: flex-start; justify-content: flex-end; }
 a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -69,7 +80,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
   color: var(--muted);
   white-space: nowrap;
 }
-.topbar nav a::before { content: counter(step, decimal-leading-zero); color: var(--line); }
+.topbar nav a::before { content: counter(step, decimal-leading-zero); color: var(--muted); }
 .topbar nav a:hover { color: var(--ink); }
 .topbar nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--water); }
 .topbar nav a[aria-current="page"]::before { color: var(--water); }
@@ -98,6 +109,8 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 
 .hud { position: absolute; z-index: 2; top: 16px; left: 16px; width: 264px; display: grid; gap: 12px; pointer-events: none; }
 .tag, .legend { margin: 0; padding: 12px 14px; background: rgb(16 27 30 / 88%); border: 1px solid var(--line); border-radius: 4px; backdrop-filter: blur(6px); }
+.tag p { margin: 8px 0; font-size: 13px; }
+.tag a { display: inline-block; margin-top: 8px; font-size: 11px; pointer-events: auto; }
 .tag { display: grid; gap: 4px; }
 .tag strong { font-size: 19px; font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
 .tag span { font: 11px var(--mono); color: var(--muted); }
@@ -163,13 +176,21 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 
 .soil-line { margin: 0; }
 .soil-line svg { display: block; width: 100%; height: auto; }
-.soil-line .grid { stroke: var(--line); stroke-width: 1; }
-.soil-line .guide { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.55; }
-.soil-line .line { fill: none; stroke: var(--water); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .grid { stroke: var(--line); stroke-width: var(--chart-grid-width); }
+.chart .guide { stroke: var(--ink); stroke-width: var(--chart-grid-width); stroke-dasharray: 3 3; opacity: 0.55; }
+.chart .line { stroke-width: var(--chart-line-width); stroke-linejoin: round; stroke-linecap: round; }
+.soil-line .line { fill: none; stroke: var(--water); }
 .soil-line circle { fill: var(--water); stroke: var(--surface); stroke-width: 1.5; }
 .soil-line circle.low { fill: var(--surface); stroke: var(--muted); stroke-width: 2; }
-.soil-line circle.selected { stroke: var(--ink); stroke-width: 2; }
-.soil-line .tick { font: 10px var(--mono); fill: var(--muted); }
+.chart circle.selected { stroke: var(--ink); stroke-width: var(--chart-line-width); }
+.chart circle { r: var(--chart-point-radius); stroke: var(--surface); stroke-width: 1.5; }
+.chart circle.selected { r: var(--chart-selected-radius); }
+.chart text, .soil-line .tick { font: var(--chart-font); fill: var(--muted); }
+.chart .line-label { fill: var(--water); }
+.chart .finding text { fill: var(--ink); }
+.chart .finding line { stroke: var(--muted); stroke-width: var(--chart-grid-width); }
+.chart-readout { display: block; min-height: 28px; font: 11px/1.5 var(--mono); color: var(--ink); }
+.chart svg { touch-action: pan-y; }
 .soil-line figcaption, .season-sound p { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 
 /* The timeline is a music staff. The notes are the values, and the thumb of the range input is the playhead. */
@@ -203,6 +224,7 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 }
 .track .staff i.weak { background: var(--surface); border: 1.5px solid var(--muted); }
 .track .staff i.now { background: var(--water); border-color: var(--water); scale: 1.5; }
+.track .staff .period-break { position: absolute; top: 0; bottom: 0; width: 4px; transform: translateX(-50%); background: var(--surface); }
 .track .ticks span { position: absolute; bottom: 0; transform: translateX(-50%); font: 10px var(--mono); color: var(--muted); }
 
 input[type="range"] { width: 100%; height: 44px; margin: 0; appearance: none; background: transparent; cursor: pointer; }
@@ -256,7 +278,7 @@ input[type="range"]::-moz-range-thumb {
 .dam-note { max-width: 68ch; color: var(--muted); font-size: 13px; margin: 8px 0; }
 .dam-chart { overflow: hidden; }
 .dam-chart svg { display: block; }
-.dam-chart text { font: 10px var(--mono); fill: var(--muted); }
+.dam-chart text { font: var(--chart-font); fill: var(--muted); }
 .dam-key { display: flex; flex-wrap: wrap; gap: 4px 16px; list-style: none; margin: 8px 0 0; padding: 0; font: 11px var(--mono); color: var(--muted); }
 .dam-key span { display: inline-block; width: 22px; margin-right: 6px; vertical-align: middle; }
 .dam-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0; margin: 0 0 8px; border-top: 1px solid var(--line); }
@@ -327,9 +349,14 @@ input[type="range"]::-moz-range-thumb {
   .map { grid-row: 1; height: 56dvh; min-height: 360px; }
   .hud { top: 12px; left: 12px; width: min(264px, calc(100% - 24px)); gap: 8px; }
   .tag strong { font-size: 16px; }
+  .tag p { margin: 4px 0 0; font-size: 12px; }
+  /* The top bar links Method, and the map needs the room. */
+  .tag span, .tag a { display: none; }
+  /* The top bar has no link to /start, so the opening link stays. */
+  .tag .opening-link { display: inline-block; }
   .panel { position: static; grid-row: 2; width: auto; max-height: none; overflow: visible; margin: 12px 12px 0; }
   .explorer > .timeline { grid-row: 3; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
-  .explorer > .timeline .readout { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; align-items: end; }
+  .explorer > .timeline .readout { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); justify-items: start; align-items: end; }
   .explorer > .timeline .readout label { justify-items: start; }
 }
 
@@ -338,6 +365,11 @@ input[type="range"]::-moz-range-thumb {
   .topbar { gap: 4px; padding: 0 8px; }
   .brand { font-size: 18px; }
   .topbar nav a { padding: 0 5px; font-size: 10px; letter-spacing: 0; }
+}
+
+/* At 360 px and less the date and the speed and loop buttons do not fit on one row. */
+@media (max-width: 360px) {
+  .explorer > .timeline .readout { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

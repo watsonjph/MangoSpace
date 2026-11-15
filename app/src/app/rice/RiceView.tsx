@@ -26,8 +26,9 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const target = parcels[parcel];
   const { dates, images } = target.nisar;
   const index = Math.min(picked ?? dates.length - 1, dates.length - 1);
+  const frameSrcs = images.map((image) => image[band]);
   const lines: Line[] = parcels.map((item, i) => ({
-    label: `${NAME[item.id]} parcel (NISAR HV)`,
+    label: `${NAME[item.id]}, NISAR HV`,
     color: COLOR[i],
     points: item.nisar.dates.map((date, j): [number, number] => [Date.parse(date), item.nisar.meanHvDb![j]]),
   }));
@@ -37,7 +38,8 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   return (
     <main className="dam-page rice-page" data-ready={ready}>
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
-      <h1>The radar signal of both rice parcels rose to its highest in September or October, then fell on 5 November.</h1>
+      <h1 data-testid="view-finding">The radar signal of 2 rice parcels rose to its highest in September or October, then fell on 5 Nov 2026.</h1>
+      <p className="dam-note">No field observations confirm the crop or its growth stage. <MapLink href="/method">Read the method and limits</MapLink></p>
       <dl className="dam-stats">
         {parcels.map((item, i) => {
           const values = item.nisar.meanHvDb!;
@@ -56,7 +58,8 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
       {/* The selected parcel is first, so a click on the chart and the marker follow its line. */}
       <Chart lines={[lines[parcel], ...lines.filter((_, i) => i !== parcel)]}
         domain={[Math.floor(Math.min(...all) / 3) * 3, Math.ceil(Math.max(...all) / 3) * 3]}
-        format={(value) => `${value.toFixed(0).replace("-", "−")} dB`} rain={rain} selected={index} onSelect={setPicked}
+        format={(value) => value.toFixed(1).replace("-", "−")} rain={rain} selected={index} onSelect={setPicked}
+        unit="dB" finding={{ time: Date.parse(dates.at(-1)!), text: `Fall on ${fmt(dates.at(-1)!)}` }}
         label="Mean HV radar signal of the Ubay and Pilar rice parcels on each radar date of 2026" />
       <p className="dam-note">Higher HV can come from more plant material or a rougher surface. Water and other vegetation also affect it.</p>
 
@@ -72,7 +75,9 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand}
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand} frames={frameSrcs}
+            sounds={target.nisar.meanHvDb!.map((hv, i) => ({ low: note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]).at, rain: target.rainMm[i] }))}
+            pitch="A higher pitch means a higher HV radar signal. Soft high notes show rain."
             notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />
           <dl className="dam-stats">
             <div><dt>Mean HV signal</dt><dd data-testid="rice-hv">{db(target.nisar.meanHvDb![index])}</dd></div>
