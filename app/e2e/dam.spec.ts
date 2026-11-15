@@ -45,7 +45,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     // The slider starts on the latest date and runs through the past events first, then 2026.
     await expect(page.getByTestId("dam-area")).toHaveText(`${areas.at(-1)!.toFixed(2)} km²`);
     for (const [i, frame] of past.entries()) {
-      await page.getByRole("slider").fill(String(i));
+      await page.locator("#date").fill(String(i));
       await expect(page.locator(".dam-picker output")).toHaveText(day(frame.date));
       await expect(radar).toHaveAttribute("src", `/data/${frame.image}`);
       await expect.poll(loaded).toBe(440);
@@ -56,7 +56,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await expect(page.getByTestId("dam-area")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "HV" })).toHaveCount(0);
     for (const [i, date] of dates.entries()) {
-      await page.getByRole("slider").fill(String(past.length + i));
+      await page.locator("#date").fill(String(past.length + i));
       await expect(page.locator(".dam-picker output")).toHaveText(day(date));
       await expect(page.getByTestId("dam-area")).toHaveText(`${areas[i].toFixed(2)} km²`);
       await expect(page.getByTestId("dam-rain")).toHaveText(`${dam.rainMm[i].toFixed(0)} mm`);

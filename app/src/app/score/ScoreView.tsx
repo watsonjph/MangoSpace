@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { IsoDate } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { playTone, type Voice } from "../soil-tone";
+import { playTone, type Voice } from "../season-instrument";
 import { fmt, useHydrated } from "../TargetParts";
 import Timeline, { place, usePlayback } from "../Timeline";
 

@@ -50,7 +50,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
       expect((await chart.locator("polyline").first().getAttribute("points"))!.split(" ")).toHaveLength(dates.length);
       await expect(chart.getByTestId("rain-bar")).toHaveCount(dates.length);
       for (const [i, date] of dates.entries()) {
-        await page.getByRole("slider").fill(String(i));
+        await page.locator("#date").fill(String(i));
         await expect(page.locator(".dam-picker output")).toHaveText(day(date));
         await expect(page.getByTestId("rice-hv")).toHaveText(db(hv[i]));
         await expect(page.getByTestId("rice-rain")).toHaveText(`${parcel.rainMm[i].toFixed(0)} mm`);
@@ -68,7 +68,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await chart.locator("svg").click({ position: { x: 46, y: box.height / 2 } });
     await expect(page.getByTestId("rice-hv")).toHaveText(db(parcels[1].nisar.meanHvDb![0]));
     await page.getByRole("button", { name: "Ubay" }).click();
-    await page.getByRole("slider").fill(String(parcels[0].nisar.dates.length - 2));
+    await page.locator("#date").fill(String(parcels[0].nisar.dates.length - 2));
 
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await saveProof(page, `sc-136-rice-${viewport.name}.png`);
