@@ -99,8 +99,17 @@ async function up(o) {
   const child = spawn(process.execPath, [fileURLToPath(import.meta.url), "serve", "--port", String(port)], { detached: true, stdio: ["ignore", log, log], windowsHide: true });
   child.unref();
   const url = `http://127.0.0.1:${port}`;
+  const logTail = () => existsSync(path.join(VERIFY, "server.log"))
+    ? readFileSync(path.join(VERIFY, "server.log"), "utf8").trim().split("\n").slice(-12).join("\n")
+    : "No server log was written.";
   for (let i = 0; i < 50; i++) {
+    if (child.exitCode !== null || child.signalCode !== null || !alive(child.pid)) {
+      fail("The server process exited before it became ready.", `The port may have been taken during the build or startup. Pick another with --port.\n${logTail()}`);
+    }
     if ((await get(`${url}/data/manifest.json`)).status === 200) {
+      if (child.exitCode !== null || child.signalCode !== null || !alive(child.pid)) {
+        fail("The server process exited while checking readiness.", `The port may have been taken during the build or startup. Pick another with --port.\n${logTail()}`);
+      }
       writeFileSync(STATE, JSON.stringify({ pid: child.pid, port, url, startedAt: new Date().toISOString() }, null, 2));
       return out({ ok: true, url, pid: child.pid, next: "node scripts/control-hubas.mjs doctor" });
     }
@@ -116,9 +125,10 @@ async function doctor() {
   const add = (name, ok, detail) => checks.push({ name, ok, detail });
   add("state", !!s, s ? STATE : 'No server started by "up". Run: node scripts/control-hubas.mjs up');
   if (s) {
-    add("process", alive(s.pid), `pid ${s.pid}`);
+    const processAlive = alive(s.pid);
+    add("process", processAlive, `pid ${s.pid}`);
     const page = await get(`${s.url}/`);
-    add("page", page.status === 200 && page.text.includes("Hubas"), `${s.url}/ → ${page.status}`);
+    add("page", processAlive && page.status === 200 && page.text.includes("Hubas"), processAlive ? `${s.url}/ → ${page.status}` : `pid ${s.pid} is not running; a response from this port cannot be trusted`);
     const m = await get(`${s.url}/data/manifest.json`);
     let manifest = null;
     try { manifest = JSON.parse(m.text); } catch { /* reported below */ }
