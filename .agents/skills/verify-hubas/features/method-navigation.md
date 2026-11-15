@@ -7,7 +7,7 @@ The top bar switches the map between Soil water and Rank and links the Dam, Rice
 - `navigation` opens the Method page and marks the current page.
 - `map-view` switches between Soil water and Rank while keeping the selected town and window.
 - `method` explains the data, coverage, rank preview and limits.
-- `sources` credits NISAR SME2 soil water and GCOV dam and rice images (ASF), the NAMRIA/PSA town borders, the PSA 2024 census, the PAGASA outlook and the base map licences. The soil water section also compares NISAR with SMAP as a check.
+- `sources` credits NISAR SME2 and GCOV (ASF), GPM IMERG v07 rain on the dam/rice charts, Sentinel-1 dam history and packaged rice images, SMAP's soil-water check, NAMRIA/PSA town borders, the PSA 2024 census, PAGASA and the base map. GPM, Copernicus and NSIDC policy/citation links identify the terms for each added source.
 - `attribution` keeps the map credits visible on desktop and phone: MapLibre, OpenFreeMap, OpenMapTiles and OpenStreetMap. The last three come from the base map, so with `--offline-basemap yes` only MapLibre shows.
 
 ## How to get to it (user POV)

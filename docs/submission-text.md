@@ -1,6 +1,6 @@
 # Hubas project-page copy
 
-Story: [sc-175](https://app.shortcut.com/spacemangoes/story/175). Draft for team review, based on main at 351abf7 and the saved MangoSpace build plan. Do not submit until the pending links and final-build checks below are resolved.
+Story: [sc-175](https://app.shortcut.com/spacemangoes/story/175). Updated 15 November 2026 against main at 59d3fb3 and the findings in sc-450. Draft for team review. Confirm the final deployed build and pending links before submission.
 
 ## Project name
 
@@ -8,7 +8,7 @@ Hubas
 
 ## High-level project summary
 
-Hubas is a radar-data explorer for Cebu and Bohol. It maps NISAR soil water for 101 towns and cities in 12-day windows, shows how much of each town has a valid reading, and gives a rank preview of the towns to look at first. A Method page explains the measurements, sources and limits. Our goal is to help people decide where to look first as they consider water conditions. The NISAR soil water data is provisional. Hubas makes no forecast of its own.
+Hubas follows the wet season before El Niño in Cebu and Bohol through three parts: the soil, the dam and the rice. NISAR observations show a fall in mean soil water at the end of July, a steady Malinao Dam water area in 2026, and a rise then fall in the radar signal of two rice parcels. Maps, radar images and charts let visitors inspect these changes alongside rain and past dry events. These observations provide a baseline for the dry months ahead. Hubas makes no forecast of its own.
 
 ## Detailed project description
 
@@ -16,13 +16,21 @@ Hubas is a radar-data explorer for Cebu and Bohol. It maps NISAR soil water for 
 
 Local governments, water districts, farmers, teachers and the public need a way to read satellite water observations with their limits. Hubas responds to Dancing with the SARs by preparing NISAR radar measurements for a web experience focused on Cebu and Bohol.
 
-A visitor picks a town and a 12-day window and sees the town's soil water in m³/m³, the share of the town with data (“Pixels with data”), its rank preview and the official PAGASA outlook for its province. Gray means less than half the town has data in that window, not dry ground. A town is “Not ranked” when less than half of it has data. The rank preview ranks 99 of 101 towns and is not a drought risk score.
+A visitor follows soil water on the map, inspects Malinao Dam's radar images and water-area history, and compares the HV radar signals of the Ubay and Pilar parcels. Rain totals give context on the dam and rice charts. The town panel shows soil water in m³/m³, coverage, a rank preview and the official PAGASA outlook. Gray means less than half the town has readings, not dry ground. The rank preview covers 99 of 101 towns; SMAP does not validate its order, and it is not the project's main finding.
 
 ### How it works
 
 An offline Python pipeline prepares static JSON and PNG files. A TypeScript and Next.js app reads those packaged files, with MapLibre GL JS for the map. NASA services are not called from the visitor's browser.
 
-The repository contains NISAR HH/HV radar images and water-area measurements for Malinao Dam, and HV measurements for selected rice-field parcels. It also contains Sentinel-1 images and dam-water history for 2015–16 and 2023–24. These packaged datasets are not yet available as dam, rice or history views. The rank preview gives equal weight to how dry a town is now, how much its soil water fell over the three windows before, and its 2024 population. It means “Look at these towns first.” It is not a drought risk score or a prediction.
+The dam view shows NISAR HH/HV images, water area, GPM rain and Sentinel-1 history from 2015–16 and 2023–24. Dashed historical scenarios illustrate what a repeat of a past relative change would look like; they are not forecasts. The rice view shows NISAR images, the HV signal of the Ubay and Pilar parcels, and GPM rain. Sentinel-1 rice comparison images are packaged, but the side-by-side L-band/C-band view is still pending sc-193.
+
+### Three findings
+
+- **Soil.** The mean of the towns fell from about 0.35 to 0.25 m³/m³ at the end of July and did not return to its earlier level. SMAP agrees on the timing of the seasonal change (correlation 0.70).
+- **Dam.** Malinao Dam's measured water area stayed between about 0.76 and 0.82 km² in 2026. In the Sentinel-1 histories, the area fell by about 52% in March 2016 and 19% in March 2024, relative to each event's starting area. These are changes within each sensor's series, not absolute area comparisons between sensors.
+- **Rice.** The HV signal of the two parcels rose by about 5–6 dB from June to its September or October peak, then fell by about 3–4 dB on 5 November. This is a measured radar change; no field observation confirms planting dates or growth stages.
+
+The planned musical experience treats each radar pass as a note. The sound redo (sc-499), shared timeline (sc-491) and combined three-part score (sc-572) are not claimed as shipped in this draft. Update this paragraph only after they are merged and verified.
 
 ### What the observations can tell us
 
@@ -38,14 +46,14 @@ We want people to inspect the measurements and their coverage before deciding wh
 
 - [NISAR SME2 and GCOV](https://nisar-docs.asf.alaska.edu/), NASA/ISRO, distributed by ASF. SME2 supplies the town soil water shown on the map and used by the rank preview. GCOV supplies the packaged Malinao Dam and rice-parcel HH/HV images and measurements. Cite the collection versions and granules actually included in the final artifact.
 - [ASF HyP3](https://hyp3-docs.asf.alaska.edu/) and [OPERA RTC-S1](https://www.jpl.nasa.gov/go/opera/products/rtc-product/) support the packaged Sentinel-1 dam history. The radar observations are Copernicus Sentinel-1 data; processing products do not make the original observations NISAR data.
-- [SMAP `SPL3SMP_E`](https://nsidc.org/data/spl3smp_e), NASA, enhanced daily soil water on a 9 km grid. Used only to check the NISAR soil water; the result is on the Method page.
-- [GPM IMERG `GPM_3IMERGDL` v07](https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDL_07/summary), NASA, daily Late Run rain. Supplies the 12-day rain total before each Malinao Dam and rice date. Packaged in the data, but no page shows or credits it yet. Per the [submission checklist](submission-checklist.md), drop this entry from the final page unless the dam view ships or the Method page credits GPM.
+- [SMAP `SPL3SMP_E`](https://nsidc.org/data/spl3smp_e), NASA NSIDC DAAC, enhanced daily soil water on a 9 km grid. Used only to check NISAR soil water; the result is on Method. Free to access; follow the [NSIDC citation policy](https://nsidc.org/data/data-programs/nsidc-daac/citing-nsidc-daac) and record the granule version actually used before publication.
+- [GPM IMERG `GPM_3IMERGDL` v07](https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDL_07/summary), NASA GES DISC, daily Late Run rain. Supplies the 12-day rain totals shown on the dam and rice charts. Freely available under the [GPM data policy](https://gpm.nasa.gov/data/policy); acknowledge NASA and the dataset producers.
 
 ## Space agency partner data and other references
 
 | Resource | Use |
 | --- | --- |
-| [Copernicus Sentinel-1](https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-1) | Packaged dam history and rice L-band/C-band comparison; cite the final processed products. |
+| [Copernicus Sentinel-1](https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-missions/sentinel-1) | Dam history shown in the app and packaged rice comparison images. Contains modified Copernicus Sentinel data 2015–2016, 2023–2024 and 2026. Free, full and open use under the [Copernicus Sentinel legal notice](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice). |
 | [PAGASA advisory](https://pubfiles.pagasa.dost.gov.ph/pagasaweb/files/climate/monthlyclimateassessment/11052026_MCAO_EN_Advisory_6.pdf) | November 2026 rainfall outlook quoted in the town panel. |
 | [NAMRIA/PSA/OCHA boundaries](https://data.humdata.org/dataset/cod-ab-phl), via [philippines-json-maps v1.1.1](https://github.com/faeldon/philippines-json-maps/tree/v1.1.1) | Town borders; underlying CC BY 3.0 IGO, conversion MIT. The shipped app does not use geoBoundaries. |
 | [PSA PSGC and POPCEN 2024](https://psa.gov.ph/classification/psgc) | Town codes and population; credit PSA. |
@@ -69,4 +77,4 @@ We used Claude and OpenAI Codex to assist with code, tests, documentation and su
 
 ## Claims check against the saved plan
 
-The plan's “we say” column permits observed soil-water change, “look at these towns first,” an attributed PAGASA outlook, conditional historical scenarios, possible causes of smaller water area, and provisional-data limits. This draft follows those claim boundaries. It claims measured town soil water and a rank preview, both marked provisional, with the SMAP check that limits the rank. It does not claim dam, rice or history views, a drought prediction or risk score, a rainfall forecast of our own, or a proven cause of water-area change. No scenario is claimed because the scenario feature is not on main.
+The three findings above follow sc-450's revised message. Dam, rice, history and conditional scenario views are on main. The town rank remains a provisional preview: SMAP does not validate its order. This draft does not claim drought prediction, a risk score, a proven physical cause, confirmed crop stages, or an implemented combined musical score. A second team member must reconcile these sentences with the plan's final “we say” column and the deployed build before publication.

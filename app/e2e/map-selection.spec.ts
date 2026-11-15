@@ -20,7 +20,7 @@ for (const width of [1280, 375]) {
     await page.goto("/");
     const mapReady = async () => {
       await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
-      await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus") && window.hubasMap.loaded());
+      await page.waitForFunction(() => window.hubasMap?.getSource("lgus") && window.hubasMap.isSourceLoaded("lgus") && window.hubasMap.loaded());
     };
     const selection = async () => {
       await mapReady();

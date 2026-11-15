@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { Lgu, Manifest } from "../lib/data";
 import { useOfflineBasemap } from "./offline-basemap";
+import { waitForLgusSource } from "./wait-for-lgus-source";
 import { saveProof } from "./proof";
 
 const BOGO = "0702211000";
@@ -42,7 +43,7 @@ test("the map and the panel show a town with data and a town with no data in a w
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
-  await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus"));
+  await waitForLgusSource(page);
 
   await page.getByLabel("Town").selectOption(BOGO);
   await expect(page.getByTestId("moisture")).toHaveText(`${bogo.soilMoisture[0]!.toFixed(3)} m³/m³`);

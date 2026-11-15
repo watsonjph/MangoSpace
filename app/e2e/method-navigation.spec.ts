@@ -42,7 +42,16 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
     for (const text of ["NASA and ISRO", "NAMRIA", "CC BY 3.0 IGO", "2024 Census", "PSGC 3Q 2026", "DOST-PAGASA", "Open Database Licence"]) {
       await expect(sources).toContainText(text);
     }
-    expect(await sources.getByRole("link").count()).toBeGreaterThan(8);
+    for (const text of ["GPM_3IMERGDL version 07", "dam and rice charts", "2015–16 and 2023–24 history", "Contains modified Copernicus Sentinel data", "SPL3SMP_E", "not to confirm the town rank"]) {
+      await expect(sources).toContainText(text);
+    }
+    for (const [name, href] of [
+      ["GPM data policy and citation", "https://gpm.nasa.gov/data/policy"],
+      ["Copernicus Sentinel legal notice", "https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice"],
+      ["SMAP dataset and citation", "https://nsidc.org/data/spl3smp_e"],
+    ]) {
+      await expect(sources.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: test.info().outputPath(`method-${viewport.width}.png`), fullPage: true });
     await page.reload();
