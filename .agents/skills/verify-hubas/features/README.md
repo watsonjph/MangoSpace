@@ -15,7 +15,7 @@ This directory is the maintained source for verifying what a Hubas user can see 
 - Each `drive` starts from a fresh page load: no town selected, window 0.
 - Use the labels `Town` and `Window` and the map layer `soil`. Do not use screen coordinates.
 - Treat quoted names and IDs as literal.
-- The app has no saved state, so no cleanup of data is needed. Run `down` at the end.
+- Town and window selections are stored in the URL; a fresh `/` starts with no selection. No local data cleanup is needed. Run `down` at the end.
 
 ## Proof and skip reporting
 
