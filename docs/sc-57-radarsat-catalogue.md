@@ -8,7 +8,7 @@
 - Collection: `Radarsat-1-FRED` (also checked `Radarsat-1-Raw`)
 - Area: bbox `123.2,9.4,124.7,11.4` (WGS 84), covering Cebu and Bohol
 - Dates: 1 Jan 1997 through 31 Dec 1998 (UTC)
-- Search result: 42 FRED catalogue records; records sharing a segment ID represent parts of the same acquisition. The list below contains the 21 unique segment IDs whose catalog footprints intersect the project's Cebu/Bohol town polygons.
+- Search result: 42 FRED catalogue records; records sharing a segment ID represent parts of the same acquisition. The list below contains 22 unique segment IDs whose catalogue footprints intersected the town polygons used at the time (see Limits). The first summary of this search said 21; the table has 22 distinct segment and dataset IDs.
 - Licence: the EODMS collection metadata identifies the catalogue as `OGL-Canada-2.0`.
 
 ## Candidate scenes
@@ -44,6 +44,6 @@ Use the [EODMS web search](https://www.eodms-sgdot.nrcan-rncan.gc.ca/search) wit
 
 ## Limits
 
-The match against town polygons uses the repository's `lgus.geojson`, whose features are marked as mock data. It is a screening result, not a boundary-accurate validation of every scene. Re-check candidate footprints against authoritative Cebu and Bohol boundaries before selecting an acquisition. This catalogue check does not download or process the scenes.
+The match against town polygons used the 8 mock towns that `app/public/data/lgus.geojson` held before sc-66. That file now holds the 101 real Cebu and Bohol towns. The mock towns were squares that covered a small part of the two islands, and six of the eight reach outside the real towns, mostly over the sea. So the list can miss scenes that cross only real towns, and it can hold scenes that touch only the part of a square outside the real towns. Re-run the footprint match against the current `lgus.geojson` before selecting an acquisition. On 2026-11-15 the EODMS STAC API returned HTTP 503, so the 42-record count and the match could not be re-checked. This catalogue check does not download or process the scenes.
 
 CSA describes RADARSAT-1 archive access through EODMS and AWS on its [data access page](https://www.csa-asc.gc.ca/eng/satellites/radarsat1/data-access.asp).
