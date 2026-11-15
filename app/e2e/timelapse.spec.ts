@@ -13,6 +13,8 @@ for (const route of ["dam", "rice"]) {
     const targets: Target[] = await (await request.get("/data/targets.json")).json();
     const target = targets.find(item => item.id === (route === "dam" ? "malinao-dam" : "ubay-rice"))!;
     const images = [...(route === "dam" ? target.history!.flatMap(event => event.images) : []), ...target.nisar.images.map(image => image.hh)].map(src => `/data/${src}`);
+    // Each image takes longer than one 300 ms step, so play must wait for a frame to load instead of skipping it.
+    await page.route("**/data/targets/*.png", async (image) => { await new Promise((done) => setTimeout(done, 400)); await image.continue(); });
     await page.goto(`/${route}`);
     await expect(page.locator("main[data-ready=true]")).toBeVisible();
     const radar = page.getByTestId(`${route}-radar`).locator("img");
@@ -28,7 +30,7 @@ for (const route of ["dam", "rice"]) {
     });
     await page.getByRole("button", { name: "Play", exact: true }).click();
     await expect(page.getByRole("slider")).toHaveValue("0");
-    await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible({ timeout: 25_000 });
+    await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible({ timeout: 45_000 });
     await expect(page.getByRole("slider")).toHaveValue(String(images.length - 1));
     const loaded = await page.evaluate(() => (window as unknown as { loadedFrames: string[] }).loadedFrames);
     expect(loaded).toEqual(images);

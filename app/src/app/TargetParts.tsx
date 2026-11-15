@@ -111,12 +111,24 @@ const FRAME_MS = 300;
 // The height of a value on the timeline staff, inside the same range as its chart.
 export const note = (value: number, [low, high]: [number, number]): Note => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
 
-export function Picker({ label, max, index, setIndex, notes, periods, band, setBand, children }: {
-  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[];
+// frames: the image of each step. They load up front, and play waits on a frame until it has loaded, so no frame is skipped.
+export function Picker({ label, max, index, setIndex, notes, frames, periods, band, setBand, children }: {
+  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[]; frames: string[];
   band: Band; setBand?: (band: Band) => void; children?: ReactNode;
   periods?: { index: number; label: string }[];
 }) {
-  const play = usePlayback(max + 1, index, setIndex, FRAME_MS);
+  const [loaded, setLoaded] = useState<ReadonlySet<string>>(new Set());
+  // The views rebuild frames on each render, so the effect keys on the joined list.
+  const list = frames.join(" ");
+  useEffect(() => {
+    for (const src of list.split(" ")) {
+      const image = new Image();
+      // A frame that fails to load must not stop play.
+      image.onload = image.onerror = () => setLoaded((done) => new Set(done).add(src));
+      image.src = `/data/${src}`;
+    }
+  }, [list]);
+  const play = usePlayback(max + 1, index, setIndex, FRAME_MS, loaded.has(frames[index]));
   return (
     <div className="dam-picker">
       <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes}

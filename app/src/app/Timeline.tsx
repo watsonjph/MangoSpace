@@ -7,21 +7,22 @@ const SPEEDS = [1, 2, 0.5] as const;
 
 export type Playback = ReturnType<typeof usePlayback>;
 
-export function usePlayback(count: number, index: number, setIndex: (index: number) => void, stepMs = STEP_MS) {
+// ready: false holds the current step until it is ready, for example until its image has loaded.
+export function usePlayback(count: number, index: number, setIndex: (index: number) => void, stepMs = STEP_MS, ready = true) {
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
   const [loop, setLoop] = useState(false);
   const last = count - 1;
 
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || !ready) return;
     const timer = window.setTimeout(() => {
       if (index < last) setIndex(index + 1);
       else if (loop) setIndex(0);
       else setPlaying(false);
     }, stepMs / speed);
     return () => window.clearTimeout(timer);
-  }, [playing, index, last, loop, speed, stepMs, setIndex]);
+  }, [playing, ready, index, last, loop, speed, stepMs, setIndex]);
 
   useEffect(() => {
     const pauseWhenHidden = () => { if (document.hidden) setPlaying(false); };

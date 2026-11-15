@@ -69,6 +69,7 @@ export default function DamView({ dam }: { dam: Target }) {
     })),
     { label: "Now", frame: past.length + last },
   ];
+  const frameSrcs = [...past.map((item) => item.src), ...images.map((image) => image[band])];
   const periods = [
     ...events.map((event, i) => ({ label: event.event, index: events.slice(0, i).reduce((count, earlier) => count + earlier.dates.length, 0) })),
     { label: "2026", index: past.length },
@@ -109,7 +110,7 @@ export default function DamView({ dam }: { dam: Target }) {
           caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`} />
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
-            periods={periods}
+            periods={periods} frames={frameSrcs}
             band={band} setBand={old ? undefined : setBand}>
             {past.length > 0 && (
               <div role="group" aria-label="Go to">
