@@ -147,6 +147,11 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
   const moisture = lgu?.soilMoisture[windowIndex];
   const here = means[windowIndex];
   const reading = (value: number | null | undefined) => value == null ? "No data" : <>{value.toFixed(3)} <span>m³/m³</span></>;
+  const interpretation = {
+    seen: "The town mean fell from 0.324 m³/m³ in the 15 to 27 July window to 0.250 in the 27 July to 8 August window. It was 0.246 on 8 to 20 August, with wider coverage. Later means stayed below July's value.",
+    cause: "Less rain can let soil dry. The GPM cell near Pilar had 99.2 mm before 20 July, then 6.1 mm before 13 August. The low August total matches dry local conditions after the soil mean fell. It does not explain when or why the mean fell.",
+    limit: "One rain cell cannot explain both islands, and the first low mean uses 61 towns instead of 99, so this provisional change has no confirmed cause.",
+  };
 
   return (
     <main className="explorer">
@@ -227,6 +232,13 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
               <dd>{here.towns} of {lgus.length}</dd>
             </dl>
           </>}
+          <section className="interpretation" aria-labelledby="soil-interpretation">
+            <h2 id="soil-interpretation">What changed in late July</h2>
+            <p><strong>What we see.</strong> {interpretation.seen}</p>
+            <p><strong>What can cause it.</strong> {interpretation.cause}</p>
+            <p><strong>What we cannot tell.</strong> {interpretation.limit}</p>
+            <MapLink href="/method">Method and limits</MapLink>
+          </section>
         </aside>
       </div>
 

@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { Target } from "../lib/data";
 import { saveProof } from "./proof";
+import { expectColorComposite } from "./radar-color";
 
 const day = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
@@ -40,7 +41,8 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
 
     const chart = page.getByTestId("dam-chart");
     await expect(chart.locator("polyline")).toHaveCount(2);
-    const radar = page.getByTestId("rice-radar").locator("img");
+    const radarFigure = page.getByTestId("rice-radar");
+    const radar = radarFigure.locator("img");
     const loaded = () => radar.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0);
 
     for (const [name, parcel] of [["Ubay", parcels[0]], ["Pilar", parcels[1]]] as const) {
@@ -60,6 +62,11 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
       await page.getByRole("button", { name: "HV" }).click();
       await expect(radar).toHaveAttribute("src", `/data/${images.at(-1)!.hv}`);
       await expect.poll(loaded).toBe(true);
+      await page.getByRole("button", { name: "Color" }).click();
+      await expectColorComposite(radarFigure, images.at(-1)!);
+      await saveProof(page, `sc-463-rice-${name.toLowerCase()}-color-${viewport.name}.png`);
+      await page.getByRole("slider", { name: "Date" }).fill("0");
+      await expectColorComposite(radarFigure, images[0]);
       await page.getByRole("button", { name: "HH" }).click();
     }
 

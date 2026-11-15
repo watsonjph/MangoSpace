@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { type Band, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated } from "../TargetParts";
+import { type RadarDisplay, Chart, DRY, fmt, type Line, NOW, note, Picker, Radar, useHydrated } from "../TargetParts";
 
 const NAME: Record<string, string> = { "ubay-rice": "Ubay", "pilar-rice": "Pilar" };
 const COLOR = [NOW, DRY];
@@ -12,7 +12,7 @@ const db = (value: number) => `${value.toFixed(1).replace("-", "−")} dB`;
 export default function RiceView({ parcels }: { parcels: Target[] }) {
   const [parcel, setParcel] = useState(0);
   const [picked, setPicked] = useState<number>();
-  const [band, setBand] = useState<Band>("hh");
+  const [display, setDisplay] = useState<RadarDisplay>("hh");
   const ready = useHydrated();
 
   if (!parcels.length) return (
@@ -26,7 +26,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const target = parcels[parcel];
   const { dates, images } = target.nisar;
   const index = Math.min(picked ?? dates.length - 1, dates.length - 1);
-  const frameSrcs = images.map((image) => image[band]);
+  const frameSrcs = images.map((image) => display === "color" ? [image.hh, image.hv] : [image[display]]);
   const lines: Line[] = parcels.map((item, i) => ({
     label: `${NAME[item.id]}, NISAR HV`,
     color: COLOR[i],
@@ -34,6 +34,16 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   }));
   const all = lines.flatMap((line) => line.points.map(([, value]) => value));
   const rain = target.rainMm.length === dates.length ? dates.map((date, i): [number, number] => [Date.parse(date), target.rainMm[i]]) : undefined;
+  const interpretation = {
+    seen: parcels.map((item) => {
+      const values = item.nisar.meanHvDb!;
+      const high = values.indexOf(Math.max(...values));
+      const last = values.length - 1;
+      return `${NAME[item.id]} HV rose from ${db(values[0])} on ${fmt(item.nisar.dates[0])} to ${db(values[high])} on ${fmt(item.nisar.dates[high])}, then fell to ${db(values[last])} on ${fmt(item.nisar.dates[last])}.`;
+    }).join(" "),
+    cause: "The rising cross-polarized HV signal fits more plant material. Before 5 November, the GPM cells had 39.6 mm near Ubay and 46.4 mm near Pilar. These totals do not measure water in the parcels. A harvest or standing water could also lower HV.",
+    limit: "No field observations confirm the crop, planting date or growth stage of these parcels, and the signal alone cannot confirm a harvest or separate water, other plants, surface roughness, and radar noise.",
+  };
 
   return (
     <main className="dam-page rice-page" data-ready={ready}>
@@ -65,8 +75,13 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
 
       <h2>The radar image behind each point</h2>
       <div className="dam-image">
-        <Radar src={images[index][band]} images={images[index]} testId="rice-radar"
-          caption={`${NAME[target.id]} parcel, NISAR ${band.toUpperCase()}, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
+        {display === "color" ? (
+          <Radar testId="rice-radar" display="color" sources={images[index]}
+            caption={`${NAME[target.id]} parcel, NISAR HH/HV color composite, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
+        ) : (
+          <Radar testId="rice-radar" display={display} sources={images[index]}
+            caption={`${NAME[target.id]} parcel, NISAR ${display.toUpperCase()}, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
+        )}
         <div>
           <div className="dam-picker" role="group" aria-label="Parcel">
             <div>
@@ -75,7 +90,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand} frames={frameSrcs}
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} display={display} setDisplay={setDisplay} frames={frameSrcs}
             sounds={target.nisar.meanHvDb!.map((hv, i) => ({ low: note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]).at, rain: target.rainMm[i] }))}
             pitch="A higher pitch means a higher HV radar signal. Soft high notes show rain."
             notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />
@@ -86,11 +101,11 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
         </div>
       </div>
 
-      <section>
-        <h2>What this can and cannot tell</h2>
-        <p>A low signal that rises over weeks is consistent with a wet field gaining vegetation.
-          No field observations confirm the crop, planting date or growth stage of these parcels,
-          and the cause of the fall on the latest date is not known.</p>
+      <section className="interpretation" aria-labelledby="rice-interpretation">
+        <h2 id="rice-interpretation">Why the HV signal can change</h2>
+        <p><strong>What we see.</strong> {interpretation.seen}</p>
+        <p><strong>What can cause it.</strong> {interpretation.cause}</p>
+        <p><strong>What we cannot tell.</strong> {interpretation.limit}</p>
         <p className="dam-note">Each parcel is a small sample, not a whole town. Soil water, standing water,
           other plants and radar noise also change the signal. <MapLink href="/method">Method and limits</MapLink></p>
       </section>
