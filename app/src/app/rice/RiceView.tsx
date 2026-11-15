@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { type Band, Chart, fmt, type Line, NOW, Picker, Radar } from "../TargetParts";
+import { type Band, Chart, fmt, type Line, NOW, Picker, Radar, useHydrated } from "../TargetParts";
 
 const NAME: Record<string, string> = { "ubay-rice": "Ubay", "pilar-rice": "Pilar" };
 const COLOR = [NOW, "#b07a1f"];
@@ -13,9 +13,10 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const [parcel, setParcel] = useState(0);
   const [picked, setPicked] = useState<number>();
   const [band, setBand] = useState<Band>("hh");
+  const ready = useHydrated();
 
   if (!parcels.length) return (
-    <main className="dam-page">
+    <main className="dam-page" data-ready={ready}>
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
       <h1>Rice parcels</h1>
       <p data-testid="rice-empty">No radar signal has been measured for the rice parcels yet.</p>
@@ -34,7 +35,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   const rain = target.rainMm.length === dates.length ? dates.map((date, i): [number, number] => [Date.parse(date), target.rainMm[i]]) : undefined;
 
   return (
-    <main className="dam-page rice-page">
+    <main className="dam-page rice-page" data-ready={ready}>
       <p className="eyebrow">Rice parcels · Ubay and Pilar, Bohol</p>
       <h1>Both samples reached their highest measured HV in September or October, then were lower on 5 November.</h1>
       <dl className="dam-stats">

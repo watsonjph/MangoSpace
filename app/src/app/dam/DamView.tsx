@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
-import { type Band, Chart, fmt, type Line, NOW, Picker, Radar } from "../TargetParts";
+import { type Band, Chart, fmt, type Line, NOW, Picker, Radar, useHydrated } from "../TargetParts";
 
 const EVENT_COLOR: Record<string, string> = { "2015–16": "#b07a1f", "2023–24": "#6b5b95" };
 const pct = (value: number, base: number) => (value / base - 1) * 100;
@@ -29,8 +29,7 @@ export default function DamView({ dam }: { dam: Target }) {
   const areas = dam.nisar.waterAreaKm2 ?? [];
   const last = dates.length - 1;
   const [picked, setPicked] = useState<number>();
-  // True only after hydration, so tests know the slider and buttons respond.
-  const ready = useSyncExternalStore(() => () => {}, () => true, () => false);
+  const ready = useHydrated();
   const [band, setBand] = useState<Band>("hh");
 
   if (!areas.length) return (

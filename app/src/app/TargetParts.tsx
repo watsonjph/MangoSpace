@@ -1,11 +1,14 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
 
 export const NOW = "#0d6f7d";
 const RAIN = "#8fb4d9";
+
+// True only after hydration, so tests know the slider and buttons respond.
+export const useHydrated = () => useSyncExternalStore(() => () => {}, () => true, () => false);
 
 export const fmt = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });

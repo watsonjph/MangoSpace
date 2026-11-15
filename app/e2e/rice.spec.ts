@@ -21,6 +21,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Rice" }).click();
     await expect(page).toHaveURL(/\/rice\/?$/);
     await expect(page.getByRole("link", { name: "Rice" })).toHaveAttribute("aria-current", "page");
+    await expect(page.locator(".rice-page[data-ready=true]")).toBeVisible();
     await expect(page.getByTestId("rice-parcel")).toHaveCount(2);
     await expect(page.getByRole("main")).toContainText("No field observations confirm the crop, planting date or growth stage");
 
