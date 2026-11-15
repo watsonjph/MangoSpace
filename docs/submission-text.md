@@ -70,7 +70,7 @@ We used Claude and OpenAI Codex to assist with code, tests, documentation and su
 ## Links and final checks
 
 - Repository: [watsonjph/MangoSpace](https://github.com/watsonjph/MangoSpace).
-- Live app: **pending confirmed deployment URL** (sc-31/sc-260/sc-205).
+- Live app: [hubas.vercel.app](https://hubas.vercel.app/). Vercel deploys it from `main`. No login.
 - Public demo: **pending sc-201**. Use the required short video or slide deck; the repo link does not replace the demo.
 - Team/project page: **pending URL**. No project-page publication has been performed.
 - Before submission: replace current-build caveats only when the corresponding feature/data is merged, deployed and verified; check every linked source/licence; have a second member read the complete page under sc-237.
