@@ -30,6 +30,11 @@ export default function MethodPage() {
           The map colour scale runs from 0.10 (drier) to 0.45 (wetter). Gray means no good pixels.</p>
         <p>“Good pixels” in the town panel means the share of a town with a valid reading in that window.
           It is coverage, not an accuracy score. A town is “not ranked” if less than half of it has data.</p>
+        <p data-testid="smap-check">We compared the NISAR soil water with NASA’s SMAP satellite for the same
+          12-day windows over Cebu and Bohol. NISAR is lower than SMAP by 0.07 m³/m³ on average, and the
+          typical difference is 0.11 m³/m³. The two agree on when the islands were wetter or drier
+          (correlation 0.70 over the 11 windows), but they do not agree on which places are drier in one window.
+          A SMAP cell is 9 km wide and can include the sea, so it is a check and not the truth.</p>
       </section>
 
       <section aria-labelledby="rank-method">
@@ -43,6 +48,9 @@ export default function MethodPage() {
         <p>The stability check doubles the weight of each part, one at a time. A town that remains
           in the top 10 in every check is called stable. These are places to look at first,
           not predictions of drought or a measure of risk.</p>
+        <p data-testid="rank-smap">SMAP does not confirm which towns are drier in the windows the rank uses
+          (correlation between places −0.06 on 7 October and −0.41 on 1 September). Read the order as a list
+          of towns to check, not as a result.</p>
       </section>
 
       <section aria-labelledby="radar-limits">
