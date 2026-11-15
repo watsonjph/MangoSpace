@@ -36,13 +36,13 @@ body {
 }
 
 a { color: var(--water); text-underline-offset: 3px; }
-.timeline-sound { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 330px; text-align: left; }
+.timeline-sound { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 260px; text-align: left; }
 .timeline-sound label { display: flex; gap: 8px; align-items: center; font: 11px var(--mono); }
 .timeline-sound input[type="range"] { width: 100px; height: 24px; appearance: auto; }
 .timeline-sound input[type="range"]::-webkit-slider-runnable-track { height: auto; }
 .timeline-sound input[type="range"]::-webkit-slider-thumb { appearance: auto; height: auto; width: auto; }
 .timeline-sound p { flex-basis: 100%; font-size: 11px; line-height: 1.4; margin: 0; color: var(--muted); }
-.timeline .controls { flex-wrap: wrap; }
+.timeline .controls { flex-wrap: wrap; align-items: flex-start; justify-content: flex-end; }
 a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 

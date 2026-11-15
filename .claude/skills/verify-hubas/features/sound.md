@@ -7,7 +7,8 @@ Sound starts off. The map timeline has a sound button and volume control before 
 - Opt-in sound and volume live in each of the map, dam and rice timelines.
 - Two octaves of a pentatonic scale keep wetter/higher values higher in pitch.
 - Three sine partials, a soft decay and a short echo form the instrument.
-- A look-ahead queue schedules oscillator start times on AudioContext.currentTime. Pause/mute cancels queued notes; speed and loop reschedule on the audio clock.
+- Each step the timeline shows plays its own note, so a slider jump, a dam frame that waits for its image, or a loop never leaves the sound on another step. A step that follows the last one on time is placed on the audio-clock beat (`AudioContext.currentTime`), so timer jitter does not reach the rhythm. Pause/mute cancels pending notes.
+- The Score page keeps its voice timbres: `playTone` uses `wave` (sine soil, triangle dam and rice).
 - Browser audio errors leave visual controls usable.
 
 ## How to get to it (user POV)
@@ -23,6 +24,8 @@ Sound starts off. The map timeline has a sound button and volume control before 
 - PROOF=1 writes docs/proof/sc-499-listening-sample.wav with an AI-assistance metadata comment. It uses the true regional mean plus Bogo as the selected town.
 
 ## Gotchas
+
+- The notes follow the steps on screen. On a busy machine the timeline steps run late, and the notes with them; `sound.spec.ts` checks the median beat and that each low note matches the window shown, also after a slider jump.
 
 - Two non-team listeners must still supply named feedback on pleasantness and hearing the seasonal change before sc-499 is accepted. No subjective listening approval is claimed.
 - Playwright video has no sound track; use the WAV as the audio proof. It is synthesized by the production instrument, not a recording of a physical laptop speaker.

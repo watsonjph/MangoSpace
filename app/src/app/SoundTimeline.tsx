@@ -11,41 +11,42 @@ export default function SoundTimeline({ frames, index, play, stepMs = STEP_MS, d
   frames: SoundFrame[]; index: number; play: Playback; stepMs?: number; description: string;
 }) {
   const audio = useRef<AudioContext | null>(null), master = useRef<GainNode | null>(null);
-  const current = useRef(index);
-  useEffect(() => { current.current = index; }, [index]);
+  const notes = useRef<{ stop: () => void; end: number }[]>([]);
+  const beat = useRef<{ index: number; at: number } | null>(null);
+  const live = useRef({ frames, speed: play.speed, stepMs });
+  useEffect(() => { live.current = { frames, speed: play.speed, stepMs }; });
   const [enabled, setEnabled] = useState(false), [starting, setStarting] = useState(false), [volume, setVolume] = useState(35), [error, setError] = useState("");
-  const key = JSON.stringify(frames);
   useEffect(() => () => { void audio.current?.close().catch(() => {}); audio.current = null; }, []);
+
+  // Each step the timeline shows plays its own note, so a jump, a slow image or a loop cannot put the sound on another step.
+  // A step that follows the last one on time keeps the beat on the audio clock, so the rhythm does not take the timer's jitter.
   useEffect(() => {
     const context = audio.current, output = master.current;
     if (!enabled || !play.playing || !context || !output) return;
-    const sequence: SoundFrame[] = JSON.parse(key);
-    const stops: { stop: () => void; end: number }[] = [];
-    const interval = stepMs / play.speed / 1000;
-    let cursor = current.current, next = context.currentTime + 0.025;
-    const schedule = () => {
-      for (let i = stops.length - 1; i >= 0; i--) if (stops[i].end < context.currentTime) {
-        stops[i].stop(); stops.splice(i, 1);
-      }
-      while (next < context.currentTime + 0.15 && cursor < sequence.length) {
-        const frame = sequence[cursor];
-        const add = (height: number | null | undefined, base: number, duration: number, when = next) => {
-          const stop = playTone(context, height, { base, duration, when, destination: output });
-          if (stop) stops.push({ stop, end: when + duration + 0.15 });
-        };
-        add(frame.low, 110, Math.min(0.65, interval * 1.4));
-        add(frame.high, 220, Math.min(0.3, interval * 0.75));
-        const rainNotes = Math.min(4, Math.ceil((frame.rain ?? 0) / 50));
-        for (let i = 0; i < rainNotes; i++) add(0.5, 880, 0.06, next + i * interval / 5);
-        next += interval; cursor++;
-        if (cursor === sequence.length && play.loop) cursor = 0;
-      }
+    const { frames, speed, stepMs } = live.current;
+    const interval = stepMs / speed / 1000, now = context.currentTime, last = beat.current;
+    const next = last && (index === last.index + 1 || (index === 0 && last.index === frames.length - 1)) ? last.at + interval : null;
+    const when = next != null && Math.abs(next - now) < interval / 2 ? Math.max(next, now + 0.005) : now + 0.02;
+    beat.current = { index, at: when };
+    notes.current = notes.current.filter((note) => note.end > now);
+    const frame = frames[index];
+    if (!frame) return;
+    const add = (height: number | null | undefined, base: number, duration: number, at = when) => {
+      const stop = playTone(context, height, { base, duration, when: at, destination: output });
+      if (stop) notes.current.push({ stop, end: at + duration + 0.15 });
     };
-    // The timer only fills the look-ahead queue; oscillator times use the audio clock.
-    schedule();
-    const timer = window.setInterval(schedule, 40);
-    return () => { window.clearInterval(timer); stops.forEach(({ stop }) => stop()); };
-  }, [enabled, play.playing, play.speed, play.loop, key, stepMs]);
+    add(frame.low, 110, Math.min(0.65, interval * 1.4));
+    add(frame.high, 220, Math.min(0.3, interval * 0.75));
+    const rainNotes = Math.min(4, Math.ceil((frame.rain ?? 0) / 50));
+    for (let i = 0; i < rainNotes; i++) add(0.5, 880, 0.06, when + i * interval / 5);
+  }, [enabled, play.playing, index]);
+
+  useEffect(() => {
+    if (enabled && play.playing) return;
+    beat.current = null;
+    notes.current.forEach((note) => note.stop());
+    notes.current = [];
+  }, [enabled, play.playing]);
 
   async function toggle() {
     if (audio.current) { const context = audio.current; audio.current = null; master.current = null; setEnabled(false); void context.close().catch(() => {}); return; }

@@ -6,7 +6,7 @@ export function noteFrequency(height: number | null | undefined, base = 220) {
   return base * 2 ** (scale[Math.round(height * (scale.length - 1))] / 12);
 }
 
-export function playTone(context: BaseAudioContext, height: number | null | undefined, { base = 220, when = context.currentTime, duration = 0.38, destination = context.destination }: Voice = {}) {
+export function playTone(context: BaseAudioContext, height: number | null | undefined, { base = 220, wave = "sine", when = context.currentTime, duration = 0.38, destination = context.destination }: Voice = {}) {
   const frequency = noteFrequency(height, base);
   if (frequency == null) return;
   const envelope = context.createGain(), delay = context.createDelay(0.5), echo = context.createGain();
@@ -18,7 +18,7 @@ export function playTone(context: BaseAudioContext, height: number | null | unde
   envelope.connect(destination); envelope.connect(delay); delay.connect(echo); echo.connect(destination);
   const tones = [1, 2, 3].map((harmonic, i) => {
     const tone = context.createOscillator(), partial = context.createGain();
-    tone.type = "sine"; tone.frequency.value = frequency * harmonic; partial.gain.value = [0.75, 0.18, 0.07][i];
+    tone.type = wave; tone.frequency.value = frequency * harmonic; partial.gain.value = [0.75, 0.18, 0.07][i];
     tone.connect(partial); partial.connect(envelope); tone.start(when); tone.stop(when + duration + 0.01);
     return { tone, partial };
   });
