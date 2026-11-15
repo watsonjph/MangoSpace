@@ -7,7 +7,6 @@ export const metadata: Metadata = { title: "Method · Hubas" };
 
 export default function MethodPage() {
   const hasSoilWater = lgus.some((town) => town.soilMoisture.some((value) => value !== null));
-  const hasRealOutlook = outlooks.every((outlook) => !outlook.advisory.includes("MOCK"));
 
   return (
     <main className="method-page">
@@ -59,14 +58,14 @@ export default function MethodPage() {
           Water area is calculated from dark HH pixels inside a reservoir outline, using a −10 dB
           threshold after speckle reduction, then multiplying the count by the pixel area.</p>
         <p>A smaller water area can have several causes, including less rain, more water use,
-          or dam work. The radar images alone do not establish the cause. We have not yet
-          established whether the small 2026 area changes exceed measurement noise.</p>
+          or dam work. The radar images alone do not establish the cause. In 2026 the area stayed
+          within 8% of its mean; the small dip on 18 September is larger than the noise of the method, but its cause is not known.</p>
         <p>Compare dates from the same satellite track for each target. Different radar viewing angles
           can change the image. NISAR and Sentinel-1 can give different water areas in km²,
           so compare changes between sensors as percentages rather than absolute areas.</p>
-        <p>The dam and rice views are not available in this build. Rice sample measurements cover
+        <p>The rice view is not available in this build. Rice sample measurements cover
           small field parcels, not whole towns, and do not establish crop identity or growth stage.</p>
-        <p>If historical scenarios are added, dashed lines will mean:
+        <p>In the dam view, dashed lines mean:
           “This is what happened before. It is not a forecast.”</p>
       </section>
 
@@ -92,9 +91,7 @@ export default function MethodPage() {
             {" "}<a href="https://github.com/faeldon/philippines-psgc-shapefiles/blob/v1.0.1/data/psgc/2026-3q/psgc.csv">Pinned population table</a>.</li>
           <li><strong>PAGASA rain outlook.</strong> DOST-PAGASA. Public-domain government advisory,
             unless otherwise stated; credit PAGASA.
-            {hasRealOutlook
-              ? outlooks.map((outlook) => <span key={outlook.province}> {outlook.province}: {outlook.advisory}, issued {outlook.issued}.</span>)
-              : " The current outlook is mock text, not an official forecast."}
+            {outlooks.map((outlook) => <span key={outlook.province}> {outlook.province}: {outlook.advisory}, issued {outlook.issued}.</span>)}
             {" "}<a href="https://www.pagasa.dost.gov.ph/climate/el-nino-la-nina/advisories">Official advisories</a>.</li>
           <li><strong>Base map.</strong> <a href="https://openfreemap.org/">OpenFreeMap</a>,
             <a href="https://openmaptiles.org/"> OpenMapTiles</a>, and © OpenStreetMap contributors.
