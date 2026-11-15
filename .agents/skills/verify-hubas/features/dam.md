@@ -32,3 +32,5 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - Past events are Sentinel-1 (C-band VV), 2026 is NISAR (L-band). Their km² differ, so past frames show percent change only. Compare changes, not areas.
 - Dashed scenario lines start at the latest NISAR area and apply past monthly-average changes. They can differ from the lowest single reading of that event. They are not a forecast.
 - The rain bars need `rainMm` to have one value per NISAR date. If not, the chart and the stats hide rain.
+
+- Development-only edge fixtures: run `npm run dev`, then open `/dam?fixture=empty` or `/dam?fixture=single-date`. The former has no chart; the latter has one centered finite point. `npx playwright test e2e/dam-edge-cases.spec.ts` covers both. Production ignores the fixture query.
