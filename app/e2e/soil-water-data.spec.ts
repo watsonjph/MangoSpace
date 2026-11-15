@@ -64,7 +64,7 @@ test("the map and the panel show a town with data and a town with no data in a w
 
   await page.getByLabel("Window").fill("3");
   await page.getByLabel("Town").selectOption(TUBIGON);
-  await expect(page.getByTestId("moisture")).toHaveText("No good pixels");
+  await expect(page.getByTestId("moisture")).toHaveText("No data");
   await expect.poll(() => state(TUBIGON)).toBeNull();
   await expect.poll(() => state(BOGO)).toBe(bogo.soilMoisture[3]);
   await page.waitForFunction(() => window.hubasMap!.loaded());
@@ -99,9 +99,9 @@ test("the rank is a full order of the towns with data, and the panel shows it", 
   await page.getByLabel("Town").selectOption(unranked.psgc);
   await expect(page.getByTestId("rank")).toHaveText("Not ranked");
   await page.getByLabel("Town").selectOption(first.psgc);
-  await expect(page.getByTestId("rank")).toHaveText(`#1 of ${ranked.length}`);
+  await expect(page.getByTestId("rank")).toContainText(`#1 of ${ranked.length} ranked · look here first`);
   const rankWin = manifest.windows[manifest.rankWindow!];
-  await expect(page.locator(".panel dt").first()).toHaveText(`Rank, ${rankWin.start} → ${rankWin.end}`);
+  await expect(page.locator(".panel dt").first()).toHaveText(`Rank preview, ${rankWin.start} → ${rankWin.end}`);
   await page.waitForFunction(() => window.hubasMap!.loaded());
   await saveProof(page, "sc-120-rank-first-town.png");
 });

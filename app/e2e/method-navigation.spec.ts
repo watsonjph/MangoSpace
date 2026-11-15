@@ -17,8 +17,15 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
     await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
 
     const navigation = page.getByRole("navigation", { name: "Main", exact: true });
-    await expect(navigation.getByRole("link")).toHaveText(["Soil water", "Dam", "Rice", "Method"]);
-    await expect(navigation.getByRole("link", { name: "Soil water" })).toHaveAttribute("aria-current", "page");
+    await expect(navigation.getByRole("link")).toHaveText(["Dam", "Rice", "Method"]);
+    await expect(navigation.getByRole("button")).toHaveText(["Soil water", "Rank"]);
+    await expect(navigation.getByRole("button", { name: "Soil water" })).toHaveAttribute("aria-pressed", "true");
+    await navigation.getByRole("button", { name: "Rank" }).click();
+    await expect(navigation.getByRole("button", { name: "Rank" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page).toHaveURL(/mode=rank$/);
+    await navigation.getByRole("button", { name: "Soil water" }).click();
+    await expect(navigation.getByRole("button", { name: "Soil water" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page).not.toHaveURL(/mode=rank/);
     const header = await page.locator(".topbar").boundingBox();
     const map = await page.locator(".map").boundingBox();
     expect(map!.y).toBeGreaterThanOrEqual(header!.y + header!.height);

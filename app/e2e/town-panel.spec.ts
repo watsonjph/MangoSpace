@@ -64,7 +64,6 @@ test("the line marks the selected window and leaves a gap where a window has no 
   expect(await guideX()).toBe(await line.locator("circle.selected").getAttribute("cx"));
   await expect(line).toHaveAccessibleName(new RegExp(`Selected: ${tubigon.soilMoisture[4]!.toFixed(3)} m³/m³\\.$`));
   await expect(page.locator(".panel dt", { hasText: "Pixels with data" })).toBeVisible();
-  await expect(page.locator(".panel")).not.toContainText("Good pixels");
   await page.waitForFunction(() => window.hubasMap!.loaded());
   await saveProof(page, "sc-89-town-panel-desktop.png");
 
@@ -77,7 +76,7 @@ test("the line marks the selected window and leaves a gap where a window has no 
   expect(Number(await guideX())).toBeLessThan(Number(before));
   expect((await line.locator("path.line").getAttribute("d"))!.match(/M/g)).toHaveLength(pieces(tubigon.soilMoisture));
   expect(pieces(tubigon.soilMoisture)).toBeGreaterThan(1);
-  await expect(page.getByTestId("moisture")).toHaveText("No good pixels");
+  await expect(page.getByTestId("moisture")).toHaveText("No data");
 
   // A town with data on less than half of its area keeps its values, as open circles.
   const mandaue = lgus.find((l) => l.psgc === MANDAUE)!;
