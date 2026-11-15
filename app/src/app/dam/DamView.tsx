@@ -13,18 +13,6 @@ const signed = (value: number) => {
   return `${rounded > 0 ? "+" : rounded < 0 ? "−" : ""}${Math.abs(rounded)}%`;
 };
 
-function Causes() {
-  return (
-    <section className="dam-causes">
-      <h2>What can cause a change</h2>
-      <p>A smaller water area can have several causes, including less rain, more water use, or dam work.
-        The radar images alone do not establish the cause.</p>
-      <p className="dam-note">The lowest 2026 value, on 18 September, is a small dip. The radar alone cannot tell
-        if there was less water or if wind or the radar caused it. <MapLink href="/method">Method and limits</MapLink></p>
-    </section>
-  );
-}
-
 export default function DamView({ dam }: { dam: Target }) {
   const { dates, images } = dam.nisar;
   const areas = dam.nisar.waterAreaKm2 ?? [];
@@ -38,7 +26,7 @@ export default function DamView({ dam }: { dam: Target }) {
       <p className="eyebrow">Malinao Dam · Pilar, Bohol</p>
       <h1>Malinao Dam water area</h1>
       <p data-testid="dam-empty">No water area has been measured for this dam yet.</p>
-      <Causes />
+      <p><MapLink href="/method">Method and limits</MapLink></p>
     </main>
   );
 
@@ -84,6 +72,12 @@ export default function DamView({ dam }: { dam: Target }) {
   const span: [number, number] = [Math.min(...frames) - 0.05, Math.max(...frames) + 0.05];
   const radarLabel = old ? `${old.sensor} VV` : display === "color" ? "NISAR HH/HV color composite" : `NISAR ${display.toUpperCase()}`;
   const radarCaption = `${radarLabel}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`;
+  const low = areas.indexOf(Math.min(...areas));
+  const interpretation = {
+    seen: `In 2026, the area stayed between ${Math.min(...areas).toFixed(2)} and ${Math.max(...areas).toFixed(2)} km². The low was on ${fmt(dates[low])}. ${events.map((event) => `The ${fmt(event.lowDate)} low was ${signed(event.fall)} against ${fmt(event.dates[0])}.`).join(" ")}`,
+    cause: `Less inflow or more water use can reduce the area. The past March lows fit the dry months. ${rain ? `The GPM cell near the dam had ${dam.rainMm[low].toFixed(1)} mm in the 12 days before the 2026 low, so this record gives no simple recent-rain explanation.` : "No matching rain total is available for the 2026 low."}`,
+    limit: "The radar images alone do not establish the cause, and the rain cell does not cover the whole catchment or measure water use, wind, or reservoir depth.",
+  };
 
   return (
     <main className="dam-page" data-ready={ready}>
@@ -153,7 +147,14 @@ export default function DamView({ dam }: { dam: Target }) {
           )}
         </div>
       </div>
-      <Causes />
+      <section className="dam-causes interpretation" aria-labelledby="dam-interpretation">
+        <h2 id="dam-interpretation">Why the water area can change</h2>
+        <p><strong>What we see.</strong> {interpretation.seen}</p>
+        <p><strong>What can cause it.</strong> {interpretation.cause}</p>
+        <p><strong>What we cannot tell.</strong> {interpretation.limit}</p>
+        <p className="dam-note">The September dip stays the lowest when the radar thresholds change.
+          Wind, radar noise, and processing changes remain possible causes. <MapLink href="/method">Method and limits</MapLink></p>
+      </section>
     </main>
   );
 }
