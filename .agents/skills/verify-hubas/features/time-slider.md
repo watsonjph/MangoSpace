@@ -32,6 +32,6 @@ Preconditions:
 
 - `drive` sets the slider value directly and fires its change event. It does not test dragging with the mouse or the arrow keys.
 - The keyboard entry point, Play/Pause and opening a `?window=` link are not covered by `drive`. Use the Playwright MCP (focus `Window`, press `ArrowRight`, read `.slider output`; click Play and read the slider value after a second), or run `npx playwright test e2e/timeline.spec.ts e2e/sound.spec.ts e2e/map-selection.spec.ts`. `timeline.spec.ts` also plays the dam radar images.
-- No spec covers the pause when the tab is hidden. Check it with the Playwright MCP: click Play, then dispatch `visibilitychange` with `document.hidden` true.
+- `timeline-verification.spec.ts` checks smooth and reduced-motion feature states, a full season at 1×, URL/reload state and a simulated hidden-tab visibility event. With PROOF=1 it saves a playback video and screenshots at 1280 and 390 px.
 - The URL updates about 300 ms after the slider stops, so read `?window=` after a short wait.
 - The window count comes from the manifest. Real data can have a different count.
