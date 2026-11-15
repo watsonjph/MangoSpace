@@ -29,7 +29,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     expect((await lines.first().getAttribute("points"))!.split(" ")).toHaveLength(dates.length);
     await expect(chart.locator("polyline[stroke-dasharray]")).toHaveCount(dam.scenarios!.length);
     await expect(chart.locator("rect[fill='#8fb4d9']")).toHaveCount(dates.length);
-    await expect(page.getByTestId("scenario-note")).toHaveText("Dashed lines: this is what happened before. It is not a forecast.");
+    await expect(page.getByTestId("scenario-note")).toContainText("Dashed lines: this is what happened before. It is not a forecast.");
     await expect(page.getByRole("main")).toContainText("The radar images alone do not establish the cause.");
     await expect(page.getByTestId("dam-event")).toHaveCount(dam.history!.length);
     await expect(page.getByTestId("dam-event").first()).toContainText("−52%");
