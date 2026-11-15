@@ -61,6 +61,7 @@ test("the map and the panel show a town with data and a town with no data in a w
 
 test("the rank is a full order of the towns with data, and the panel shows it", async ({ page, request }) => {
   const lgus: Lgu[] = await (await request.get("/data/lgus.json")).json();
+  const manifest: Manifest = await (await request.get("/data/manifest.json")).json();
   const ranked = lgus.filter((l) => l.rank !== null);
   expect(ranked.length).toBeGreaterThan(0);
   expect(ranked.map((l) => l.rank!.position).sort((a, b) => a - b)).toEqual(ranked.map((_, i) => i + 1));
@@ -87,6 +88,8 @@ test("the rank is a full order of the towns with data, and the panel shows it", 
   await expect(page.getByTestId("rank")).toHaveText("Not ranked");
   await page.getByLabel("Town").selectOption(first.psgc);
   await expect(page.getByTestId("rank")).toHaveText(`#1 of ${ranked.length}`);
+  const rankWin = manifest.windows[manifest.rankWindow!];
+  await expect(page.locator(".panel dt").first()).toHaveText(`Rank, ${rankWin.start} → ${rankWin.end}`);
   await page.waitForFunction(() => window.hubasMap!.loaded());
   await page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-120-rank-first-town.png"), fullPage: true });
 });
