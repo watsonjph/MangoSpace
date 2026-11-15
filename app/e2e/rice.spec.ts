@@ -6,6 +6,18 @@ const day = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const db = (value: number) => `${value.toFixed(1).replace("-", "−")} dB`;
 
+// The rice heading is a fixed sentence, so this fails when new data stops supporting it.
+test("the data still supports the rice heading", async ({ request }) => {
+  const targets: Target[] = await (await request.get("/data/targets.json")).json();
+  for (const { id, nisar } of targets.filter((target) => target.kind === "rice")) {
+    const hv = nisar.meanHvDb!;
+    const high = hv.indexOf(Math.max(...hv));
+    expect([8, 9], `${id} peaks in September or October`).toContain(new Date(nisar.dates[high]).getUTCMonth());
+    expect(nisar.dates.at(-1), `${id} ends on 5 November`).toBe("2026-11-05");
+    expect(hv.at(-1)!, `${id} is lower on the last date`).toBeLessThan(hv.at(-2)!);
+  }
+});
+
 for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "mobile", width: 375, height: 812 }]) {
   test(`Rice view shows the HV line and each date of both parcels at ${viewport.width}px`, async ({ page, request }) => {
     const errors: string[] = [];
