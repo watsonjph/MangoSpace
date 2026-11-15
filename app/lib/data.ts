@@ -27,7 +27,7 @@ export interface Lgu {
   name: string
   province: Province
   population: number
-  soilMoisture: (number | null)[] // m³/m³ per window, good pixels only
+  soilMoisture: (number | null)[] // m³/m³ per window, mean of the valid NISAR readings in the town; null when there are none
   validShare: number[] // 0–1 per window
   rank: {
     position: number
