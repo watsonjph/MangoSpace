@@ -46,7 +46,7 @@ Include this disclosure with the project description and repository documentatio
 
 - sc-482: keep English as the default and keep Method in English. Translate the opening, findings and main controls only after the English screen text is final. A Cebuano-speaking teammate must check every sentence and be named in the story before publication. This change does not claim a shipped language selection.
 - sc-201: the user will handle recording or voiceover and supply the public demo link.
-- sc-31/sc-260: supply a public deployment URL. `npm run dev` verifies the local app but does not provide a link for judges.
+- sc-31: done. The public URL is https://hubas.vercel.app/. Vercel deploys it from `main`. Check it again after the last merge, before sc-205.
 - Team owner: supply the actual Space Apps project-page URL and verify registration, required fields and declarations there. The Claude artifact URL is the build plan, not the project page.
 - Second team member: read the completed project page, reconcile the final plan's “we say” column, and record their name/date in sc-237.
 - Keep sc-175 and sc-237 In Progress until these checks are resolved. The repository changes do not publish or submit the project.
