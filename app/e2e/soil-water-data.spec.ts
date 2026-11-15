@@ -103,5 +103,5 @@ test("the rank is a full order of the towns with data, and the panel shows it", 
   const rankWin = manifest.windows[manifest.rankWindow!];
   await expect(page.locator(".panel dt").first()).toHaveText(`Rank, ${rankWin.start} → ${rankWin.end}`);
   await page.waitForFunction(() => window.hubasMap!.loaded());
-  await page.screenshot({ path: path.resolve(process.cwd(), "..", "docs", "proof", "sc-120-rank-first-town.png"), fullPage: true });
+  await saveProof(page, "sc-120-rank-first-town.png");
 });
