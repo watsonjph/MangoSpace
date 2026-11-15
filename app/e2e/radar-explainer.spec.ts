@@ -169,3 +169,30 @@ for (const problem of ["missing", "mismatched"] as const) {
     await expect(result).not.toContainText(" dB");
   });
 }
+
+test("playback keeps focus on the inspector and a drag from elsewhere picks nothing", async ({ page }) => {
+  await page.goto("/dam");
+  await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
+  const button = page.getByRole("button", { name: "Inspect radar pixel" });
+  const result = page.getByTestId("radar-pixel-result");
+  const image = page.getByTestId("dam-radar").locator("img");
+  await expect(button).toBeEnabled();
+  await image.scrollIntoViewIfNeeded();
+  const heading = (await page.getByRole("heading", { name: "The radar image of each date" }).boundingBox())!;
+  const box = (await image.boundingBox())!;
+  await page.mouse.move(heading.x + 20, heading.y + heading.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 5 });
+  await page.mouse.up();
+  await expect(result).toHaveText("");
+
+  const slider = page.getByRole("slider", { name: "Date" });
+  await slider.fill(String(Number(await slider.getAttribute("max")) - 3));
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await button.focus();
+  await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible({ timeout: 15_000 });
+  await expect(button).toBeFocused();
+  await expect(result).toHaveText("");
+  await button.press("Enter");
+  await expect(result).toContainText(" dB");
+});
