@@ -18,6 +18,7 @@ export interface Manifest {
   windows: { start: IsoDate; end: IsoDate }[]
   bounds: Bounds
   sme2Status: "provisional"
+  rankWindow: number | null // index in windows of the "now" of the rank
   generatedAt: string
 }
 
@@ -56,6 +57,8 @@ export interface Target {
     images: string[]
   }[]
   scenarios?: { label: string; basedOn: "2015–16" | "2023–24"; months: string[]; waterAreaKm2: number[] }[]
+  // Rice only. The Sentinel-1 (C-band) pair nearest to one NISAR (L-band) date, same bounds and grey scale.
+  cBand?: { date: IsoDate; nisarDate: IsoDate; images: { vv: string; vh: string }; meanDb: { vv: number; vh: number } }
 }
 
 export interface Outlook { province: Province; advisory: string; issued: IsoDate; summary: string }

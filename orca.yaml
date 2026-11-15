@@ -1,0 +1,5 @@
+worktree:
+  # app/node_modules is not shared: Turbopack refuses a node_modules linked from outside the worktree.
+  # Run `npm ci` in app/ of each new worktree.
+  sharedDirectories:
+    - pipeline/.venv

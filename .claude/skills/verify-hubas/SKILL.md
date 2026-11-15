@@ -5,7 +5,7 @@ description: Launch, check and drive the Hubas web app (app/, Next.js static exp
 
 # Verify Hubas
 
-Hubas is one page: a MapLibre map of Cebu and Bohol, a "Window" time slider, and a town panel. All data comes from static files in `app/public/data`. There is no server code and no login.
+Hubas has four routes. `/` is a MapLibre map of Cebu and Bohol colored by soil water, a "Window" timeline with play, and a town panel that also holds the rank preview. `/dam` shows the water area of Malinao Dam with a chart and radar images. `/rice` shows the HV line of two rice parcels. `/method` explains the method and credits the sources. The top bar links the four pages. The dam and rice pages have the same timeline with play for their radar images. On a phone (640 px wide or less) the panel and slider sit below the map. All data comes from static files in `app/public/data`. There is no server code and no login.
 
 The control tool is `app/scripts/control-hubas.mjs`. Run every command from `app/`. Each command prints JSON. Read `ok` first; on `false`, follow `hint`.
 
@@ -25,7 +25,7 @@ node scripts/control-hubas.mjs up --no-build   # reuse the current out/
 ```
 
 - `up` builds the static export, starts a small static server in the background, and waits until `/data/manifest.json` answers. It prints the URL.
-- It serves the built `out/`, the same files Vercel serves. It does not use `next dev`.
+- It serves the built `out/`, the same static files the host serves. It does not use `next dev`.
 - Ready means the page and its data answer. The map itself loads in the browser: `drive` waits for it.
 - State goes in `app/.verify/state.json`; the server log in `app/.verify/server.log`.
 - `up` refuses to start if its own server is already running or the port is taken. It never touches a server it did not start.
@@ -43,14 +43,15 @@ Run it first, and again whenever something looks wrong. It is read-only. It chec
 - `page`: `/` answers 200 and contains "Hubas".
 - `data`: the manifest says region `PH-07`; it prints the window count and `generatedAt`.
 - `build-fresh`: `out/` is newer than `src/`, `lib/` and `public/`. If not, you are driving old code: run `down`, then `up`.
-- `basemap`: the OpenFreeMap style answers. It is an outside service; without it the map can fail to load. Report it; do not work around it.
+- `basemap`: the OpenFreeMap style answers. It is an outside service; without it the map can fail to load. Report it. To keep verifying the app itself, use `drive --offline-basemap yes`.
 
 ## Drive
 
 ```
 node scripts/control-hubas.mjs towns
-node scripts/control-hubas.mjs drive --click-town mock-bogo-city --window 10 --name sc-123-bogo
+node scripts/control-hubas.mjs drive --click-town 0702211000 --window 10 --name sc-123-bogo
 node scripts/control-hubas.mjs drive --town "Carmen, Bohol" --name sc-123-carmen
+node scripts/control-hubas.mjs drive --nav Method --name sc-123-method
 ```
 
 `drive` opens a fresh headless Chromium (falls back to installed Chrome), loads the app, waits for the map and the town layer, then does the actions in this order:
@@ -60,16 +61,19 @@ node scripts/control-hubas.mjs drive --town "Carmen, Bohol" --name sc-123-carmen
 | `--click-town <psgc>` | Click the town shape on the map | MapLibre `window.hubasMap`, layer `soil`, feature id = psgc. The tool finds a point inside the shape that is not under the slider or the panel. |
 | `--town <psgc or "Name, Province">` | Pick the town in the dropdown | label `Town` |
 | `--window <n>` | Move the slider to window n | label `Window`; range text in `.slider output` |
+| `--nav <link>` | Click a link in the top bar: `Soil water`, `Dam`, `Rice` or `Method` | `navigation` named `Main`; waits until that link has `aria-current="page"` |
 
-It prints `steps`, the map label, the slider value and range, the selected town, every row of the town panel (`Rank`, `Soil water`, `Good pixels`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
+Two more options: `--viewport 375x812` gives the phone layout, and `--offline-basemap yes` replaces the outside base map with a plain background (the same stub as `app/e2e/offline-basemap.ts`) for runs without internet.
 
-For something `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
+It prints `steps`, the map label, the legend lines, the slider value and range, the selected town, every row of the town panel (`Soil water, <window>`, `Pixels with data`, `Rank preview, <window>`, `Rank parts`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
+
+`drive` always starts on `/`. Add `--nav Dam`, `--nav Rice` or `--nav Method` to open that page. It prints `path` and the page `heading`, and `window`, `town` and `panel` are `null` off the map. For anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
 
 ## Evidence
 
 Each `drive` writes to `app/.verify/evidence/<name>/`:
 
-- `screenshot.png`: the page after the actions, with the app label visible.
+- `screenshot.png`: the full page after the actions, with the app label visible. On a phone viewport it is taller than the screen, so it includes the panel and slider.
 - `aria.yml`: the ARIA snapshot of the page.
 - `result.json`: the same JSON the command printed.
 - `failure.png`: only when a step failed.
@@ -94,5 +98,5 @@ node scripts/control-hubas.mjs down
 
 ## Known limits
 
-- The data is mock data until the pipeline lands (`psgc` values start with `mock-`). Town IDs and counts change then: use `towns` instead of hard-coded IDs.
-- Features from the plan that are not built yet (dam view, rice, explainer, sound, rank colors) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.
+- The 101 towns and their soil water are real (sc-71, all valid NISAR readings, provisional). The rank is real too (sc-120): 99 towns have a rank from the window of 7 Oct; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey, because only part of Bohol has readings there (29 of 48 Bohol towns have none). `outlook.json` has PAGASA's El Niño Advisory No. 6 (issued 2026-11-03), the November 2026 rainfall outlook for Cebu and Bohol (sc-61). Get town IDs with `towns`. The Malinao Dam data in `targets.json` is real and shown on `/dam`.
+- Features from the plan that are not built yet (explainer, history) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.

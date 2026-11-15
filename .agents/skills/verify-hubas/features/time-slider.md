@@ -1,0 +1,37 @@
+# Time slider
+
+The slider at the bottom moves through the 12-day NISAR windows, from late June to late October. Moving it changes Soil water colors and the selected town's soil water, pixels with data and marked window on its soil water line. The Rank preview stays fixed to its rank window.
+
+## Sub-features
+
+- `slider-play` advances one window each 450 ms at 1× (`STEP_MS` in `app/src/app/Timeline.tsx`), so the 11 windows take about 5 seconds. It stops after the final window, or starts again when Loop is on. The speed button changes between 1×, 2× and 0.5×. During play the town colors blend between windows; a user who moves the slider gets each window at once. Pause holds the current window. The space key starts and stops play when the focus is not on a control. The notes on the track are the mean soil water of the towns; an open note is a window with fewer towns. Play on the final window starts again from window 0. Hiding the tab pauses playback.
+- `slider-url` keeps the window in the URL as `?window=n`, so reloads and shared links open the same window; an invalid value falls back to window 0.
+- `slider-range` shows the start and end date of the selected window.
+- `slider-map` recolors the map for the new window in Soil water view.
+- `slider-panel` updates the open town panel for the new window.
+
+## How to get to it (user POV)
+
+- Click Play or Pause beside the date range.
+- Drag the slider labeled `Window` at the bottom of the page.
+- Focus the slider and press the arrow keys.
+
+## Driving it with control-hubas
+
+Preconditions:
+
+- `doctor` reports `ok: true`.
+- `public/data/manifest.json` has 11 provisional NISAR windows (index 0 to 10).
+
+- **Move the slider.** Set window 10. Run `node scripts/control-hubas.mjs drive --window 10 --name slider-10`. `window.index` is `10` and `window.range` matches the last entry of `manifest.json` `windows` (`19 Oct to 31 Oct 2026`).
+- **Panel follows.** Open a town and move the slider. Run `node scripts/control-hubas.mjs drive --town 0702211000 --name slider-bogo-0` and `node scripts/control-hubas.mjs drive --town 0702211000 --window 10 --name slider-bogo-10`. `panel["Soil water"]` matches `soilMoisture[0]` and `soilMoisture[10]` for that town in `lgus.json`. The two values differ when the data differs.
+- **No soil water in a window.** Run `node scripts/control-hubas.mjs drive --town 0701245000 --window 3 --name slider-tubigon-3`. `panel["Soil water"]` is `No data` and `panel["Pixels with data"]` is `0%`, because Tubigon has no pixels with data in window 3. Other Bohol towns do have readings in that window.
+- **Out of range.** Run `node scripts/control-hubas.mjs drive --window 99`. The command fails with `--window must be 0 to 10.`
+
+## Gotchas
+
+- `drive` sets the slider value directly and fires its change event. It does not test dragging with the mouse or the arrow keys.
+- The keyboard entry point, Play/Pause and opening a `?window=` link are not covered by `drive`. Use the Playwright MCP (focus `Window`, press `ArrowRight`, read `.slider output`; click Play and read the slider value after a second), or run `npx playwright test e2e/timeline.spec.ts e2e/sound.spec.ts e2e/map-selection.spec.ts`. `timeline.spec.ts` also plays the dam radar images.
+- No spec covers the pause when the tab is hidden. Check it with the Playwright MCP: click Play, then dispatch `visibilitychange` with `document.hidden` true.
+- The URL updates about 300 ms after the slider stops, so read `?window=` after a short wait.
+- The window count comes from the manifest. Real data can have a different count.

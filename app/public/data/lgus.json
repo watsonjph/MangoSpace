@@ -1,329 +1,4226 @@
 [
  {
-  "psgc": "mock-bogo-city",
-  "name": "Bogo City",
-  "province": "Cebu",
-  "population": 88867,
+  "psgc": "0701201000",
+  "name": "Alburquerque",
+  "province": "Bohol",
+  "population": 11489,
   "soilMoisture": [
-   0.34,
-   0.332,
-   0.317,
-   0.293,
-   0.268,
-   0.25,
-   0.241,
-   0.235,
-   0.222,
-   0.2,
-   0.175
-  ],
-  "validShare": [
-   0.89,
-   0.88,
-   0.85,
-   0.83,
-   0.84,
-   0.87,
-   0.89,
-   0.88,
-   0.86,
-   0.83,
-   0.83
-  ],
-  "rank": {
-   "position": 1,
-   "of": 7,
-   "stable": true,
-   "parts": {
-    "dryness": 0.24,
-    "dryingSpeed": 1,
-    "people": 0.09
-   }
-  }
- },
- {
-  "psgc": "mock-cebu-city",
-  "name": "Cebu City",
-  "province": "Cebu",
-  "population": 964169,
-  "soilMoisture": [
-   0.308,
-   0.3,
-   0.283,
-   0.265,
+   0.347,
+   0.353,
+   0.372,
    null,
-   0.252,
-   0.253,
-   0.247,
-   0.232,
-   0.214,
-   0.2
+   0.294,
+   0.277,
+   0.278,
+   0.299,
+   0.325,
+   0.301,
+   null
   ],
   "validShare": [
-   0.64,
-   0.61,
-   0.59,
-   0.6,
-   0.63,
-   0.65,
-   0.64,
-   0.62,
-   0.59,
-   0.59,
-   0.62
+   0.957,
+   0.957,
+   0.959,
+   0,
+   0.959,
+   0.959,
+   0.959,
+   0.959,
+   0.959,
+   0.959,
+   0
   ],
   "rank": {
-   "position": 6,
-   "of": 7,
+   "position": 66,
+   "of": 99,
    "stable": false,
    "parts": {
-    "dryness": 0.33,
-    "dryingSpeed": 0.56,
-    "people": 1
+    "dryness": 0.347,
+    "dryingSpeed": 0.661,
+    "people": 0.1
    }
   }
  },
  {
-  "psgc": "mock-toledo-city",
-  "name": "Toledo City",
-  "province": "Cebu",
-  "population": 207314,
+  "psgc": "0701202000",
+  "name": "Alicia",
+  "province": "Bohol",
+  "population": 24663,
   "soilMoisture": [
-   0.369,
-   0.35,
-   0.33,
-   0.317,
-   0.313,
-   0.312,
-   0.304,
+   0.338,
+   0.331,
+   0.332,
+   0.263,
+   0.239,
+   0.252,
+   0.243,
+   0.274,
    0.287,
-   0.267,
-   0.251,
+   0.291,
+   0.266
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "rank": {
+   "position": 81,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.417,
+    "dryingSpeed": 0.214,
+    "people": 0.255
+   }
+  }
+ },
+ {
+  "psgc": "0701203000",
+  "name": "Anda",
+  "province": "Bohol",
+  "population": 17835,
+  "soilMoisture": [
+   0.354,
+   0.36,
+   0.329,
+   0.245,
+   0.238,
+   0.242,
+   0.25,
+   0.243,
+   0.249,
+   0.263,
    0.245
   ],
   "validShare": [
-   0.8,
+   0.937,
+   0.937,
+   0.937,
+   0.937,
+   0.937,
+   0.937,
+   0.937,
+   0.937,
+   0.937,
+   0.937,
+   0.937
+  ],
+  "rank": {
+   "position": 23,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.611,
+    "dryingSpeed": 0.839,
+    "people": 0.189
+   }
+  }
+ },
+ {
+  "psgc": "0701204000",
+  "name": "Antequera",
+  "province": "Bohol",
+  "population": 14881,
+  "soilMoisture": [
+   0.345,
+   0.347,
+   0.406,
+   0.285,
+   0.326,
+   0.307,
+   0.307,
+   0.331,
+   0.338,
+   0.342,
+   0.295
+  ],
+  "validShare": [
+   0.999,
+   0.999,
+   0.999,
+   0.007,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.008
+  ],
+  "rank": {
+   "position": 93,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.062,
+    "dryingSpeed": 0.446,
+    "people": 0.152
+   }
+  }
+ },
+ {
+  "psgc": "0701205000",
+  "name": "Baclayon",
+  "province": "Bohol",
+  "population": 22754,
+  "soilMoisture": [
+   0.349,
+   0.356,
+   0.39,
+   null,
+   0.307,
+   0.294,
+   0.296,
+   0.314,
+   0.344,
+   0.316,
+   null
+  ],
+  "validShare": [
+   0.965,
+   0.965,
+   0.967,
+   0,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0
+  ],
+  "rank": {
+   "position": 58,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.243,
+    "dryingSpeed": 0.714,
+    "people": 0.239
+   }
+  }
+ },
+ {
+  "psgc": "0701206000",
+  "name": "Balilihan",
+  "province": "Bohol",
+  "population": 19747,
+  "soilMoisture": [
+   0.345,
+   0.348,
+   0.393,
+   null,
+   0.304,
+   0.286,
+   0.287,
+   0.318,
+   0.333,
+   0.327,
+   null
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0
+  ],
+  "rank": {
+   "position": 89,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.167,
+    "dryingSpeed": 0.357,
+    "people": 0.21
+   }
+  }
+ },
+ {
+  "psgc": "0701207000",
+  "name": "Batuan",
+  "province": "Bohol",
+  "population": 14423,
+  "soilMoisture": [
+   0.346,
+   0.348,
+   0.363,
+   null,
+   0.27,
+   0.26,
+   0.257,
+   0.293,
+   0.302,
+   0.307,
+   null
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0
+  ],
+  "rank": {
+   "position": 94,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.306,
+    "dryingSpeed": 0.179,
+    "people": 0.146
+   }
+  }
+ },
+ {
+  "psgc": "0701248000",
+  "name": "Bien Unido",
+  "province": "Bohol",
+  "population": 26278,
+  "soilMoisture": [
+   0.316,
+   0.327,
+   0.365,
+   0.304,
+   0.278,
+   0.28,
+   0.254,
+   0.305,
+   0.306,
+   0.293,
+   0.275
+  ],
+  "validShare": [
+   0.66,
+   0.66,
+   0.689,
+   0.689,
+   0.689,
+   0.689,
+   0.689,
+   0.689,
+   0.689,
+   0.689,
+   0.689
+  ],
+  "rank": {
+   "position": 70,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.403,
+    "dryingSpeed": 0.375,
+    "people": 0.268
+   }
+  }
+ },
+ {
+  "psgc": "0701208000",
+  "name": "Bilar",
+  "province": "Bohol",
+  "population": 18877,
+  "soilMoisture": [
+   0.341,
+   0.342,
+   0.352,
+   null,
+   0.26,
+   0.25,
+   0.25,
+   0.269,
+   0.285,
+   0.282,
+   null
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0
+  ],
+  "rank": {
+   "position": 60,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.479,
+    "dryingSpeed": 0.5,
+    "people": 0.201
+   }
+  }
+ },
+ {
+  "psgc": "0701209000",
+  "name": "Buenavista",
+  "province": "Bohol",
+  "population": 31095,
+  "soilMoisture": [
+   0.339,
+   0.341,
+   0.387,
+   null,
+   0.244,
+   0.244,
+   0.271,
+   0.268,
+   0.306,
+   0.31,
+   null
+  ],
+  "validShare": [
+   0.926,
+   0.926,
+   0.927,
+   0,
+   0.927,
+   0.927,
+   0.927,
+   0.927,
+   0.927,
+   0.927,
+   0
+  ],
+  "rank": {
+   "position": 77,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.285,
+    "dryingSpeed": 0.375,
+    "people": 0.302
+   }
+  }
+ },
+ {
+  "psgc": "0701210000",
+  "name": "Calape",
+  "province": "Bohol",
+  "population": 33022,
+  "soilMoisture": [
+   0.345,
+   0.352,
+   0.41,
+   0.311,
+   0.317,
+   0.294,
+   0.317,
+   0.329,
+   0.329,
+   0.351,
+   0.316
+  ],
+  "validShare": [
    0.78,
-   0.79,
-   0.82,
-   0.84,
-   0.83,
-   0.81,
    0.78,
-   0.78,
-   0.81,
+   0.783,
+   0.263,
+   0.783,
+   0.783,
+   0.783,
+   0.783,
+   0.783,
+   0.783,
+   0.265
+  ],
+  "rank": {
+   "position": 87,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.0,
+    "dryingSpeed": 0.464,
+    "people": 0.314
+   }
+  }
+ },
+ {
+  "psgc": "0701211000",
+  "name": "Candijay",
+  "province": "Bohol",
+  "population": 30142,
+  "soilMoisture": [
+   0.36,
+   0.359,
+   0.34,
+   0.264,
+   0.242,
+   0.256,
+   0.251,
+   0.266,
+   0.281,
+   0.288,
+   0.262
+  ],
+  "validShare": [
+   0.815,
+   0.815,
+   0.817,
+   0.817,
+   0.817,
+   0.817,
+   0.817,
+   0.817,
+   0.817,
+   0.817,
+   0.817
+  ],
+  "rank": {
+   "position": 63,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.438,
+    "dryingSpeed": 0.411,
+    "people": 0.296
+   }
+  }
+ },
+ {
+  "psgc": "0701212000",
+  "name": "Carmen",
+  "province": "Bohol",
+  "population": 50249,
+  "soilMoisture": [
+   0.343,
+   0.346,
+   0.346,
+   null,
+   0.245,
+   0.249,
+   0.243,
+   0.289,
+   0.299,
+   0.303,
+   null
+  ],
+  "validShare": [
+   0.999,
+   0.999,
+   0.999,
+   0,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0
+  ],
+  "rank": {
+   "position": 90,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.333,
+    "dryingSpeed": 0.0,
+    "people": 0.4
+   }
+  }
+ },
+ {
+  "psgc": "0701213000",
+  "name": "Catigbian",
+  "province": "Bohol",
+  "population": 23812,
+  "soilMoisture": [
+   0.351,
+   0.355,
+   0.393,
+   null,
+   0.304,
+   0.283,
+   0.286,
+   0.338,
+   0.34,
+   0.346,
+   null
+  ],
+  "validShare": [
+   0.999,
+   0.999,
+   0.999,
+   0,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0
+  ],
+  "rank": {
+   "position": 99,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.035,
+    "dryingSpeed": 0.0,
+    "people": 0.248
+   }
+  }
+ },
+ {
+  "psgc": "0701242000",
+  "name": "City of Tagbilaran",
+  "province": "Bohol",
+  "population": 106120,
+  "soilMoisture": [
+   0.374,
+   0.383,
+   0.412,
+   null,
+   0.325,
+   0.312,
+   0.313,
+   0.335,
+   0.357,
+   0.333,
+   null
+  ],
+  "validShare": [
+   0.807,
+   0.807,
+   0.808,
+   0,
+   0.808,
+   0.808,
+   0.808,
+   0.808,
+   0.808,
+   0.808,
+   0
+  ],
+  "rank": {
+   "position": 37,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.125,
+    "dryingSpeed": 0.714,
+    "people": 0.551
+   }
+  }
+ },
+ {
+  "psgc": "0701214000",
+  "name": "Clarin",
+  "province": "Bohol",
+  "population": 21318,
+  "soilMoisture": [
+   0.35,
+   0.348,
+   0.376,
+   null,
+   0.281,
+   0.271,
+   0.288,
+   0.316,
+   0.33,
+   0.333,
+   null
+  ],
+  "validShare": [
+   0.912,
+   0.912,
+   0.912,
+   0,
+   0.912,
+   0.912,
+   0.912,
+   0.912,
+   0.912,
+   0.912,
+   0
+  ],
+  "rank": {
+   "position": 95,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.125,
+    "dryingSpeed": 0.268,
+    "people": 0.225
+   }
+  }
+ },
+ {
+  "psgc": "0701215000",
+  "name": "Corella",
+  "province": "Bohol",
+  "population": 9889,
+  "soilMoisture": [
+   0.342,
+   0.344,
+   0.403,
+   null,
+   0.316,
+   0.297,
+   0.297,
+   0.327,
+   0.34,
+   0.326,
+   null
+  ],
+  "validShare": [
+   0.999,
+   0.999,
+   0.999,
+   0,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0
+  ],
+  "rank": {
+   "position": 85,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.174,
+    "dryingSpeed": 0.554,
+    "people": 0.069
+   }
+  }
+ },
+ {
+  "psgc": "0701216000",
+  "name": "Cortes",
+  "province": "Bohol",
+  "population": 18976,
+  "soilMoisture": [
+   0.346,
+   0.353,
+   0.398,
+   null,
+   0.316,
+   0.298,
+   0.302,
+   0.328,
+   0.339,
+   0.335,
+   null
+  ],
+  "validShare": [
+   0.918,
+   0.918,
+   0.92,
+   0,
+   0.92,
+   0.92,
+   0.92,
+   0.92,
+   0.92,
+   0.92,
+   0
+  ],
+  "rank": {
+   "position": 86,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.111,
+    "dryingSpeed": 0.482,
+    "people": 0.202
+   }
+  }
+ },
+ {
+  "psgc": "0701217000",
+  "name": "Dagohoy",
+  "province": "Bohol",
+  "population": 20068,
+  "soilMoisture": [
+   0.335,
+   0.333,
+   0.345,
+   null,
+   0.25,
+   0.252,
+   0.245,
+   0.288,
+   0.305,
+   0.303,
+   null
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0
+  ],
+  "rank": {
+   "position": 96,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.333,
+    "dryingSpeed": 0.036,
+    "people": 0.213
+   }
+  }
+ },
+ {
+  "psgc": "0701218000",
+  "name": "Danao",
+  "province": "Bohol",
+  "population": 20299,
+  "soilMoisture": [
+   0.35,
+   0.341,
+   0.362,
+   null,
+   0.254,
+   0.244,
+   0.264,
+   0.293,
+   0.312,
+   0.309,
+   null
+  ],
+  "validShare": [
+   0.999,
+   0.999,
+   0.999,
+   0,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0
+  ],
+  "rank": {
+   "position": 88,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.292,
+    "dryingSpeed": 0.268,
+    "people": 0.215
+   }
+  }
+ },
+ {
+  "psgc": "0701219000",
+  "name": "Dauis",
+  "province": "Bohol",
+  "population": 53864,
+  "soilMoisture": [
+   0.355,
+   0.37,
+   0.405,
+   0.303,
+   0.313,
+   0.288,
+   0.285,
+   0.323,
+   0.342,
+   0.318,
+   0.313
+  ],
+  "validShare": [
+   0.902,
+   0.902,
+   0.903,
+   0.269,
+   0.903,
+   0.903,
+   0.903,
+   0.903,
+   0.903,
+   0.903,
+   0.274
+  ],
+  "rank": {
+   "position": 65,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.229,
+    "dryingSpeed": 0.482,
+    "people": 0.414
+   }
+  }
+ },
+ {
+  "psgc": "0701220000",
+  "name": "Dimiao",
+  "province": "Bohol",
+  "population": 14894,
+  "soilMoisture": [
+   0.355,
+   0.361,
+   0.335,
+   null,
+   0.236,
+   0.228,
+   0.232,
+   0.256,
+   0.269,
+   0.266,
+   null
+  ],
+  "validShare": [
+   0.99,
+   0.99,
+   0.99,
+   0,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0
+  ],
+  "rank": {
+   "position": 56,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.59,
+    "dryingSpeed": 0.464,
+    "people": 0.153
+   }
+  }
+ },
+ {
+  "psgc": "0701221000",
+  "name": "Duero",
+  "province": "Bohol",
+  "population": 19136,
+  "soilMoisture": [
+   0.339,
+   0.344,
+   0.302,
+   0.236,
+   0.215,
+   0.217,
+   0.219,
+   0.23,
+   0.24,
+   0.253,
+   0.228
+  ],
+  "validShare": [
+   0.977,
+   0.977,
+   0.977,
+   0.236,
+   0.977,
+   0.977,
+   0.977,
+   0.977,
+   0.977,
+   0.977,
+   0.237
+  ],
+  "rank": {
+   "position": 42,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.681,
+    "dryingSpeed": 0.464,
+    "people": 0.203
+   }
+  }
+ },
+ {
+  "psgc": "0701222000",
+  "name": "Garcia Hernandez",
+  "province": "Bohol",
+  "population": 24450,
+  "soilMoisture": [
+   0.351,
+   0.355,
+   0.316,
+   null,
+   0.217,
+   0.216,
+   0.215,
+   0.229,
+   0.244,
+   0.252,
+   null
+  ],
+  "validShare": [
+   0.983,
+   0.983,
+   0.984,
+   0,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0
+  ],
+  "rank": {
+   "position": 41,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.687,
+    "dryingSpeed": 0.411,
+    "people": 0.253
+   }
+  }
+ },
+ {
+  "psgc": "0701226000",
+  "name": "Getafe",
+  "province": "Bohol",
+  "population": 33485,
+  "soilMoisture": [
+   0.334,
+   0.339,
+   0.358,
+   null,
+   0.27,
+   0.248,
+   0.255,
+   0.277,
+   0.305,
+   0.31,
+   null
+  ],
+  "validShare": [
+   0.761,
+   0.761,
+   0.768,
+   0,
+   0.768,
+   0.768,
+   0.768,
+   0.768,
+   0.768,
+   0.768,
+   0
+  ],
+  "rank": {
+   "position": 91,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.285,
+    "dryingSpeed": 0.089,
+    "people": 0.317
+   }
+  }
+ },
+ {
+  "psgc": "0701223000",
+  "name": "Guindulman",
+  "province": "Bohol",
+  "population": 34660,
+  "soilMoisture": [
+   0.342,
+   0.347,
+   0.32,
+   0.249,
+   0.225,
+   0.235,
+   0.229,
+   0.246,
+   0.259,
+   0.264,
+   0.241
+  ],
+  "validShare": [
+   0.967,
+   0.967,
+   0.969,
+   0.946,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.947
+  ],
+  "rank": {
+   "position": 38,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.604,
+    "dryingSpeed": 0.446,
+    "people": 0.324
+   }
+  }
+ },
+ {
+  "psgc": "0701224000",
+  "name": "Inabanga",
+  "province": "Bohol",
+  "population": 49133,
+  "soilMoisture": [
+   0.338,
+   0.34,
+   0.376,
+   null,
+   0.253,
+   0.254,
+   0.275,
+   0.281,
+   0.302,
+   0.304,
+   null
+  ],
+  "validShare": [
+   0.844,
+   0.844,
+   0.848,
+   0,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0
+  ],
+  "rank": {
+   "position": 52,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.326,
+    "dryingSpeed": 0.554,
+    "people": 0.395
+   }
+  }
+ },
+ {
+  "psgc": "0701225000",
+  "name": "Jagna",
+  "province": "Bohol",
+  "population": 36674,
+  "soilMoisture": [
+   0.347,
+   0.353,
+   0.306,
+   null,
+   0.211,
+   0.213,
+   0.209,
+   0.224,
+   0.237,
+   0.245,
+   null
+  ],
+  "validShare": [
+   0.975,
+   0.975,
+   0.975,
+   0,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0
+  ],
+  "rank": {
+   "position": 32,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.736,
+    "dryingSpeed": 0.429,
+    "people": 0.336
+   }
+  }
+ },
+ {
+  "psgc": "0701227000",
+  "name": "Lila",
+  "province": "Bohol",
+  "population": 11450,
+  "soilMoisture": [
+   0.381,
+   0.394,
+   0.355,
+   null,
+   0.249,
+   0.239,
+   0.247,
+   0.273,
+   0.283,
+   0.271,
+   null
+  ],
+  "validShare": [
+   0.926,
+   0.926,
+   0.926,
+   0,
+   0.926,
+   0.926,
+   0.926,
+   0.926,
+   0.926,
+   0.926,
+   0
+  ],
+  "rank": {
+   "position": 51,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.556,
+    "dryingSpeed": 0.643,
+    "people": 0.099
+   }
+  }
+ },
+ {
+  "psgc": "0701228000",
+  "name": "Loay",
+  "province": "Bohol",
+  "population": 17957,
+  "soilMoisture": [
+   0.363,
+   0.373,
+   0.357,
+   null,
+   0.273,
+   0.256,
+   0.26,
+   0.282,
+   0.304,
+   0.279,
+   null
+  ],
+  "validShare": [
+   0.824,
+   0.824,
+   0.826,
+   0,
+   0.826,
+   0.826,
+   0.826,
+   0.826,
+   0.826,
+   0.826,
+   0
+  ],
+  "rank": {
+   "position": 35,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.5,
+    "dryingSpeed": 0.732,
+    "people": 0.19
+   }
+  }
+ },
+ {
+  "psgc": "0701229000",
+  "name": "Loboc",
+  "province": "Bohol",
+  "population": 17338,
+  "soilMoisture": [
+   0.347,
+   0.352,
+   0.362,
+   null,
+   0.277,
+   0.26,
+   0.261,
+   0.285,
+   0.302,
+   0.286,
+   null
+  ],
+  "validShare": [
+   0.976,
+   0.976,
+   0.976,
+   0,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0
+  ],
+  "rank": {
+   "position": 53,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.451,
+    "dryingSpeed": 0.625,
+    "people": 0.183
+   }
+  }
+ },
+ {
+  "psgc": "0701230000",
+  "name": "Loon",
+  "province": "Bohol",
+  "population": 43857,
+  "soilMoisture": [
+   0.352,
+   0.357,
+   0.422,
+   0.33,
+   0.335,
+   0.319,
+   0.322,
+   0.337,
+   0.33,
+   0.345,
+   0.33
+  ],
+  "validShare": [
+   0.908,
+   0.908,
+   0.909,
+   0.848,
+   0.909,
+   0.909,
+   0.909,
+   0.909,
+   0.909,
+   0.909,
+   0.85
+  ],
+  "rank": {
+   "position": 69,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.042,
+    "dryingSpeed": 0.661,
+    "people": 0.372
+   }
+  }
+ },
+ {
+  "psgc": "0701231000",
+  "name": "Mabini",
+  "province": "Bohol",
+  "population": 28224,
+  "soilMoisture": [
+   0.319,
+   0.327,
+   0.341,
+   0.273,
+   0.241,
+   0.255,
+   0.253,
+   0.264,
+   0.279,
+   0.273,
+   0.253
+  ],
+  "validShare": [
+   0.87,
+   0.87,
+   0.871,
+   0.871,
+   0.871,
+   0.871,
+   0.871,
+   0.871,
+   0.871,
+   0.871,
+   0.871
+  ],
+  "rank": {
+   "position": 28,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.542,
+    "dryingSpeed": 0.714,
+    "people": 0.282
+   }
+  }
+ },
+ {
+  "psgc": "0701232000",
+  "name": "Maribojoc",
+  "province": "Bohol",
+  "population": 22268,
+  "soilMoisture": [
+   0.345,
+   0.353,
+   0.412,
+   0.321,
+   0.332,
+   0.317,
+   0.315,
+   0.339,
+   0.334,
+   0.338,
+   0.326
+  ],
+  "validShare": [
+   0.897,
+   0.897,
+   0.901,
+   0.461,
+   0.901,
+   0.901,
+   0.901,
+   0.901,
+   0.901,
+   0.901,
+   0.465
+  ],
+  "rank": {
+   "position": 74,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.09,
+    "dryingSpeed": 0.661,
+    "people": 0.234
+   }
+  }
+ },
+ {
+  "psgc": "0701233000",
+  "name": "Panglao",
+  "province": "Bohol",
+  "population": 41760,
+  "soilMoisture": [
+   0.348,
+   0.358,
+   0.357,
+   0.266,
+   0.279,
+   0.255,
+   0.228,
+   0.272,
+   0.295,
+   0.273,
+   0.293
+  ],
+  "validShare": [
+   0.868,
+   0.868,
+   0.872,
+   0.857,
+   0.872,
+   0.872,
+   0.872,
+   0.872,
+   0.872,
+   0.872,
+   0.858
+  ],
+  "rank": {
+   "position": 61,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.542,
+    "dryingSpeed": 0.268,
+    "people": 0.362
+   }
+  }
+ },
+ {
+  "psgc": "0701234000",
+  "name": "Pilar",
+  "province": "Bohol",
+  "population": 28860,
+  "soilMoisture": [
+   0.332,
+   0.337,
+   0.329,
+   0.259,
+   0.246,
+   0.252,
+   0.244,
+   0.277,
+   0.288,
+   0.292,
+   0.252
+  ],
+  "validShare": [
+   0.992,
+   0.992,
+   0.994,
+   0.243,
+   0.994,
+   0.994,
+   0.994,
+   0.994,
+   0.994,
+   0.994,
+   0.235
+  ],
+  "rank": {
+   "position": 79,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.41,
+    "dryingSpeed": 0.214,
+    "people": 0.287
+   }
+  }
+ },
+ {
+  "psgc": "0701235000",
+  "name": "President Carlos P. Garcia",
+  "province": "Bohol",
+  "population": 23858,
+  "soilMoisture": [
+   0.345,
+   0.352,
+   0.327,
+   0.263,
+   0.247,
+   0.269,
+   0.238,
+   0.264,
+   0.271,
+   0.266,
+   0.242
+  ],
+  "validShare": [
+   0.633,
+   0.633,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646
+  ],
+  "rank": {
+   "position": 36,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.59,
+    "dryingSpeed": 0.571,
+    "people": 0.248
+   }
+  }
+ },
+ {
+  "psgc": "0701236000",
+  "name": "Sagbayan",
+  "province": "Bohol",
+  "population": 25329,
+  "soilMoisture": [
+   0.341,
+   0.344,
+   0.371,
+   null,
+   0.284,
+   0.261,
+   0.276,
+   0.314,
+   0.324,
+   0.33,
+   null
+  ],
+  "validShare": [
+   0.998,
+   0.998,
+   0.998,
+   0,
+   0.998,
+   0.998,
+   0.998,
+   0.998,
+   0.998,
+   0.998,
+   0
+  ],
+  "rank": {
+   "position": 97,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.146,
+    "dryingSpeed": 0.107,
+    "people": 0.26
+   }
+  }
+ },
+ {
+  "psgc": "0701237000",
+  "name": "San Isidro",
+  "province": "Bohol",
+  "population": 10228,
+  "soilMoisture": [
+   0.339,
+   0.343,
+   0.406,
+   null,
+   0.318,
+   0.296,
+   0.304,
+   0.331,
+   0.336,
+   0.35,
+   null
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0
+  ],
+  "rank": {
+   "position": 98,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.007,
+    "dryingSpeed": 0.25,
+    "people": 0.076
+   }
+  }
+ },
+ {
+  "psgc": "0701238000",
+  "name": "San Miguel",
+  "province": "Bohol",
+  "population": 26124,
+  "soilMoisture": [
+   0.329,
+   0.327,
+   0.342,
+   0.257,
+   0.268,
+   0.261,
+   0.275,
+   0.303,
+   0.307,
+   0.302,
+   0.25
+  ],
+  "validShare": [
+   0.999,
+   0.999,
+   1.0,
+   0.428,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0.428
+  ],
+  "rank": {
+   "position": 59,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.34,
+    "dryingSpeed": 0.589,
+    "people": 0.267
+   }
+  }
+ },
+ {
+  "psgc": "0701239000",
+  "name": "Sevilla",
+  "province": "Bohol",
+  "population": 11425,
+  "soilMoisture": [
+   0.355,
+   0.356,
+   0.381,
+   null,
+   0.285,
+   0.268,
+   0.27,
+   0.299,
+   0.323,
+   0.313,
+   null
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0
+  ],
+  "rank": {
+   "position": 92,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.264,
+    "dryingSpeed": 0.304,
+    "people": 0.099
+   }
+  }
+ },
+ {
+  "psgc": "0701240000",
+  "name": "Sierra Bullones",
+  "province": "Bohol",
+  "population": 26154,
+  "soilMoisture": [
+   0.345,
+   0.35,
+   0.329,
+   null,
+   0.233,
+   0.235,
+   0.231,
+   0.262,
+   0.272,
+   0.281,
+   null
+  ],
+  "validShare": [
+   1.0,
+   1.0,
+   1.0,
+   0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0
+  ],
+  "rank": {
+   "position": 78,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.486,
+    "dryingSpeed": 0.179,
+    "people": 0.267
+   }
+  }
+ },
+ {
+  "psgc": "0701241000",
+  "name": "Sikatuna",
+  "province": "Bohol",
+  "population": 7031,
+  "soilMoisture": [
+   0.34,
+   0.34,
+   0.384,
+   null,
+   0.296,
+   0.277,
+   0.277,
+   0.303,
+   0.325,
+   0.305,
+   null
+  ],
+  "validShare": [
+   0.999,
+   0.999,
+   0.999,
+   0,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0.999,
+   0
+  ],
+  "rank": {
+   "position": 80,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.319,
+    "dryingSpeed": 0.571,
+    "people": 0.0
+   }
+  }
+ },
+ {
+  "psgc": "0701243000",
+  "name": "Talibon",
+  "province": "Bohol",
+  "population": 71450,
+  "soilMoisture": [
+   0.336,
+   0.34,
+   0.357,
+   0.307,
+   0.256,
+   0.253,
+   0.26,
+   0.303,
+   0.313,
+   0.314,
+   0.277
+  ],
+  "validShare": [
+   0.861,
+   0.861,
+   0.88,
+   0.19,
+   0.88,
+   0.88,
+   0.88,
+   0.88,
+   0.88,
+   0.88,
+   0.191
+  ],
+  "rank": {
+   "position": 83,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.257,
+    "dryingSpeed": 0.107,
+    "people": 0.471
+   }
+  }
+ },
+ {
+  "psgc": "0701244000",
+  "name": "Trinidad",
+  "province": "Bohol",
+  "population": 37191,
+  "soilMoisture": [
+   0.32,
+   0.319,
+   0.36,
+   0.277,
+   0.244,
+   0.246,
+   0.259,
+   0.275,
+   0.302,
+   0.298,
+   0.247
+  ],
+  "validShare": [
+   0.949,
+   0.949,
+   0.952,
+   0.48,
+   0.952,
+   0.952,
+   0.952,
+   0.952,
+   0.952,
+   0.952,
+   0.481
+  ],
+  "rank": {
+   "position": 68,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.368,
+    "dryingSpeed": 0.375,
+    "people": 0.338
+   }
+  }
+ },
+ {
+  "psgc": "0701245000",
+  "name": "Tubigon",
+  "province": "Bohol",
+  "population": 49275,
+  "soilMoisture": [
+   0.347,
+   0.349,
+   0.395,
+   null,
+   0.296,
+   0.282,
+   0.307,
+   0.328,
+   0.331,
+   0.345,
+   null
+  ],
+  "validShare": [
+   0.892,
+   0.892,
+   0.896,
+   0,
+   0.896,
+   0.896,
+   0.896,
+   0.896,
+   0.896,
+   0.896,
+   0
+  ],
+  "rank": {
+   "position": 84,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.042,
+    "dryingSpeed": 0.393,
+    "people": 0.396
+   }
+  }
+ },
+ {
+  "psgc": "0701246000",
+  "name": "Ubay",
+  "province": "Bohol",
+  "population": 82179,
+  "soilMoisture": [
+   0.296,
+   0.297,
+   0.331,
+   0.275,
+   0.253,
+   0.266,
+   0.266,
+   0.265,
+   0.285,
+   0.279,
+   0.251
+  ],
+  "validShare": [
+   0.893,
+   0.893,
+   0.901,
+   0.893,
+   0.901,
+   0.901,
+   0.901,
+   0.901,
+   0.901,
+   0.901,
+   0.893
+  ],
+  "rank": {
+   "position": 13,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.5,
+    "dryingSpeed": 0.839,
+    "people": 0.499
+   }
+  }
+ },
+ {
+  "psgc": "0701247000",
+  "name": "Valencia",
+  "province": "Bohol",
+  "population": 28535,
+  "soilMoisture": [
+   0.351,
+   0.357,
+   0.324,
+   null,
+   0.228,
+   0.223,
+   0.224,
+   0.243,
+   0.26,
+   0.259,
+   null
+  ],
+  "validShare": [
+   0.99,
+   0.99,
+   0.991,
+   0,
+   0.991,
+   0.991,
+   0.991,
+   0.991,
+   0.991,
+   0.991,
+   0
+  ],
+  "rank": {
+   "position": 39,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.639,
+    "dryingSpeed": 0.446,
+    "people": 0.285
+   }
+  }
+ },
+ {
+  "psgc": "0702201000",
+  "name": "Alcantara",
+  "province": "Cebu",
+  "population": 17490,
+  "soilMoisture": [
+   0.344,
+   0.358,
+   0.3,
+   0.25,
+   0.219,
+   0.24,
+   0.238,
+   0.24,
+   0.276,
+   0.285,
+   0.266
+  ],
+  "validShare": [
+   0.956,
+   0.956,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958
+  ],
+  "rank": {
+   "position": 82,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.458,
+    "dryingSpeed": 0.232,
+    "people": 0.185
+   }
+  }
+ },
+ {
+  "psgc": "0702202000",
+  "name": "Alcoy",
+  "province": "Cebu",
+  "population": 19207,
+  "soilMoisture": [
+   0.326,
+   0.33,
+   0.304,
+   0.25,
+   0.224,
+   0.222,
+   0.232,
+   0.24,
+   0.265,
+   0.263,
+   0.228
+  ],
+  "validShare": [
+   0.964,
+   0.964,
+   0.964,
+   0.964,
+   0.964,
+   0.964,
+   0.964,
+   0.964,
+   0.964,
+   0.964,
+   0.964
+  ],
+  "rank": {
+   "position": 46,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.611,
+    "dryingSpeed": 0.518,
+    "people": 0.204
+   }
+  }
+ },
+ {
+  "psgc": "0702203000",
+  "name": "Alegria",
+  "province": "Cebu",
+  "population": 26520,
+  "soilMoisture": [
+   0.328,
+   0.335,
+   0.278,
+   0.253,
+   0.236,
+   0.233,
+   0.231,
+   0.234,
+   0.245,
+   0.26,
+   0.248
+  ],
+  "validShare": [
+   0.982,
+   0.982,
+   0.983,
+   0.983,
+   0.983,
+   0.983,
+   0.983,
+   0.983,
+   0.983,
+   0.983,
+   0.983
+  ],
+  "rank": {
+   "position": 34,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.632,
+    "dryingSpeed": 0.554,
+    "people": 0.27
+   }
+  }
+ },
+ {
+  "psgc": "0702204000",
+  "name": "Aloguinsan",
+  "province": "Cebu",
+  "population": 34990,
+  "soilMoisture": [
+   0.333,
+   0.343,
+   0.308,
+   0.272,
+   0.227,
+   0.248,
+   0.237,
+   0.25,
+   0.264,
+   0.271,
+   0.273
+  ],
+  "validShare": [
+   0.976,
+   0.976,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978
+  ],
+  "rank": {
+   "position": 43,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.556,
+    "dryingSpeed": 0.464,
+    "people": 0.326
+   }
+  }
+ },
+ {
+  "psgc": "0702205000",
+  "name": "Argao",
+  "province": "Cebu",
+  "population": 78111,
+  "soilMoisture": [
+   0.335,
+   0.338,
+   0.315,
+   0.27,
+   0.227,
+   0.238,
+   0.234,
+   0.255,
+   0.275,
+   0.269,
+   0.235
+  ],
+  "validShare": [
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984,
+   0.984
+  ],
+  "rank": {
+   "position": 31,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.569,
+    "dryingSpeed": 0.446,
+    "people": 0.489
+   }
+  }
+ },
+ {
+  "psgc": "0702206000",
+  "name": "Asturias",
+  "province": "Cebu",
+  "population": 54777,
+  "soilMoisture": [
+   0.333,
+   0.348,
+   0.326,
+   0.248,
+   0.232,
+   0.234,
+   0.242,
+   0.259,
+   0.273,
+   0.291,
+   0.259
+  ],
+  "validShare": [
+   0.978,
+   0.978,
+   0.981,
+   0.981,
+   0.981,
+   0.981,
+   0.981,
+   0.981,
+   0.981,
+   0.981,
+   0.981
+  ],
+  "rank": {
+   "position": 71,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.417,
+    "dryingSpeed": 0.196,
+    "people": 0.417
+   }
+  }
+ },
+ {
+  "psgc": "0702207000",
+  "name": "Badian",
+  "province": "Cebu",
+  "population": 44626,
+  "soilMoisture": [
+   0.325,
+   0.34,
+   0.29,
+   0.251,
+   0.21,
+   0.237,
+   0.236,
+   0.239,
+   0.248,
+   0.257,
+   0.255
+  ],
+  "validShare": [
+   0.958,
+   0.958,
+   0.96,
+   0.96,
+   0.96,
+   0.96,
+   0.96,
+   0.96,
+   0.96,
+   0.96,
+   0.96
+  ],
+  "rank": {
+   "position": 19,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.653,
+    "dryingSpeed": 0.696,
+    "people": 0.375
+   }
+  }
+ },
+ {
+  "psgc": "0702208000",
+  "name": "Balamban",
+  "province": "Cebu",
+  "population": 98170,
+  "soilMoisture": [
+   0.336,
+   0.345,
+   0.319,
+   0.251,
+   0.233,
+   0.235,
+   0.24,
+   0.257,
+   0.268,
+   0.283,
+   0.258
+  ],
+  "validShare": [
+   0.974,
+   0.974,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975
+  ],
+  "rank": {
+   "position": 50,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.472,
+    "dryingSpeed": 0.304,
+    "people": 0.536
+   }
+  }
+ },
+ {
+  "psgc": "0702209000",
+  "name": "Bantayan",
+  "province": "Cebu",
+  "population": 87394,
+  "soilMoisture": [
+   0.345,
+   0.354,
+   0.222,
+   0.199,
+   0.192,
+   0.195,
+   0.194,
+   0.211,
+   0.211,
+   0.214,
+   0.194
+  ],
+  "validShare": [
+   0.843,
+   0.843,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0.848,
+   0.848
+  ],
+  "rank": {
+   "position": 2,
+   "of": 99,
+   "stable": true,
+   "parts": {
+    "dryness": 0.951,
+    "dryingSpeed": 0.714,
+    "people": 0.512
+   }
+  }
+ },
+ {
+  "psgc": "0702210000",
+  "name": "Barili",
+  "province": "Cebu",
+  "population": 82427,
+  "soilMoisture": [
+   0.337,
+   0.346,
+   0.314,
+   0.279,
+   0.227,
+   0.238,
+   0.241,
+   0.276,
+   0.279,
+   0.272,
+   0.275
+  ],
+  "validShare": [
+   0.985,
+   0.985,
+   0.986,
+   0.986,
+   0.986,
+   0.986,
+   0.986,
+   0.986,
+   0.986,
+   0.986,
+   0.986
+  ],
+  "rank": {
+   "position": 27,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.549,
+    "dryingSpeed": 0.518,
+    "people": 0.5
+   }
+  }
+ },
+ {
+  "psgc": "0702212000",
+  "name": "Boljoon",
+  "province": "Cebu",
+  "population": 17153,
+  "soilMoisture": [
+   0.325,
+   0.334,
+   0.287,
+   0.233,
+   0.205,
+   0.205,
+   0.192,
+   0.216,
+   0.245,
+   0.247,
+   0.229
+  ],
+  "validShare": [
+   0.989,
+   0.989,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0.99,
+   0.99
+  ],
+  "rank": {
+   "position": 73,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.722,
+    "dryingSpeed": 0.089,
+    "people": 0.181
+   }
+  }
+ },
+ {
+  "psgc": "0702213000",
+  "name": "Borbon",
+  "province": "Cebu",
+  "population": 40097,
+  "soilMoisture": [
+   0.344,
+   0.345,
+   0.307,
+   0.262,
+   0.239,
+   0.234,
+   0.244,
+   0.274,
+   0.273,
+   0.287,
+   0.238
+  ],
+  "validShare": [
+   0.994,
+   0.994,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995
+  ],
+  "rank": {
+   "position": 67,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.444,
+    "dryingSpeed": 0.304,
+    "people": 0.354
+   }
+  }
+ },
+ {
+  "psgc": "0702215000",
+  "name": "Carmen",
+  "province": "Cebu",
+  "population": 60230,
+  "soilMoisture": [
+   0.355,
+   0.352,
+   0.316,
+   0.271,
+   0.239,
+   0.233,
+   0.239,
+   0.27,
+   0.265,
+   0.278,
+   0.221
+  ],
+  "validShare": [
+   0.964,
+   0.964,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965
+  ],
+  "rank": {
+   "position": 49,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.507,
+    "dryingSpeed": 0.375,
+    "people": 0.436
+   }
+  }
+ },
+ {
+  "psgc": "0702216000",
+  "name": "Catmon",
+  "province": "Cebu",
+  "population": 34608,
+  "soilMoisture": [
+   0.347,
+   0.346,
+   0.315,
+   0.267,
+   0.234,
+   0.234,
+   0.238,
+   0.275,
+   0.268,
+   0.285,
+   0.232
+  ],
+  "validShare": [
+   0.988,
+   0.988,
+   0.988,
+   0.988,
+   0.988,
+   0.988,
+   0.988,
+   0.988,
+   0.988,
+   0.988,
+   0.988
+  ],
+  "rank": {
+   "position": 72,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.458,
+    "dryingSpeed": 0.232,
+    "people": 0.324
+   }
+  }
+ },
+ {
+  "psgc": "0702211000",
+  "name": "City of Bogo",
+  "province": "Cebu",
+  "population": 90187,
+  "soilMoisture": [
+   0.341,
+   0.336,
+   0.216,
+   0.191,
+   0.196,
+   0.192,
+   0.188,
+   0.212,
+   0.215,
+   0.216,
+   0.19
+  ],
+  "validShare": [
+   0.938,
+   0.938,
+   0.941,
+   0.941,
+   0.941,
+   0.941,
+   0.941,
+   0.941,
+   0.941,
+   0.941,
+   0.941
+  ],
+  "rank": {
+   "position": 6,
+   "of": 99,
+   "stable": true,
+   "parts": {
+    "dryness": 0.937,
+    "dryingSpeed": 0.571,
+    "people": 0.518
+   }
+  }
+ },
+ {
+  "psgc": "0702214000",
+  "name": "City of Carcar",
+  "province": "Cebu",
+  "population": 140308,
+  "soilMoisture": [
+   0.341,
+   0.345,
+   0.311,
+   0.263,
+   0.233,
+   0.239,
+   0.242,
+   0.272,
+   0.271,
+   0.275,
+   0.25
+  ],
+  "validShare": [
+   0.956,
+   0.956,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958
+  ],
+  "rank": {
+   "position": 25,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.528,
+    "dryingSpeed": 0.482,
+    "people": 0.608
+   }
+  }
+ },
+ {
+  "psgc": "0730600000",
+  "name": "City of Cebu",
+  "province": "Cebu",
+  "population": 965332,
+  "soilMoisture": [
+   0.34,
+   0.342,
+   0.305,
+   0.255,
+   0.228,
+   0.222,
+   0.225,
+   0.255,
+   0.261,
+   0.269,
+   0.216
+  ],
+  "validShare": [
+   0.874,
+   0.874,
+   0.875,
+   0.875,
+   0.875,
+   0.875,
+   0.875,
+   0.875,
+   0.875,
+   0.875,
+   0.875
+  ],
+  "rank": {
+   "position": 11,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.569,
+    "dryingSpeed": 0.286,
+    "people": 1.0
+   }
+  }
+ },
+ {
+  "psgc": "0731100000",
+  "name": "City of Lapu-Lapu",
+  "province": "Cebu",
+  "population": 497813,
+  "soilMoisture": [
+   0.333,
+   0.335,
+   0.296,
+   0.228,
+   0.243,
+   0.23,
+   0.235,
+   0.247,
+   0.266,
+   0.259,
+   0.2
+  ],
+  "validShare": [
+   0.423,
+   0.423,
+   0.435,
+   0.188,
+   0.435,
+   0.435,
+   0.435,
+   0.435,
+   0.435,
+   0.435,
+   0.191
+  ],
+  "rank": null
+ },
+ {
+  "psgc": "0731300000",
+  "name": "City of Mandaue",
+  "province": "Cebu",
+  "population": 364482,
+  "soilMoisture": [
+   0.333,
+   0.334,
+   0.313,
+   0.26,
+   0.233,
+   0.218,
+   0.224,
+   0.234,
+   0.253,
+   0.267,
+   0.195
+  ],
+  "validShare": [
+   0.185,
+   0.185,
+   0.189,
+   0.189,
+   0.189,
+   0.189,
+   0.189,
+   0.189,
+   0.189,
+   0.189,
+   0.189
+  ],
+  "rank": null
+ },
+ {
+  "psgc": "0702234000",
+  "name": "City of Naga",
+  "province": "Cebu",
+  "population": 138727,
+  "soilMoisture": [
+   0.342,
+   0.341,
+   0.307,
+   0.257,
+   0.225,
+   0.232,
+   0.229,
+   0.249,
+   0.267,
+   0.269,
+   0.24
+  ],
+  "validShare": [
+   0.962,
+   0.962,
+   0.962,
+   0.962,
+   0.962,
+   0.962,
+   0.962,
+   0.962,
+   0.962,
+   0.962,
+   0.962
+  ],
+  "rank": {
+   "position": 29,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.569,
+    "dryingSpeed": 0.357,
+    "people": 0.606
+   }
+  }
+ },
+ {
+  "psgc": "0702250000",
+  "name": "City of Talisay",
+  "province": "Cebu",
+  "population": 263832,
+  "soilMoisture": [
+   0.347,
+   0.345,
+   0.315,
+   0.255,
+   0.232,
+   0.228,
+   0.234,
+   0.254,
+   0.26,
+   0.268,
+   0.224
+  ],
+  "validShare": [
+   0.731,
+   0.731,
+   0.739,
+   0.739,
+   0.739,
+   0.739,
+   0.739,
+   0.739,
+   0.739,
+   0.739,
+   0.739
+  ],
+  "rank": {
+   "position": 16,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.576,
+    "dryingSpeed": 0.464,
+    "people": 0.736
+   }
+  }
+ },
+ {
+  "psgc": "0702251000",
+  "name": "City of Toledo",
+  "province": "Cebu",
+  "population": 206692,
+  "soilMoisture": [
+   0.326,
+   0.335,
+   0.315,
+   0.257,
+   0.223,
+   0.229,
+   0.231,
+   0.254,
+   0.26,
+   0.263,
+   0.261
+  ],
+  "validShare": [
+   0.958,
+   0.958,
+   0.971,
+   0.971,
+   0.971,
+   0.971,
+   0.971,
+   0.971,
+   0.971,
+   0.971,
+   0.971
+  ],
+  "rank": {
+   "position": 14,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.611,
+    "dryingSpeed": 0.5,
+    "people": 0.687
+   }
+  }
+ },
+ {
+  "psgc": "0702218000",
+  "name": "Compostela",
+  "province": "Cebu",
+  "population": 58178,
+  "soilMoisture": [
+   0.357,
+   0.351,
+   0.309,
+   0.256,
+   0.235,
+   0.226,
+   0.23,
+   0.25,
+   0.269,
+   0.276,
+   0.212
+  ],
+  "validShare": [
+   0.98,
+   0.98,
+   0.98,
+   0.98,
+   0.98,
+   0.98,
+   0.98,
+   0.98,
+   0.98,
+   0.98,
+   0.98
+  ],
+  "rank": {
+   "position": 57,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.521,
+    "dryingSpeed": 0.25,
+    "people": 0.429
+   }
+  }
+ },
+ {
+  "psgc": "0702219000",
+  "name": "Consolacion",
+  "province": "Cebu",
+  "population": 153931,
+  "soilMoisture": [
+   0.346,
+   0.347,
+   0.308,
+   0.259,
+   0.229,
+   0.221,
+   0.223,
+   0.242,
+   0.26,
+   0.274,
+   0.201
+  ],
+  "validShare": [
+   0.812,
+   0.812,
+   0.819,
+   0.819,
+   0.819,
+   0.819,
+   0.819,
+   0.819,
+   0.819,
+   0.819,
+   0.819
+  ],
+  "rank": {
+   "position": 47,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.535,
+    "dryingSpeed": 0.161,
+    "people": 0.627
+   }
+  }
+ },
+ {
+  "psgc": "0702220000",
+  "name": "Cordova",
+  "province": "Cebu",
+  "population": 72915,
+  "soilMoisture": [
+   0.386,
+   0.386,
+   0.338,
+   0.279,
+   0.28,
+   0.255,
+   0.269,
+   0.284,
+   0.289,
+   0.289,
+   0.251
+  ],
+  "validShare": [
+   0.607,
+   0.607,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646,
+   0.646
+  ],
+  "rank": {
+   "position": 24,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.431,
+    "dryingSpeed": 0.714,
+    "people": 0.475
+   }
+  }
+ },
+ {
+  "psgc": "0702221000",
+  "name": "Daanbantayan",
+  "province": "Cebu",
+  "population": 95080,
+  "soilMoisture": [
+   0.354,
+   0.359,
+   0.227,
+   0.199,
+   0.194,
+   0.194,
+   0.194,
+   0.208,
+   0.22,
+   0.211,
+   0.199
+  ],
+  "validShare": [
+   0.901,
+   0.901,
+   0.905,
+   0.905,
+   0.905,
+   0.905,
+   0.905,
+   0.905,
+   0.905,
+   0.905,
+   0.905
+  ],
+  "rank": {
+   "position": 1,
+   "of": 99,
+   "stable": true,
+   "parts": {
+    "dryness": 0.972,
+    "dryingSpeed": 0.768,
+    "people": 0.529
+   }
+  }
+ },
+ {
+  "psgc": "0702222000",
+  "name": "Dalaguete",
+  "province": "Cebu",
+  "population": 75937,
+  "soilMoisture": [
+   0.335,
+   0.342,
+   0.31,
+   0.271,
+   0.254,
+   0.239,
+   0.255,
+   0.268,
+   0.285,
+   0.278,
+   0.225
+  ],
+  "validShare": [
+   0.977,
+   0.977,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978
+  ],
+  "rank": {
+   "position": 21,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.507,
+    "dryingSpeed": 0.661,
+    "people": 0.483
+   }
+  }
+ },
+ {
+  "psgc": "0702223000",
+  "name": "Danao City",
+  "province": "Cebu",
+  "population": 161307,
+  "soilMoisture": [
+   0.354,
+   0.353,
+   0.318,
+   0.263,
+   0.24,
+   0.235,
+   0.235,
+   0.265,
+   0.271,
+   0.283,
+   0.221
+  ],
+  "validShare": [
+   0.971,
+   0.971,
+   0.972,
+   0.972,
+   0.972,
+   0.972,
+   0.972,
+   0.972,
+   0.972,
+   0.972,
+   0.972
+  ],
+  "rank": {
+   "position": 48,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.472,
+    "dryingSpeed": 0.214,
+    "people": 0.637
+   }
+  }
+ },
+ {
+  "psgc": "0702224000",
+  "name": "Dumanjug",
+  "province": "Cebu",
+  "population": 59954,
+  "soilMoisture": [
+   0.34,
+   0.35,
+   0.307,
+   0.269,
+   0.226,
+   0.236,
+   0.24,
+   0.25,
+   0.278,
+   0.283,
+   0.264
+  ],
+  "validShare": [
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978
+  ],
+  "rank": {
+   "position": 55,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.472,
+    "dryingSpeed": 0.304,
+    "people": 0.435
+   }
+  }
+ },
+ {
+  "psgc": "0702225000",
+  "name": "Ginatilan",
+  "province": "Cebu",
+  "population": 17184,
+  "soilMoisture": [
+   0.339,
+   0.344,
+   0.278,
+   0.256,
+   0.219,
+   0.238,
+   0.237,
+   0.245,
+   0.256,
+   0.253,
+   0.239
+  ],
+  "validShare": [
+   0.974,
+   0.974,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975
+  ],
+  "rank": {
+   "position": 22,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.681,
+    "dryingSpeed": 0.786,
+    "people": 0.182
+   }
+  }
+ },
+ {
+  "psgc": "0702227000",
+  "name": "Liloan",
+  "province": "Cebu",
+  "population": 158387,
+  "soilMoisture": [
+   0.351,
+   0.351,
+   0.307,
+   0.257,
+   0.233,
+   0.225,
+   0.228,
+   0.245,
+   0.265,
+   0.272,
+   0.208
+  ],
+  "validShare": [
+   0.856,
+   0.856,
+   0.863,
+   0.837,
+   0.863,
+   0.863,
+   0.863,
+   0.863,
+   0.863,
+   0.863,
    0.84
   ],
   "rank": {
-   "position": 4,
-   "of": 7,
+   "position": 33,
+   "of": 99,
    "stable": false,
    "parts": {
-    "dryness": 0.2,
-    "dryingSpeed": 0.69,
+    "dryness": 0.549,
+    "dryingSpeed": 0.286,
+    "people": 0.633
+   }
+  }
+ },
+ {
+  "psgc": "0702228000",
+  "name": "Madridejos",
+  "province": "Cebu",
+  "population": 42828,
+  "soilMoisture": [
+   0.346,
+   0.352,
+   0.218,
+   0.211,
+   0.202,
+   0.206,
+   0.199,
+   0.219,
+   0.212,
+   0.223,
+   0.199
+  ],
+  "validShare": [
+   0.88,
+   0.88,
+   0.895,
+   0.895,
+   0.895,
+   0.895,
+   0.895,
+   0.895,
+   0.895,
+   0.895,
+   0.895
+  ],
+  "rank": {
+   "position": 9,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.889,
+    "dryingSpeed": 0.643,
+    "people": 0.367
+   }
+  }
+ },
+ {
+  "psgc": "0702229000",
+  "name": "Malabuyoc",
+  "province": "Cebu",
+  "population": 20378,
+  "soilMoisture": [
+   0.335,
+   0.339,
+   0.3,
+   0.263,
+   0.217,
+   0.233,
+   0.221,
+   0.234,
+   0.256,
+   0.27,
+   0.273
+  ],
+  "validShare": [
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978,
+   0.978
+  ],
+  "rank": {
+   "position": 76,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.562,
+    "dryingSpeed": 0.196,
+    "people": 0.216
+   }
+  }
+ },
+ {
+  "psgc": "0702231000",
+  "name": "Medellin",
+  "province": "Cebu",
+  "population": 62163,
+  "soilMoisture": [
+   0.348,
+   0.347,
+   0.225,
+   0.206,
+   0.188,
+   0.187,
+   0.187,
+   0.207,
+   0.22,
+   0.223,
+   0.203
+  ],
+  "validShare": [
+   0.879,
+   0.879,
+   0.887,
+   0.887,
+   0.887,
+   0.887,
+   0.887,
+   0.887,
+   0.887,
+   0.887,
+   0.887
+  ],
+  "rank": {
+   "position": 17,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.889,
+    "dryingSpeed": 0.429,
+    "people": 0.443
+   }
+  }
+ },
+ {
+  "psgc": "0702232000",
+  "name": "Minglanilla",
+  "province": "Cebu",
+  "population": 155934,
+  "soilMoisture": [
+   0.345,
+   0.34,
+   0.306,
+   0.254,
+   0.225,
+   0.23,
+   0.229,
+   0.244,
+   0.267,
+   0.267,
+   0.23
+  ],
+  "validShare": [
+   0.917,
+   0.917,
+   0.918,
+   0.918,
+   0.918,
+   0.918,
+   0.918,
+   0.918,
+   0.918,
+   0.918,
+   0.918
+  ],
+  "rank": {
+   "position": 26,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.583,
+    "dryingSpeed": 0.393,
+    "people": 0.63
+   }
+  }
+ },
+ {
+  "psgc": "0702233000",
+  "name": "Moalboal",
+  "province": "Cebu",
+  "population": 37993,
+  "soilMoisture": [
+   0.336,
+   0.347,
+   0.3,
+   0.245,
+   0.219,
+   0.237,
+   0.237,
+   0.243,
+   0.263,
+   0.271,
+   0.257
+  ],
+  "validShare": [
+   0.926,
+   0.926,
+   0.932,
+   0.932,
+   0.932,
+   0.932,
+   0.932,
+   0.932,
+   0.932,
+   0.932,
+   0.932
+  ],
+  "rank": {
+   "position": 40,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.556,
+    "dryingSpeed": 0.464,
+    "people": 0.343
+   }
+  }
+ },
+ {
+  "psgc": "0702235000",
+  "name": "Oslob",
+  "province": "Cebu",
+  "population": 29378,
+  "soilMoisture": [
+   0.328,
+   0.336,
+   0.213,
+   0.195,
+   0.189,
+   0.199,
+   0.19,
+   0.193,
+   0.214,
+   0.218,
+   0.181
+  ],
+  "validShare": [
+   0.975,
+   0.975,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0.976,
+   0.976
+  ],
+  "rank": {
+   "position": 15,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.924,
+    "dryingSpeed": 0.571,
+    "people": 0.291
+   }
+  }
+ },
+ {
+  "psgc": "0702236000",
+  "name": "Pilar",
+  "province": "Cebu",
+  "population": 12454,
+  "soilMoisture": [
+   0.38,
+   0.381,
+   0.228,
+   0.208,
+   0.211,
+   0.215,
+   0.207,
+   0.224,
+   0.218,
+   0.213,
+   0.206
+  ],
+  "validShare": [
+   0.868,
+   0.868,
+   0.87,
+   0.87,
+   0.87,
+   0.87,
+   0.87,
+   0.87,
+   0.87,
+   0.87,
+   0.87
+  ],
+  "rank": {
+   "position": 4,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.958,
+    "dryingSpeed": 0.964,
+    "people": 0.116
+   }
+  }
+ },
+ {
+  "psgc": "0702237000",
+  "name": "Pinamungajan",
+  "province": "Cebu",
+  "population": 76568,
+  "soilMoisture": [
+   0.326,
+   0.338,
+   0.316,
+   0.265,
+   0.224,
+   0.245,
+   0.234,
+   0.258,
+   0.253,
+   0.26,
+   0.266
+  ],
+  "validShare": [
+   0.955,
+   0.955,
+   0.966,
+   0.966,
+   0.966,
+   0.966,
+   0.966,
+   0.966,
+   0.966,
+   0.966,
+   0.966
+  ],
+  "rank": {
+   "position": 20,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.632,
+    "dryingSpeed": 0.607,
+    "people": 0.485
+   }
+  }
+ },
+ {
+  "psgc": "0702238000",
+  "name": "Poro",
+  "province": "Cebu",
+  "population": 26908,
+  "soilMoisture": [
+   0.352,
+   0.358,
+   0.228,
+   0.213,
+   0.202,
+   0.211,
+   0.192,
+   0.222,
+   0.215,
+   0.221,
+   0.208
+  ],
+  "validShare": [
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931
+  ],
+  "rank": {
+   "position": 18,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.903,
+    "dryingSpeed": 0.554,
+    "people": 0.273
+   }
+  }
+ },
+ {
+  "psgc": "0702239000",
+  "name": "Ronda",
+  "province": "Cebu",
+  "population": 21179,
+  "soilMoisture": [
+   0.34,
+   0.35,
+   0.3,
+   0.248,
+   0.224,
+   0.237,
+   0.24,
+   0.247,
+   0.278,
+   0.284,
+   0.267
+  ],
+  "validShare": [
+   0.974,
+   0.974,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975,
+   0.975
+  ],
+  "rank": {
+   "position": 75,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.465,
+    "dryingSpeed": 0.286,
+    "people": 0.224
+   }
+  }
+ },
+ {
+  "psgc": "0702240000",
+  "name": "Samboan",
+  "province": "Cebu",
+  "population": 20736,
+  "soilMoisture": [
+   0.341,
+   0.348,
+   0.297,
+   0.26,
+   0.232,
+   0.259,
+   0.256,
+   0.27,
+   0.271,
+   0.26,
+   0.243
+  ],
+  "validShare": [
+   0.968,
+   0.968,
+   0.968,
+   0.968,
+   0.968,
+   0.968,
+   0.968,
+   0.968,
+   0.968,
+   0.968,
+   0.968
+  ],
+  "rank": {
+   "position": 12,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.632,
+    "dryingSpeed": 1.0,
     "people": 0.22
    }
   }
  },
  {
-  "psgc": "mock-argao",
-  "name": "Argao",
+  "psgc": "0702241000",
+  "name": "San Fernando",
   "province": "Cebu",
-  "population": 78187,
+  "population": 76110,
   "soilMoisture": [
-   0.381,
-   0.365,
-   0.356,
-   0.356,
-   0.359,
-   0.355,
-   0.342,
-   0.326,
-   0.314,
-   0.312,
-   0.314
+   0.339,
+   0.338,
+   0.311,
+   0.262,
+   0.229,
+   0.242,
+   0.236,
+   0.254,
+   0.268,
+   0.277,
+   0.252
   ],
   "validShare": [
-   0.87,
-   0.88,
-   0.91,
-   0.93,
-   0.92,
-   0.9,
-   0.87,
-   0.87,
-   0.9,
-   0.93,
-   0.93
+   0.964,
+   0.964,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965
   ],
   "rank": {
-   "position": 7,
-   "of": 7,
+   "position": 45,
+   "of": 99,
    "stable": false,
    "parts": {
-    "dryness": 0.16,
-    "dryingSpeed": 0.44,
-    "people": 0.08
+    "dryness": 0.514,
+    "dryingSpeed": 0.339,
+    "people": 0.484
    }
   }
  },
  {
-  "psgc": "mock-tagbilaran-city",
-  "name": "Tagbilaran City",
-  "province": "Bohol",
-  "population": 104976,
+  "psgc": "0702242000",
+  "name": "San Francisco",
+  "province": "Cebu",
+  "population": 61092,
   "soilMoisture": [
-   0.322,
-   0.31,
-   0.307,
-   0.307,
-   0.3,
-   0.284,
-   0.265,
-   0.25,
-   0.245,
-   0.244,
-   0.24
+   0.37,
+   0.369,
+   0.23,
+   0.21,
+   0.206,
+   0.214,
+   0.198,
+   0.216,
+   0.221,
+   0.22,
+   0.214
   ],
   "validShare": [
-   0.68,
-   0.71,
-   0.73,
-   0.72,
-   0.7,
-   0.67,
-   0.67,
-   0.7,
-   0.73,
-   0.73,
-   0.7
+   0.866,
+   0.866,
+   0.873,
+   0.873,
+   0.873,
+   0.873,
+   0.873,
+   0.873,
+   0.873,
+   0.873,
+   0.873
   ],
   "rank": {
    "position": 5,
-   "of": 7,
-   "stable": false,
-   "parts": {
-    "dryness": 0.27,
-    "dryingSpeed": 0.63,
-    "people": 0.11
-   }
-  }
- },
- {
-  "psgc": "mock-ubay",
-  "name": "Ubay",
-  "province": "Bohol",
-  "population": 81799,
-  "soilMoisture": [
-   0.39,
-   0.383,
-   0.379,
-   0.368,
-   0.348,
-   0.325,
-   0.306,
-   0.297,
-   0.292,
-   0.284,
-   0.267
-  ],
-  "validShare": [
-   0.94,
-   0.96,
-   0.95,
-   0.93,
-   0.9,
-   0.9,
-   0.93,
-   0.96,
-   0.96,
-   0.93,
-   0.91
-  ],
-  "rank": {
-   "position": 2,
-   "of": 7,
+   "of": 99,
    "stable": true,
    "parts": {
-    "dryness": 0.11,
-    "dryingSpeed": 0.88,
-    "people": 0.08
+    "dryness": 0.91,
+    "dryingSpeed": 0.679,
+    "people": 0.439
    }
   }
  },
  {
-  "psgc": "mock-pilar",
-  "name": "Pilar",
-  "province": "Bohol",
-  "population": 28693,
+  "psgc": "0702243000",
+  "name": "San Remigio",
+  "province": "Cebu",
+  "population": 67850,
   "soilMoisture": [
-   0.407,
-   0.405,
-   0.396,
-   0.378,
-   0.357,
-   0.34,
-   0.333,
-   0.33,
-   0.324,
-   0.309,
-   0.287
+   0.347,
+   0.355,
+   0.23,
+   0.197,
+   0.199,
+   0.196,
+   0.192,
+   0.209,
+   0.213,
+   0.216,
+   0.195
   ],
   "validShare": [
-   0.98,
-   0.97,
-   0.95,
-   0.92,
-   0.92,
-   0.95,
-   0.98,
-   0.98,
-   0.95,
-   0.93,
-   0.92
+   0.942,
+   0.942,
+   0.947,
+   0.947,
+   0.947,
+   0.947,
+   0.947,
+   0.947,
+   0.947,
+   0.947,
+   0.947
   ],
   "rank": {
    "position": 3,
-   "of": 7,
+   "of": 99,
    "stable": true,
    "parts": {
-    "dryness": 0.09,
-    "dryingSpeed": 0.75,
-    "people": 0.03
+    "dryness": 0.937,
+    "dryingSpeed": 0.643,
+    "people": 0.461
    }
   }
  },
  {
-  "psgc": "mock-carmen",
-  "name": "Carmen",
-  "province": "Bohol",
-  "population": 49191,
+  "psgc": "0702244000",
+  "name": "Santa Fe",
+  "province": "Cebu",
+  "population": 34834,
   "soilMoisture": [
-   0.377,
    0.372,
-   0.358,
-   0.341,
-   0.328,
-   0.325,
-   0.326,
-   0.324,
-   0.313,
-   0.295,
-   0.28
+   0.376,
+   0.232,
+   0.21,
+   0.2,
+   0.203,
+   0.204,
+   0.219,
+   0.219,
+   0.222,
+   0.206
   ],
   "validShare": [
-   0.33,
-   0.31,
-   0.28,
-   0.28,
-   0.31,
-   0.34,
-   0.34,
-   0.31,
-   0.29,
-   0.28,
-   0.3
+   0.761,
+   0.761,
+   0.784,
+   0.784,
+   0.784,
+   0.784,
+   0.784,
+   0.784,
+   0.784,
+   0.784,
+   0.784
   ],
-  "rank": null
+  "rank": {
+   "position": 7,
+   "of": 99,
+   "stable": true,
+   "parts": {
+    "dryness": 0.896,
+    "dryingSpeed": 0.75,
+    "people": 0.325
+   }
+  }
+ },
+ {
+  "psgc": "0702245000",
+  "name": "Santander",
+  "province": "Cebu",
+  "population": 18669,
+  "soilMoisture": [
+   0.352,
+   0.362,
+   0.31,
+   0.263,
+   0.232,
+   0.264,
+   0.253,
+   0.266,
+   0.264,
+   0.27,
+   0.233
+  ],
+  "validShare": [
+   0.966,
+   0.966,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0.967,
+   0.967
+  ],
+  "rank": {
+   "position": 30,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.562,
+    "dryingSpeed": 0.768,
+    "people": 0.198
+   }
+  }
+ },
+ {
+  "psgc": "0702246000",
+  "name": "Sibonga",
+  "province": "Cebu",
+  "population": 54610,
+  "soilMoisture": [
+   0.35,
+   0.348,
+   0.311,
+   0.273,
+   0.238,
+   0.231,
+   0.236,
+   0.273,
+   0.283,
+   0.274,
+   0.238
+  ],
+  "validShare": [
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969,
+   0.969
+  ],
+  "rank": {
+   "position": 44,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.535,
+    "dryingSpeed": 0.393,
+    "people": 0.416
+   }
+  }
+ },
+ {
+  "psgc": "0702247000",
+  "name": "Sogod",
+  "province": "Cebu",
+  "population": 40746,
+  "soilMoisture": [
+   0.352,
+   0.353,
+   0.312,
+   0.27,
+   0.232,
+   0.23,
+   0.239,
+   0.279,
+   0.269,
+   0.282,
+   0.238
+  ],
+  "validShare": [
+   0.987,
+   0.987,
+   0.987,
+   0.987,
+   0.987,
+   0.987,
+   0.987,
+   0.987,
+   0.987,
+   0.987,
+   0.987
+  ],
+  "rank": {
+   "position": 64,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.479,
+    "dryingSpeed": 0.304,
+    "people": 0.357
+   }
+  }
+ },
+ {
+  "psgc": "0702248000",
+  "name": "Tabogon",
+  "province": "Cebu",
+  "population": 42066,
+  "soilMoisture": [
+   0.333,
+   0.332,
+   0.218,
+   0.192,
+   0.195,
+   0.187,
+   0.188,
+   0.212,
+   0.215,
+   0.216,
+   0.188
+  ],
+  "validShare": [
+   0.993,
+   0.993,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995,
+   0.995
+  ],
+  "rank": {
+   "position": 10,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.937,
+    "dryingSpeed": 0.571,
+    "people": 0.363
+   }
+  }
+ },
+ {
+  "psgc": "0702249000",
+  "name": "Tabuelan",
+  "province": "Cebu",
+  "population": 29662,
+  "soilMoisture": [
+   0.347,
+   0.358,
+   0.312,
+   0.252,
+   0.235,
+   0.238,
+   0.245,
+   0.269,
+   0.273,
+   0.279,
+   0.246
+  ],
+  "validShare": [
+   0.964,
+   0.964,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965,
+   0.965
+  ],
+  "rank": {
+   "position": 54,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.5,
+    "dryingSpeed": 0.464,
+    "people": 0.292
+   }
+  }
+ },
+ {
+  "psgc": "0702252000",
+  "name": "Tuburan",
+  "province": "Cebu",
+  "population": 68307,
+  "soilMoisture": [
+   0.343,
+   0.355,
+   0.318,
+   0.248,
+   0.23,
+   0.235,
+   0.242,
+   0.269,
+   0.278,
+   0.288,
+   0.257
+  ],
+  "validShare": [
+   0.981,
+   0.981,
+   0.982,
+   0.982,
+   0.982,
+   0.982,
+   0.982,
+   0.982,
+   0.982,
+   0.982,
+   0.982
+  ],
+  "rank": {
+   "position": 62,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 0.438,
+    "dryingSpeed": 0.25,
+    "people": 0.462
+   }
+  }
+ },
+ {
+  "psgc": "0702253000",
+  "name": "Tudela",
+  "province": "Cebu",
+  "population": 11638,
+  "soilMoisture": [
+   0.363,
+   0.366,
+   0.226,
+   0.208,
+   0.198,
+   0.209,
+   0.193,
+   0.214,
+   0.215,
+   0.207,
+   0.201
+  ],
+  "validShare": [
+   0.93,
+   0.93,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931,
+   0.931
+  ],
+  "rank": {
+   "position": 8,
+   "of": 99,
+   "stable": false,
+   "parts": {
+    "dryness": 1.0,
+    "dryingSpeed": 0.821,
+    "people": 0.102
+   }
+  }
  }
 ]

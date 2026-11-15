@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+import Navigation from "./Navigation";
+
+const display = localFont({ src: "./fonts/bricolage-grotesque.woff2", variable: "--font-display", weight: "400 800" });
+const mono = localFont({ src: "./fonts/jetbrains-mono.woff2", variable: "--font-mono", weight: "400 600" });
 
 export const metadata: Metadata = {
   title: "Hubas",
-  description: "Which Cebu and Bohol towns enter El Niño driest. Measured by NISAR, not forecast.",
+  description: "The soil, a dam and the rice fields of Cebu and Bohol before El Niño. Measured by NISAR each 12 days, not forecast.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={`${display.variable} ${mono.variable}`}>
+      <body><Navigation />{children}</body>
     </html>
   );
 }
