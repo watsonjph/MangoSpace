@@ -19,11 +19,16 @@ for (const width of [1280, 390]) test(`opening leads through three parts and pre
   await expect(page.locator(".story-steps li")).toHaveCount(3);
   await saveProof(page, `sc-456-opening-${width}.png`);
   for (const name of ["Play the soil season", "Compare the dam dates", "Explore the rice dates"]) {
-    await page.getByRole("link", { name, exact: true }).click();
+    const link = page.getByRole("link", { name, exact: true });
+    // Static HTML has no browser selection until the client store hydrates.
+    await expect(link).toHaveAttribute("href", /town=0702211000&window=3/);
+    await link.click();
     await expect(page).toHaveURL(/town=0702211000&window=3/);
     await page.goto("/start?town=0702211000&window=3");
   }
-  await page.getByRole("link", { name: "Return to the map" }).click();
+  const back = page.getByRole("link", { name: "Return to the map" });
+  await expect(back).toHaveAttribute("href", /town=0702211000&window=3/);
+  await back.click();
   await expect(page.getByLabel("Town")).toHaveValue("0702211000");
   await expect(page.getByLabel("Window")).toHaveValue("3");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
