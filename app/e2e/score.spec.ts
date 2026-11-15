@@ -109,6 +109,19 @@ test("the score adds dam after one loop and rice after the next", async ({ page 
   await page.getByRole("button", { name: "Pause", exact: true }).click();
 });
 
+test("scrubbing to the end does not add score voices", async ({ page }) => {
+  await page.goto("/score");
+  await expect(page.locator(".score-page[data-ready=true]")).toBeVisible();
+  const dam = page.getByRole("button", { name: "Dam voice" });
+  const rice = page.getByRole("button", { name: "Rice voice" });
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await page.getByLabel("Date").fill((await page.getByLabel("Date").getAttribute("max"))!);
+  await page.waitForTimeout(STEP_MS + 100);
+  await expect(dam).toHaveAttribute("aria-pressed", "false");
+  await expect(rice).toHaveAttribute("aria-pressed", "false");
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+});
+
 test("the score plays through the season with its voices on", async ({ browser }) => {
   const proof = process.env.PROOF === "1";
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, recordVideo: proof ? { dir: test.info().outputPath("video"), size: { width: 1280, height: 900 } } : undefined });

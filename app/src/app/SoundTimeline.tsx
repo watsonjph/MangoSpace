@@ -19,9 +19,28 @@ export default function SoundTimeline({ frames, index, play, stepMs = STEP_MS, d
   useEffect(() => () => { void audio.current?.close().catch(() => {}); audio.current = null; }, []);
 
   const ensureAudio = useCallback(async () => {
-    if (audio.current) return master.current !== null;
+    const fail = (context: AudioContext | null) => {
+      if (context ? audio.current !== context : audio.current) return false;
+      void context?.close().catch(() => {});
+      audio.current = null; master.current = null; setAudioReady(false); setEnabled(false);
+      setError("Sound could not start in this browser. The slider still works.");
+      return false;
+    };
+    const current = audio.current;
+    if (current) {
+      try {
+        await current.resume();
+        if (audio.current !== current) return false;
+        if (current.state !== "running" || !master.current) throw new Error("Audio unavailable");
+        setAudioReady(true);
+        return true;
+      } catch {
+        return fail(current);
+      }
+    }
+    let context: AudioContext | undefined;
     try {
-      const context = new AudioContext(); audio.current = context;
+      context = new AudioContext(); audio.current = context;
       await context.resume();
       if (audio.current !== context) return false;
       if (context.state !== "running") throw new Error("Audio unavailable");
@@ -29,15 +48,12 @@ export default function SoundTimeline({ frames, index, play, stepMs = STEP_MS, d
       setAudioReady(true);
       return true;
     } catch {
-      void audio.current?.close().catch(() => {}); audio.current = null; master.current = null; setAudioReady(false);
-      setEnabled(false);
-      setError("Sound could not start in this browser. The slider still works.");
-      return false;
+      return fail(context ?? null);
     }
   }, [volume]);
 
   useEffect(() => {
-    if (enabled && play.playing && !audio.current) void ensureAudio();
+    if (enabled && play.playing && (!audio.current || audio.current.state !== "running")) void ensureAudio();
   }, [enabled, ensureAudio, play.playing]);
 
   // Each step the timeline shows plays its own note, so a jump, a slow image or a loop cannot put the sound on another step.

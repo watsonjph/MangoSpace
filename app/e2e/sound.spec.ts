@@ -4,7 +4,7 @@ import path from "node:path";
 import { noteFrequency, playTone } from "../src/app/season-instrument";
 import { useOfflineBasemap } from "./offline-basemap";
 
-declare global { interface Window { audioStarts: number[]; audioLeads: number[]; audioNotes: { shown: number; frequency: number }[] } }
+declare global { interface Window { audioStarts: number[]; audioLeads: number[]; audioNotes: { shown: number; frequency: number }[]; audioContexts: AudioContext[]; audioResumes: number } }
 
 test("pentatonic mapping uses two octaves and missing data is a rest", () => {
   expect(noteFrequency(0)).toBe(220);
@@ -87,6 +87,34 @@ test("audio startup failure leaves the slider usable", async ({ page }) => {
   await expect(page.locator(".timeline-sound").getByRole("alert")).toContainText("Sound could not start");
   await page.getByLabel("Window").fill("3");
   await expect(page.getByLabel("Window")).toHaveValue("3");
+});
+
+test("resumes a suspended audio context after pause and play", async ({ page }) => {
+  await page.addInitScript(() => {
+    const Native = window.AudioContext;
+    window.audioContexts = [];
+    window.audioResumes = 0;
+    window.AudioContext = class extends Native {
+      constructor(options?: AudioContextOptions) {
+        super(options);
+        window.audioContexts.push(this);
+      }
+      resume() {
+        window.audioResumes++;
+        return super.resume();
+      }
+    };
+  });
+  await useOfflineBasemap(page);
+  await page.goto("/");
+  await page.locator(".map[data-ready=true] canvas").waitFor();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await page.waitForFunction(() => window.audioResumes > 0 && window.audioContexts[0]?.state === "running");
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  await page.evaluate(async () => { await window.audioContexts[0].suspend(); });
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await page.waitForFunction(() => window.audioResumes > 1 && window.audioContexts[0]?.state === "running");
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
 });
 
 test("audio-clock spacing follows speed with loop enabled", async ({ page }) => {
