@@ -102,7 +102,10 @@ test("the score adds dam after one loop and rice after the next", async ({ page 
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await expect.poll(async () => dam.getAttribute("aria-pressed"), { timeout: 15_000 }).toBe("true");
   await expect(rice).toHaveAttribute("aria-pressed", "false");
+  await dam.click();
+  await expect(dam).toHaveAttribute("aria-pressed", "false");
   await expect.poll(async () => rice.getAttribute("aria-pressed"), { timeout: 15_000 }).toBe("true");
+  await expect(dam).toHaveAttribute("aria-pressed", "false");
   await page.getByRole("button", { name: "Pause", exact: true }).click();
 });
 

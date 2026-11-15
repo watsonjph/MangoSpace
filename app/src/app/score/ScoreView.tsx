@@ -17,7 +17,7 @@ const VOICES: Record<Part["voice"], Voice & { name: string }> = {
 };
 type VoiceState = Record<Part["voice"], boolean>;
 const INITIAL_VOICES: VoiceState = { soil: true, dam: false, rice: false };
-const VOICE_STAGES: Part["voice"][][] = [["soil"], ["soil", "dam"], ["soil", "dam", "rice"]];
+const VOICE_STAGES: (Part["voice"] | undefined)[] = [undefined, "dam", "rice"];
 const DAY = 86_400_000;
 
 export default function ScoreView({ parts, rain, steps, start, end }: {
@@ -34,8 +34,8 @@ export default function ScoreView({ parts, rain, steps, start, end }: {
   const [audioReady, setAudioReady] = useState(false);
   const [error, setError] = useState("");
   const onLoop = useCallback((loopCount: number) => {
-    const stage = VOICE_STAGES[Math.min(loopCount, VOICE_STAGES.length - 1)];
-    setOn((voices) => stage.reduce<VoiceState>((current, voice) => current[voice] ? current : { ...current, [voice]: true }, voices));
+    const voice = VOICE_STAGES[loopCount];
+    if (voice) setOn((voices) => ({ ...voices, [voice]: true }));
   }, []);
   const play = usePlayback(steps.length, index, setIndex, undefined, true, onLoop);
   const date = steps[index];
@@ -74,7 +74,6 @@ export default function ScoreView({ parts, rain, steps, start, end }: {
       void audio.current?.close().catch(() => {});
       audio.current = null;
       setAudioReady(false);
-      setOn({ soil: false, dam: false, rice: false });
       setError("Sound could not start in this browser. The score still plays without it.");
       return false;
     }
