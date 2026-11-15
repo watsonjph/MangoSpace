@@ -94,7 +94,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           <span>0.10 m³/m³ · drier</span>
           <span>0.45 m³/m³ · wetter</span>
         </div>
-        <p><span className="no-data-swatch" aria-hidden="true" /> Gray: no good pixels</p>
+        <p><span className="no-data-swatch" aria-hidden="true" /> Gray: no data</p>
       </section>
 
       <form className="slider" onSubmit={(e) => e.preventDefault()}>
@@ -124,8 +124,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
             <dt>Rank</dt>
             <dd data-testid="rank">{lgu.rank ? `#${lgu.rank.position} of ${lgu.rank.of}` : "Not ranked"}</dd>
             <dt>Soil water</dt>
-            <dd data-testid="moisture">{moisture == null ? "No good pixels" : `${moisture.toFixed(3)} m³/m³`}</dd>
-            <dt>Good pixels</dt>
+            <dd data-testid="moisture">{moisture == null ? "No data" : `${moisture.toFixed(3)} m³/m³`}</dd>
+            <dt>Pixels with data</dt>
             <dd>{Math.round(lgu.validShare[windowIndex] * 100)}%</dd>
             <dt>PAGASA, {lgu.province}</dt>
             <dd>{outlook ? `${outlook.summary} (${outlook.advisory}, ${outlook.issued})` : "No outlook"}</dd>

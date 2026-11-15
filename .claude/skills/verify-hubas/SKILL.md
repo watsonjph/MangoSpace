@@ -60,7 +60,7 @@ node scripts/control-hubas.mjs drive --town "Carmen, Bohol" --name sc-123-carmen
 | `--town <psgc or "Name, Province">` | Pick the town in the dropdown | label `Town` |
 | `--window <n>` | Move the slider to window n | label `Window`; range text in `.slider output` |
 
-It prints `steps`, the map label, the slider value and range, the selected town, every row of the town panel (`Rank`, `Soil water`, `Good pixels`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
+It prints `steps`, the map label, the slider value and range, the selected town, every row of the town panel (`Rank`, `Soil water`, `Pixels with data`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
 
 For something `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
 

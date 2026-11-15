@@ -1,6 +1,6 @@
 # Time slider
 
-The slider at the bottom moves through the 12-day NISAR windows, from late June to late October. Moving it changes the map colors and the selected town's soil water and good pixels.
+The slider at the bottom moves through the 12-day NISAR windows, from late June to late October. Moving it changes the map colors and the selected town's soil water and pixels with data.
 
 ## Sub-features
 

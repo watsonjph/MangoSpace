@@ -1,6 +1,6 @@
 # Soil water map
 
-The map shows Cebu and Bohol on a light base map. Each town is a shape filled by its soil water for the selected window: dry is ochre, wet is teal, and a town with no good pixels is grey. A label at the top left says the data is provisional.
+The map shows Cebu and Bohol on a light base map. Each town is a shape filled by its soil water for the selected window: dry is ochre, wet is teal, and a town with no soil water data is grey. A label at the top left says the data is provisional.
 
 ## Sub-features
 

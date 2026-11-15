@@ -40,5 +40,12 @@ test("map loads, slider and town panel work, no console errors", async ({ page }
   await page.getByLabel("Town").selectOption({ label: "Carmen, Bohol" });
   await expect(page.getByTestId("rank")).toHaveText("Not ranked");
 
+  // Cebu City has no soil water reading in window 4; keep that distinct from its data coverage.
+  await page.getByLabel("Town").selectOption({ label: "Cebu City, Cebu" });
+  await page.getByLabel("Window").fill("4");
+  await expect(page.getByTestId("moisture")).toHaveText("No data");
+  await expect(page.locator(".panel dl")).toContainText("Pixels with data");
+  await expect(page.locator(".panel dl")).toContainText("63%");
+
   expect(errors).toEqual([]);
 });
