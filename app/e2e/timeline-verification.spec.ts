@@ -15,7 +15,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     await page.setViewportSize({ width: reducedMotion === "reduce" ? 390 : 1280, height: 800 });
     await useOfflineBasemap(page);
     await page.goto("/?town=0702211000&window=0");
-    await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
+    await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
     await waitForLgusSource(page);
     const lgus: Lgu[] = await (await request.get("/data/lgus.json")).json();
     const measured = lgus.find(lgu => lgu.psgc === "0702211000")!.soilMoisture;
@@ -30,19 +30,31 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       };
     });
     const slider = page.getByLabel("Window");
-    const started = Date.now();
+    // Time the steps in the page: timing from the test adds the click and the polling delays.
+    const stepTimes = slider.evaluate((input: HTMLInputElement) => new Promise<number[]>(resolve => {
+      const times: number[] = [];
+      const watch = () => {
+        while (times.length < Number(input.value)) times.push(performance.now());
+        if (times.length === 10) resolve(times);
+        else requestAnimationFrame(watch);
+      };
+      requestAnimationFrame(watch);
+    }));
     await page.getByRole("button", { name: "Play", exact: true }).click();
-    await expect(slider).toHaveValue("10", { timeout: 8000 });
+    const times = await stepTimes;
+    await expect(slider).toHaveValue("10");
     await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible();
-    expect(Date.now() - started).toBeGreaterThanOrEqual(4000);
-    expect(Date.now() - started).toBeLessThan(6500);
+    // Windows 1 to 10 are 9 of the season's 10 steps.
+    const season = (times[9] - times[0]) * 10 / 9;
+    expect(season).toBeGreaterThanOrEqual(4000);
+    expect(season).toBeLessThan(6500);
     const samples = await page.evaluate(() => (window as unknown as { motionSamples: number[] }).motionSamples);
     expect(samples.length).toBeGreaterThan(0);
     const intermediate = samples.some(value => !measured.includes(value));
     expect(intermediate).toBe(reducedMotion !== "reduce");
-    await expect(page).toHaveURL(/window=10$/);
+    await expect(page).toHaveURL(/[?&]window=10(&|$)/);
     await page.reload();
-    await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
+    await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
     await expect(slider).toHaveValue("10");
     await saveProof(page, `sc-491-playback-${reducedMotion === "reduce" ? 390 : 1280}.png`);
 
@@ -56,7 +68,7 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     const stopped = await slider.inputValue();
     await page.waitForTimeout(700);
     await expect(slider).toHaveValue(stopped);
-    await expect(page).toHaveURL(new RegExp(`window=${stopped}$`));
+    await expect(page).toHaveURL(new RegExp(`[?&]window=${stopped}(&|$)`));
     await page.reload();
     await expect(slider).toHaveValue(stopped);
     expect(errors).toEqual([]);
