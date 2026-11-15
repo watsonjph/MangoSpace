@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { useOfflineBasemap } from "./offline-basemap";
 
+declare global {
+  interface Window { replaceCalls: number }
+}
+
 for (const width of [1280, 375]) {
   test(`town and window survive navigation and reload at ${width}px`, async ({ page }) => {
     test.setTimeout(90_000);
@@ -56,4 +60,26 @@ test("invalid map selections fall back to an empty town and first window", async
     await expect(page.getByLabel("Town")).toHaveValue("");
     await expect(page.getByLabel("Window", { exact: false })).toHaveValue("0");
   }
+});
+
+test("rapid slider changes stay under Safari's replaceState limit", async ({ page }) => {
+  await page.addInitScript(() => {
+    const replaceState = History.prototype.replaceState;
+    window.replaceCalls = 0;
+    History.prototype.replaceState = function (...args) {
+      window.replaceCalls++;
+      return replaceState.apply(this, args);
+    };
+  });
+  await useOfflineBasemap(page);
+  await page.goto("/?town=0702211000&window=0");
+  await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
+  const slider = page.getByLabel("Window", { exact: false });
+  await slider.focus();
+  const before = await page.evaluate(() => window.replaceCalls);
+  for (let i = 0; i < 150; i++) await page.keyboard.press(i % 20 < 10 ? "ArrowRight" : "ArrowLeft");
+  await expect(slider).toHaveValue("10");
+  await expect(page).toHaveURL(/\?town=0702211000&window=10$/);
+  const writes = await page.evaluate(() => window.replaceCalls) - before;
+  expect(writes).toBeLessThan(20);
 });
