@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { useOfflineBasemap } from "./offline-basemap";
+import { saveProof } from "./proof";
 
-for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 }, { width: 320, height: 640 }]) {
+for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 812 }, { width: 320, height: 640 }]) {
   test(`Method, sources and navigation at ${viewport.width}px`, async ({ page }) => {
     test.setTimeout(60_000);
     const errors: string[] = [];
@@ -32,6 +33,12 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
       await expect(attribution.getByRole("link", { name, exact: true })).toBeVisible();
     }
     await page.screenshot({ path: test.info().outputPath(`map-${viewport.width}.png`), fullPage: true });
+    const months = await page.locator(".timeline .ticks span").all();
+    for (let i = 1; i < months.length; i++) {
+      const previous = (await months[i - 1].boundingBox())!, current = (await months[i].boundingBox())!;
+      expect(current.x - previous.x - previous.width, "month labels have breathing room").toBeGreaterThanOrEqual(8);
+    }
+    await saveProof(page, `sc-539-navigation-${viewport.width}.png`);
 
     await navigation.getByRole("link", { name: "Method" }).click();
     await expect(page).toHaveURL(/\/method\/?$/, { timeout: 15_000 });
