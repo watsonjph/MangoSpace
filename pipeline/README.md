@@ -126,6 +126,29 @@ date, or if the nearest date has more than one burst. Sentinel-1 pixels are
 30 m, so a rice sample of about 110 m × 155 m has only about 20 independent
 pixels.
 
+## Rain before each target date
+
+```sh
+uv run python context.py
+```
+
+The command writes `rainMm` of each target in `targets.json`: one value for each
+NISAR date, the sum of the daily NASA GPM rain in the 12 days before the date
+(the date itself is not included), in mm. NISAR comes again after 12 days, so
+the periods of two dates in sequence do not overlap.
+
+- Product: `GPM_3IMERGDL` version 07, the IMERG Late Run daily rain on a 0.1°
+  grid. The Final Run does not have the 2026 dates yet.
+- A GPM day is a UTC day: from 08:00 to 08:00 Philippine time.
+- Each target uses the one grid cell that has the centre of its bounds. Malinao
+  Dam and the Pilar rice sample are in the same cell, so their values are equal.
+- The command asks the GES DISC OPeNDAP server for only those cells and keeps
+  each day in the ignored `pipeline/data/gpm/`. It needs an Earthdata Login that
+  approved the application "NASA GESDISC DATA ARCHIVE".
+
+The rain is a possible cause of a change, not a proven one. One cell of about
+11 km is not the rain of the whole area that feeds the reservoir.
+
 ## Town soil water
 
 ```sh
