@@ -4,6 +4,8 @@ The map shows Cebu and Bohol on a light base map. Each town is a shape filled by
 
 ## Sub-features
 
+- `soil-interpretation` is the panel section "What changed in late July". Its three lines give the late-July mean change, the local GPM rain comparison, and the coverage and cause limits. It stays visible when a town is selected.
+
 - `map-load` shows the base map and every town shape without console errors.
 - `map-view` selects the Soil water button in the top bar.
 - `map-colors` fills each town by its soil water in the selected window.
@@ -19,6 +21,8 @@ The map shows Cebu and Bohol on a light base map. Each town is a shape filled by
 
 ## Driving it with control-hubas
 
+- Scroll the panel to "What changed in late July". Check "What we see", "What can cause it", and "What we cannot tell". Select Ubay and check that the season note remains. `npx playwright test e2e/causes-and-next.spec.ts` verifies the block at desktop and phone widths. With `PROOF=1`, it writes `sc-476-soil-desktop.png` and `sc-476-soil-mobile.png`.
+
 Preconditions:
 
 - `doctor` reports `ok: true`, including `basemap`.
@@ -30,6 +34,8 @@ Preconditions:
 - **Colors follow data.** Run `node scripts/control-hubas.mjs drive --window 0 --name map-w0` and `node scripts/control-hubas.mjs drive --window 10 --name map-w10`. Compare the two screenshots: towns whose `soilMoisture` changes between index 0 and 10 in `public/data/lgus.json` change color.
 
 ## Gotchas
+
+- The interpretation describes the whole season, not the selected town or window. The 27 July to 8 August mean uses 61 towns, against 99 in the windows beside it. The Pilar rain cell is not an island-wide measure.
 
 - The base map comes from tiles.openfreemap.org. If `doctor` fails `basemap`, the map can stay blank; report it as an outside failure, not an app bug. To verify the app without internet, add `--offline-basemap yes` to `drive`: town shapes, colors and overlays still work on a plain background, the same stub the e2e specs use.
 - A town with `null` soil water or low coverage for a window is grey, not missing. Check `lgus.json` before reporting a missing town.

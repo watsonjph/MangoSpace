@@ -147,6 +147,10 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 .panel .big { font: 600 34px/1.1 var(--mono); letter-spacing: -0.03em; color: var(--water); }
 .panel .big span { font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--muted); }
 .panel .hint { margin: 0; color: var(--muted); }
+.panel .interpretation { padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; }
+.panel .interpretation h2 { font-size: 16px; }
+.interpretation p { margin: 12px 0; }
+.interpretation strong { color: var(--ink); }
 .panel .outlook { padding-top: 12px; border-top: 1px solid var(--line); }
 .panel .outlook dd { font-size: 13px; color: var(--muted); }
 .rank-value { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }

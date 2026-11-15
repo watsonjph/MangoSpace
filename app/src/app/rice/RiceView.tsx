@@ -33,6 +33,16 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
   }));
   const all = lines.flatMap((line) => line.points.map(([, value]) => value));
   const rain = target.rainMm.length === dates.length ? dates.map((date, i): [number, number] => [Date.parse(date), target.rainMm[i]]) : undefined;
+  const interpretation = {
+    seen: parcels.map((item) => {
+      const values = item.nisar.meanHvDb!;
+      const high = values.indexOf(Math.max(...values));
+      const last = values.length - 1;
+      return `${NAME[item.id]} HV rose from ${db(values[0])} on ${fmt(item.nisar.dates[0])} to ${db(values[high])} on ${fmt(item.nisar.dates[high])}, then fell to ${db(values[last])} on ${fmt(item.nisar.dates[last])}.`;
+    }).join(" "),
+    cause: "The rising cross-polarized HV signal fits more plant material. Before 5 November, the GPM cells had 39.6 mm near Ubay and 46.4 mm near Pilar. These totals do not measure water in the parcels. A harvest or standing water could also lower HV.",
+    limit: "No field observations confirm the crop, planting date or growth stage of these parcels, and the signal alone cannot confirm a harvest or separate water, other plants, surface roughness, and radar noise.",
+  };
 
   return (
     <main className="dam-page rice-page" data-ready={ready}>
@@ -87,11 +97,11 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
         </div>
       </div>
 
-      <section>
-        <h2>What this can and cannot tell</h2>
-        <p>A low signal that rises over weeks is consistent with a wet field gaining vegetation.
-          No field observations confirm the crop, planting date or growth stage of these parcels,
-          and the cause of the fall on the latest date is not known.</p>
+      <section className="interpretation" aria-labelledby="rice-interpretation">
+        <h2 id="rice-interpretation">Why the HV signal can change</h2>
+        <p><strong>What we see.</strong> {interpretation.seen}</p>
+        <p><strong>What can cause it.</strong> {interpretation.cause}</p>
+        <p><strong>What we cannot tell.</strong> {interpretation.limit}</p>
         <p className="dam-note">Each parcel is a small sample, not a whole town. Soil water, standing water,
           other plants and radar noise also change the signal. <MapLink href="/method">Method and limits</MapLink></p>
       </section>

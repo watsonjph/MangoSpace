@@ -9,7 +9,7 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - `dam-slider` (label `Date`) starts on the latest date. Lower values are the past Sentinel-1 frames: 2015–16, then 2023–24. A past frame shows a VV image and the change against the event's first date; a 2026 frame shows an HH or HV image, the area and the rain.
 - `dam-jumps` (group `Go to`): `Lowest in 2015–16`, `Lowest in 2023–24` and `Now`.
 - `dam-band` (group `Radar band`): `HH` and `HV`, only on 2026 frames.
-- `dam-causes` lists possible causes and links to the Method page.
+- `dam-interpretation` is the section "Why the water area can change". Its three lines give the 2026 range and historical lows, possible water-budget causes and nearby rain, and the limits. It links to Method.
 - Each line is named at its end. The chart marks the steady 2026 measurement; the March 2016 minimum is identified separately as historical. Rain has its own numeric axis in mm. Move a mouse or touch the chart for the nearest measured date and value.
 
 ## How to get to it (user POV)
@@ -20,6 +20,8 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 
 ## Driving it with control-hubas
 
+- Scroll to "Why the water area can change". Check the three labels and the 60.9 mm total before the 2026 low. `npx playwright test e2e/causes-and-next.spec.ts` checks the block. With `PROOF=1`, it writes `sc-476-dam-desktop.png` and `sc-476-dam-mobile.png`.
+
 - Start the static export with `node scripts/control-hubas.mjs up` and run `doctor`.
 - **Open the dam.** Run `node scripts/control-hubas.mjs drive --nav Dam --name dam` and again with `--viewport 375x812`. `path` is `/dam`, `heading` is `The water area is steady now. In past dry events it fell in March.`, and `consoleErrors` is empty. In `aria.yml`: `Now, 5 Nov 2026` with `0.82 km²`, `Lowest in 2015–16` `−52%` (20 Mar 2016), `Lowest in 2023–24` `−19%` (26 Mar 2024).
 - **Selection kept.** Run `drive --town 0701246000 --window 3 --nav Dam --name dam-sel`. In `aria.yml` the Soil water, Dam and Method links carry `?town=0701246000&window=3`.
@@ -27,6 +29,8 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - Run `npx playwright test e2e/dam.spec.ts` for every date of the past events and of 2026, both bands, the jumps and a chart click on desktop and phone. With `PROOF=1` it also rewrites `docs/proof/sc-104-dam-desktop.png` and `-mobile.png`.
 
 ## Gotchas
+
+- The GPM cell near the dam does not cover the whole catchment. Rain before a low area does not establish the cause or rule out a longer rain deficit. The historical percentages use the first date of each event as the baseline.
 
 - Wait for `.dam-page[data-ready=true]` before moving the slider. A fill before hydration is lost, and React then ignores a second fill to the same value.
 - The page has no map, so it does not need the base map, but `drive` starts on `/` and does. Add `--offline-basemap yes` without internet.

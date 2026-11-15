@@ -73,7 +73,7 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   await expect(page.getByTestId("map-legend")).toContainText("0.10 m³/m³ · drier");
   await expect(page.getByTestId("map-legend")).toContainText("0.45 m³/m³ · wetter");
   await expect(page.getByTestId("map-legend")).toContainText("Gray: less than half the pixels have data");
-  await expect(page.getByText("provisional")).toBeVisible();
+  await expect(page.locator(".tag")).toContainText("provisional");
 
   await page.getByLabel("Window").fill("4");
   await mapShows(cebuCity, 4);

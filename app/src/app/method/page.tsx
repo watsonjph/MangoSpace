@@ -2,11 +2,28 @@ import type { Metadata } from "next";
 import MapLink from "../MapLink";
 import lgus from "../../../public/data/lgus.json";
 import outlooks from "../../../public/data/outlook.json";
+import targets from "../../../public/data/targets.json";
 
 export const metadata: Metadata = { title: "Method · Hubas" };
 
 export default function MethodPage() {
   const hasSoilWater = lgus.some((town) => town.soilMoisture.some((value) => value !== null));
+  const bandComparisons = targets.flatMap((target) => {
+    if (target.kind !== "rice" || !target.cBand || !target.nisar.meanHvDb) return [];
+    const index = target.nisar.dates.indexOf(target.cBand.nisarDate);
+    if (index < 0) return [];
+    return [{
+      name: target.id === "ubay-rice" ? "Ubay" : "Pilar",
+      nisarDate: target.cBand.nisarDate,
+      sentinelDate: target.cBand.date,
+      hv: target.nisar.meanHvDb[index],
+      vh: target.cBand.meanDb.vh,
+    }];
+  });
+  const day = (date: string) => new Date(`${date}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric", month: "short", year: "numeric", timeZone: "UTC",
+  });
+  const db = (value: number) => `${value.toFixed(1).replace("-", "−")} dB`;
 
   return (
     <main className="method-page">
@@ -59,7 +76,7 @@ export default function MethodPage() {
           threshold after speckle reduction, then multiplying the count by the pixel area.</p>
         <p>A smaller water area can have several causes, including less rain, more water use,
           or dam work. The radar images alone do not establish the cause. In 2026 the area stayed
-          within 8% of its mean; the small dip on 18 September is larger than the noise of the method, but its cause is not known.</p>
+          within 8% of its mean. The small dip on 18 September is larger than the measured threshold sensitivity, but its cause is not known.</p>
         <p>Compare dates from the same satellite track for each target. Different radar viewing angles
           can change the image. NISAR and Sentinel-1 can give different water areas in km²,
           so compare changes between sensors as percentages rather than absolute areas.</p>
@@ -67,6 +84,27 @@ export default function MethodPage() {
           small field parcels, not whole towns, and do not establish crop identity or growth stage.</p>
         <p>In the dam view, dashed lines mean:
           “This is what happened before. It is not a forecast.”</p>
+      </section>
+
+      <section aria-labelledby="nisar-next">
+        <h2 id="nisar-next">What NISAR can do next</h2>
+        <p>NISAR has a nominal 12-day repeat. We can continue the same soil water, dam area, and rice HV measurements through the December to May dry months and El Niño.
+          Each new value needs an available pass with valid data on the same track.
+          These records can show when the surface changes. They cannot forecast the effect of El Niño.</p>
+        <p>NISAR uses L-band waves, about 24 cm long. Sentinel-1 uses C-band waves, about 5.6 cm long.
+          L-band can reach deeper into vegetation and may add information about lower plant layers or wet ground.
+          The result depends on the plants, radar angle, and polarization. C-band can also reach the ground when plants are sparse.</p>
+        <ul data-testid="band-comparison">
+          {bandComparisons.map((pair) => <li key={pair.name}>{pair.name} parcel.
+            NISAR HV was {db(pair.hv)} on {day(pair.nisarDate)}.
+            Sentinel-1 VH was {db(pair.vh)} on {day(pair.sentinelDate)}.</li>)}
+        </ul>
+        <p>These pairs show a difference in radar return. Their dates, pixel sizes, viewing angles, and processing also differ.
+          They do not prove that either sensor measured water or soil below the plants.
+          Repeated pairs with field observations could test that explanation.
+          Read the <a href="https://earthdata.nasa.gov/s3fs-public/2025-04/SARHB_CH2_Content.pdf">NASA SAR Handbook on wavelength and vegetation</a>.</p>
+        <p>The soil water product is provisional. A revised product could change the values.
+          Reprocess this record when a new version arrives, then check it against field measurements before using town differences for decisions.</p>
       </section>
 
       <section aria-labelledby="sources">

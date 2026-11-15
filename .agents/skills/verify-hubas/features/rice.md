@@ -4,6 +4,8 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 
 ## Sub-features
 
+- `rice-interpretation` is the section "Why the HV signal can change". Its three lines give each parcel's first, peak, and latest value, possible vegetation or water explanations, and the field-observation limit. Dates and values come from the same parcel array.
+
 - `rice-parcel` (one per parcel) shows the HV range with its lowest and highest date. Ubay is `−21.9 dB to −16.5 dB`, Pilar `−21.0 dB to −15.2 dB`.
 - `dam-chart` (the shared chart; img name `Mean HV radar signal of the Ubay and Pilar rice parcels on each radar date of 2026`) draws one solid line per parcel and rain bars for the selected parcel. Clicking the chart picks the nearest date.
 - Parcel picker (group `Parcel`): `Ubay` (default) and `Pilar`.
@@ -20,6 +22,8 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 - On a phone the chart and image stack in one column. The two parcel ranges sit side by side.
 
 ## Driving it with control-hubas
+
+- Scroll to "Why the HV signal can change". Check all three labels, Ubay's 24 October peak, Pilar's 30 September peak, and the field-observation limit. `npx playwright test e2e/causes-and-next.spec.ts` checks the block. With `PROOF=1`, it writes `sc-476-rice-desktop.png` and `sc-476-rice-mobile.png`.
 
 - Start the static export with `node scripts/control-hubas.mjs up` and run `doctor`.
 - **Open rice.** Run `node scripts/control-hubas.mjs drive --nav Rice --name rice` and again with `--viewport 375x812`. `path` is `/rice`, `heading` is `The radar signal of both rice parcels rose to its highest in September or October, then fell on 5 November.`, and `consoleErrors` is empty. In `aria.yml`: both ranges, `Date` `5 Nov 2026`, HV `−19.2 dB` and rain `40 mm` (Ubay).
