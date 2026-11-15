@@ -30,6 +30,7 @@ node scripts/control-hubas.mjs up --no-build   # reuse the current out/
 - State goes in `app/.verify/state.json`; the server log in `app/.verify/server.log`.
 - `up` refuses to start if its own server is already running or the port is taken. It never touches a server it did not start.
 - A shared port can give a false "ready": another session's server can take the port during the build and answer the readiness probe. So `up` only trusts the probe after its own server has logged that it is listening. If its server exits first (usually `EADDRINUSE`), `up` fails with the end of `server.log`. Pick another `--port`.
+- The regression test steals a free loopback port (`127.0.0.1`). On Windows, a listener on `0.0.0.0` can coexist with a second listener on `127.0.0.1`, so that wildcard bind alone does not reproduce the false-ready race.
 
 ## Doctor
 
