@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { useOfflineBasemap } from "./offline-basemap";
 
-for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 }]) {
+for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 }, { width: 320, height: 640 }]) {
   test(`Method, sources and navigation at ${viewport.width}px`, async ({ page }) => {
     test.setTimeout(60_000);
     const errors: string[] = [];
@@ -20,6 +20,10 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
     await expect(navigation.getByRole("link")).toHaveText(["Soil water", "Dam", "Rice", "Score", "Method"]);
     await expect(navigation.getByRole("link", { name: "Soil water" })).toHaveAttribute("aria-current", "page");
     await expect(page.getByRole("button", { name: "Rank" })).toHaveCount(0);
+    for (const link of await navigation.getByRole("link").all()) {
+      const box = (await link.boundingBox())!;
+      expect(box.x + box.width, `${await link.innerText()} fits in the top bar`).toBeLessThanOrEqual(viewport.width);
+    }
     const header = await page.locator(".topbar").boundingBox();
     const map = await page.locator(".map").boundingBox();
     expect(map!.y).toBeGreaterThanOrEqual(header!.y + header!.height);

@@ -308,9 +308,9 @@ input[type="range"]::-moz-range-thumb {
   .topbar { gap: 8px; padding: 0 12px; }
   .brand { flex-shrink: 0; font-size: 20px; }
   .brand small { display: none; }
-  /* ponytail: under ~400 px the five nav items do not fit. The row scrolls and the page does not. */
+  /* The row can still scroll if a font loads wider, so the page never does. */
   .topbar nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
-  .topbar nav a { padding: 0 8px; }
+  .topbar nav a { padding: 0 6px; letter-spacing: 0.02em; }
   .topbar nav a::before { content: none; }
 
   .explorer { position: relative; display: grid; grid-template-rows: minmax(360px, 56dvh) auto auto; align-content: start; height: auto; min-height: calc(100dvh - var(--bar)); }
@@ -322,6 +322,13 @@ input[type="range"]::-moz-range-thumb {
   .explorer > .timeline { grid-row: 3; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
   .explorer > .timeline .readout { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; align-items: end; }
   .explorer > .timeline .readout label { justify-items: start; }
+}
+
+/* Five links fit next to the brand down to 320 px. */
+@media (max-width: 400px) {
+  .topbar { gap: 4px; padding: 0 8px; }
+  .brand { font-size: 18px; }
+  .topbar nav a { padding: 0 5px; font-size: 10px; letter-spacing: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
