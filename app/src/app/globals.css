@@ -66,7 +66,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 .topbar nav a[aria-current="page"]::before { color: var(--water); }
 
 button, select { font: inherit; color: inherit; }
-.timeline button, .panel button, .dam-picker button {
+.timeline button, .panel button, .dam-picker button, .score-voices button {
   min-height: 36px;
   padding: 6px 12px;
   font: 500 12px var(--mono);
@@ -77,7 +77,7 @@ button, select { font: inherit; color: inherit; }
   border-radius: 4px;
   cursor: pointer;
 }
-.timeline button:hover, .panel button:hover, .dam-picker button:hover { border-color: var(--muted); }
+.timeline button:hover, .panel button:hover, .dam-picker button:hover, .score-voices button:hover { border-color: var(--muted); }
 button[aria-pressed="true"] { color: var(--ground); background: var(--water); border-color: var(--water); font-weight: 600; }
 
 .explorer { display: grid; grid-template-rows: minmax(0, 1fr) auto; height: calc(100dvh - var(--bar)); min-height: 500px; }
@@ -189,7 +189,7 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
   height: 9px;
   border-radius: 50%;
   background: var(--muted);
-  transform: translate(-50%, 50%);
+  translate: -50% 50%;
   transition: background-color 150ms, scale 150ms;
 }
 .track .staff i.weak { background: var(--surface); border: 1.5px solid var(--muted); }
@@ -268,6 +268,37 @@ input[type="range"]::-moz-range-thumb {
 .dam-image .dam-stats { grid-template-columns: 1fr; }
 .rice-page .dam-radar img { image-rendering: pixelated; }
 
+/* The score: three staves and the rain on one date axis. The range thumb is the playhead through all of them. */
+.score-page .timeline { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
+.score-page .timeline .play { width: 44px; height: 44px; }
+.score-page .readout { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; align-items: end; }
+.score-page .readout label { justify-items: start; }
+.score .track { height: 300px; }
+.score .staves { position: absolute; inset: 0 0 20px; display: grid; grid-template-rows: 1fr 1fr 1fr 44px; gap: 6px; }
+.score .stave { display: grid; grid-template-rows: 14px 1fr; }
+.score .stave > span { font: 500 10px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.score .track .staff { position: relative; inset: auto; }
+.score .track .staff i.ubay { background: var(--water); }
+.score .track .staff i.pilar { background: var(--dry); }
+.score .track .staff i.now:not(.ubay, .pilar) { background: var(--ink); border-color: var(--ink); }
+.score .staff.rain { background: none; }
+.score .staff.rain b { position: absolute; bottom: 0; width: 4px; transform: translateX(-50%); background: #8fb4d9; opacity: 0.7; }
+.score .staff.rain b.now { opacity: 1; }
+.score .ticks { position: absolute; inset: auto 0 -20px; height: 14px; }
+.score .track input[type="range"], .score .track input[type="range"]::-webkit-slider-runnable-track { inset: 0 0 auto; height: 280px; }
+.score .track input[type="range"]::-moz-range-track { height: 280px; }
+.score .track input[type="range"]::-webkit-slider-thumb { height: 280px; background: rgb(233 240 237 / 10%); }
+.score .track input[type="range"]::-moz-range-thumb { height: 277px; background: rgb(233 240 237 / 10%); }
+.score-page .dam-key span { height: 10px; border-radius: 50%; width: 10px; }
+.score-page .dam-key .key-ubay { background: var(--water); }
+.score-page .dam-key .key-pilar { background: var(--dry); }
+.score-page .dam-key .key-rain { width: 4px; height: 12px; border-radius: 0; background: #8fb4d9; }
+.score-page .dam-key .key-weak { border: 1.5px solid var(--muted); }
+.score-voices { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+.score-readout { margin-top: 20px; }
+.score-readout dd { font-size: 18px; }
+.score-sentences { padding-left: 20px; font-size: 18px; line-height: 1.5; }
+
 @media (max-width: 880px) {
   .dam-image { display: block; }
   .dam-image .dam-picker { margin-top: 16px; }
@@ -277,7 +308,7 @@ input[type="range"]::-moz-range-thumb {
   .topbar { gap: 8px; padding: 0 12px; }
   .brand { flex-shrink: 0; font-size: 20px; }
   .brand small { display: none; }
-  /* ponytail: under ~360 px the four nav items do not fit. The row scrolls and the page does not. */
+  /* ponytail: under ~400 px the five nav items do not fit. The row scrolls and the page does not. */
   .topbar nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
   .topbar nav a { padding: 0 8px; }
   .topbar nav a::before { content: none; }

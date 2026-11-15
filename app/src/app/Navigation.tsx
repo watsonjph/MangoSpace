@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import MapLink from "./MapLink";
 
-const LINKS = [["/", "Soil water"], ["/dam", "Dam"], ["/rice", "Rice"], ["/method", "Method"]] as const;
+const LINKS = [["/", "Soil water"], ["/dam", "Dam"], ["/rice", "Rice"], ["/score", "Score"], ["/method", "Method"]] as const;
 
 export default function Navigation() {
   const pathname = usePathname();

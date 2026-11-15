@@ -45,7 +45,11 @@ export function usePlayback(count: number, index: number, setIndex: (index: numb
 // at: height on the staff, 0 (bottom) to 1 (top). weak: a value from less data than the others.
 export type Note = { at: number; weak?: boolean } | null;
 
-export default function Timeline({ id, name, count, index, onIndex, label, play, notes, ticks, className, children }: {
+// The same inset as half of the range thumb, so a note sits under the thumb of its step.
+export const place = (x: number, max: number) => `calc(5px + (100% - 10px) * ${x / Math.max(max, 1)})`;
+
+// axis: put step i at axis.at[i] on a 0 to axis.max scale (for example a day), not at i. staff replaces the one staff of notes.
+export default function Timeline({ id, name, count, index, onIndex, label, play, notes, ticks, axis, staff, className, children }: {
   id: string;
   name: string;
   count: number;
@@ -55,12 +59,21 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
   play: Playback;
   notes?: Note[];
   ticks?: { index: number; label: string }[];
+  axis?: { at: number[]; max: number };
+  staff?: ReactNode;
   className?: string;
   children?: ReactNode;
 }) {
-  const last = Math.max(count - 1, 1);
-  // The same inset as half of the range thumb, so a note sits under the thumb of its step.
-  const left = (i: number) => `calc(5px + (100% - 10px) * ${i / last})`;
+  const at = (i: number) => axis ? axis.at[i] : i;
+  const max = axis ? axis.max : count - 1;
+  const left = (i: number) => place(at(i), max);
+  // On an axis, a move goes to the next step in its direction, so one arrow key press is one step.
+  const pick = (value: number) => {
+    if (!axis) return value;
+    const forward = value > at(index);
+    const next = forward ? axis.at.findIndex((x) => x >= value) : axis.at.findLastIndex((x) => x <= value);
+    return next >= 0 ? next : forward ? count - 1 : 0;
+  };
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -82,13 +95,16 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
         <span className="sr">{play.playing ? "Pause" : "Play"}</span>
       </button>
       <div className="track">
-        <div className="staff" aria-hidden="true">
-          {notes?.map((note, i) => note && (
-            <i key={i} className={[i === index ? "now" : "", note.weak ? "weak" : ""].join(" ").trim() || undefined}
-              style={{ left: left(i), bottom: `${note.at * 100}%` }} />
-          ))}
-        </div>
-        <input id={id} type="range" min={0} max={count - 1} value={index} onChange={(event) => onIndex(Number(event.target.value))} />
+        {staff ?? (
+          <div className="staff" aria-hidden="true">
+            {notes?.map((note, i) => note && (
+              <i key={i} className={[i === index ? "now" : "", note.weak ? "weak" : ""].join(" ").trim() || undefined}
+                style={{ left: left(i), bottom: `${note.at * 100}%` }} />
+            ))}
+          </div>
+        )}
+        <input id={id} type="range" min={0} max={max} value={at(index)} aria-valuetext={axis ? label : undefined}
+          onChange={(event) => onIndex(pick(Number(event.target.value)))} />
         {ticks && (
           <div className="ticks" aria-hidden="true">
             {ticks.map((tick) => <span key={tick.index} style={{ left: left(tick.index) }}>{tick.label}</span>)}
