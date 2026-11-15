@@ -1,10 +1,10 @@
 # Hear the season
 
-Sound starts off. The map timeline has a sound button and volume control before a town is selected. The low voice follows the mean soil water; the high voice follows the selected town. Dam and rice timelines use the same pentatonic bell instrument, with soft high rain notes. Missing readings are rests.
+Sound and loop start on. The map timeline has a sound button and volume control before a town is selected. The low voice follows the mean soil water; the high voice follows the selected town. Dam and rice timelines use the same pentatonic bell instrument, with soft high rain notes. Missing readings are rests.
 
 ## Sub-features
 
-- Opt-in sound and volume live in each of the map, dam and rice timelines.
+- Sound, loop and volume live in each of the map, dam and rice timelines. Sound and loop start on.
 - Two octaves of a pentatonic scale keep wetter/higher values higher in pitch.
 - Three sine partials, a soft decay and a short echo form the instrument.
 - Each step the timeline shows plays its own note, so a slider jump, a dam frame that waits for its image, or a loop never leaves the sound on another step. A step that follows the last one on time is placed on the audio-clock beat (`AudioContext.currentTime`), so timer jitter does not reach the rhythm. Pause/mute cancels pending notes.
@@ -13,8 +13,8 @@ Sound starts off. The map timeline has a sound button and volume control before 
 
 ## How to get to it (user POV)
 
-- On Soil water, Dam or Rice, click Hear the season. Playback starts at the first frame.
-- Adjust Sound volume. Select a town for the higher soil voice. Click the sound button again to mute.
+- On Soil water, Dam or Rice, press Play to start the season with sound and loop on.
+- Adjust Sound volume. Select a town for the higher soil voice. Click Hear the season to mute or turn sound back on.
 - Use Pause, speed and Loop as on the silent timeline.
 
 ## Driving it with control-hubas

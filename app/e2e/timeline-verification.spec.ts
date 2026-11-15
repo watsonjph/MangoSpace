@@ -40,6 +40,8 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
       };
       requestAnimationFrame(watch);
     }));
+    await expect(page.getByRole("button", { name: "Loop", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("button", { name: "Loop", exact: true }).click();
     await page.getByRole("button", { name: "Play", exact: true }).click();
     const times = await stepTimes;
     await expect(slider).toHaveValue("10");

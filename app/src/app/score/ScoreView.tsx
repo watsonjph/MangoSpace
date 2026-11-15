@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { IsoDate } from "../../../lib/data";
 import MapLink from "../MapLink";
 import { playTone, type Voice } from "../season-instrument";
@@ -15,7 +15,9 @@ const VOICES: Record<Part["voice"], Voice & { name: string }> = {
   dam: { name: "Dam", base: 110, wave: "triangle" },
   rice: { name: "Rice", base: 330, wave: "triangle" },
 };
-const OFF = { soil: false, dam: false, rice: false };
+type VoiceState = Record<Part["voice"], boolean>;
+const INITIAL_VOICES: VoiceState = { soil: true, dam: false, rice: false };
+const VOICE_STAGES: Part["voice"][][] = [["soil"], ["soil", "dam"], ["soil", "dam", "rice"]];
 const DAY = 86_400_000;
 
 export default function ScoreView({ parts, rain, steps, start, end }: {
@@ -27,10 +29,15 @@ export default function ScoreView({ parts, rain, steps, start, end }: {
 }) {
   const ready = useHydrated();
   const [index, setIndex] = useState(0);
-  const play = usePlayback(steps.length, index, setIndex);
   const audio = useRef<AudioContext | null>(null);
-  const [on, setOn] = useState(OFF);
+  const [on, setOn] = useState<VoiceState>(INITIAL_VOICES);
+  const [audioReady, setAudioReady] = useState(false);
   const [error, setError] = useState("");
+  const onLoop = useCallback((loopCount: number) => {
+    const stage = VOICE_STAGES[Math.min(loopCount, VOICE_STAGES.length - 1)];
+    setOn((voices) => stage.reduce<VoiceState>((current, voice) => current[voice] ? current : { ...current, [voice]: true }, voices));
+  }, []);
+  const play = usePlayback(steps.length, index, setIndex, undefined, true, onLoop);
   const date = steps[index];
   const day = (iso: IsoDate) => Math.round((Date.parse(iso) - Date.parse(start)) / DAY);
   const max = day(end);
@@ -48,6 +55,35 @@ export default function ScoreView({ parts, rain, steps, start, end }: {
     audio.current = null;
   }, []);
 
+  const ensureAudio = useCallback(async () => {
+    try {
+      if (audio.current) {
+        await audio.current.resume();
+        if (audio.current.state !== "running") throw new Error("Audio did not start");
+        setAudioReady(true);
+        return true;
+      }
+      const context = new AudioContext();
+      audio.current = context;
+      await context.resume();
+      if (audio.current !== context) return false;
+      if (context.state !== "running") throw new Error("Audio did not start");
+      setAudioReady(true);
+      return true;
+    } catch {
+      void audio.current?.close().catch(() => {});
+      audio.current = null;
+      setAudioReady(false);
+      setOn({ soil: false, dam: false, rice: false });
+      setError("Sound could not start in this browser. The score still plays without it.");
+      return false;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (play.playing && Object.values(on).some(Boolean) && (!audio.current || audio.current.state !== "running")) void ensureAudio();
+  }, [ensureAudio, on, play.playing]);
+
   useEffect(() => {
     const context = audio.current;
     if (!play.playing || !context || context.state !== "running") return;
@@ -57,23 +93,11 @@ export default function ScoreView({ parts, rain, steps, start, end }: {
       return now.length ? playTone(context, now.reduce((sum, note) => sum + note.at, 0) / now.length, VOICES[part.voice]) : undefined;
     });
     return () => stops.forEach((stop) => stop?.());
-  }, [play.playing, date, on, parts]);
+  }, [audioReady, play.playing, date, on, parts]);
 
   async function toggle(voice: Part["voice"]) {
     setError("");
-    if (!audio.current) {
-      try {
-        const context = new AudioContext();
-        audio.current = context;
-        await context.resume();
-        if (context.state !== "running") throw new Error("Audio did not start");
-      } catch {
-        void audio.current?.close().catch(() => {});
-        audio.current = null;
-        setError("Sound could not start in this browser. The score still plays without it.");
-        return;
-      }
-    }
+    if (!on[voice] && !(await ensureAudio())) return;
     setOn((voices) => ({ ...voices, [voice]: !voices[voice] }));
   }
 
@@ -137,7 +161,7 @@ export default function ScoreView({ parts, rain, steps, start, end }: {
           </button>
         ))}
       </div>
-      <p className="dam-note">Sound is off at the start. Turn on a voice, then press play. A higher note is a higher value.</p>
+      <p className="dam-note">Soil starts on. After one loop the dam joins; after two loops the rice joins. A higher note is a higher value.</p>
       {error && <p role="alert">{error}</p>}
 
       <dl className="dam-stats score-readout">

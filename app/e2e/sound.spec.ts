@@ -14,7 +14,7 @@ test("pentatonic mapping uses two octaves and missing data is a rest", () => {
   for (let i = 0; i <= 100; i++) expect(allowed).toContain(Math.round(12 * Math.log2(noteFrequency(i / 100)! / 220)));
 });
 
-for (const route of ["/", "/dam", "/rice"]) test(`sound and volume are opt-in timeline controls on ${route}`, async ({ page }) => {
+for (const route of ["/", "/dam", "/rice"]) test(`sound and loop start on for ${route}`, async ({ page }) => {
   await useOfflineBasemap(page);
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
@@ -23,6 +23,9 @@ for (const route of ["/", "/dam", "/rice"]) test(`sound and volume are opt-in ti
   if (route === "/") await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
   else await expect(page.locator("main[data-ready=true]")).toBeVisible();
   const sound = page.locator(".timeline").getByRole("button", { name: "Hear the season" });
+  await expect(sound).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Loop", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await sound.click();
   await expect(sound).toHaveAttribute("aria-pressed", "false");
   await sound.click();
   await expect(sound).toHaveAttribute("aria-pressed", "true");
@@ -80,7 +83,7 @@ test("audio startup failure leaves the slider usable", async ({ page }) => {
   await useOfflineBasemap(page);
   await page.goto("/");
   await page.locator(".map[data-ready=true] canvas").waitFor();
-  await page.getByRole("button", { name: "Hear the season" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await expect(page.locator(".timeline-sound").getByRole("alert")).toContainText("Sound could not start");
   await page.getByLabel("Window").fill("3");
   await expect(page.getByLabel("Window")).toHaveValue("3");
@@ -102,8 +105,9 @@ test("audio-clock spacing follows speed with loop enabled", async ({ page }) => 
   await useOfflineBasemap(page);
   await page.goto("/");
   await page.locator(".map[data-ready=true] canvas").waitFor();
-  await page.getByRole("button", { name: "Hear the season" }).click();
-  await page.getByRole("button", { name: "Loop", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Hear the season" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Loop", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   for (const [i, interval] of [0.45, 0.225, 0.9].entries()) {
     if (i) await page.getByRole("button", { name: /^Speed/ }).click();
     await page.evaluate(() => { window.audioStarts = []; window.audioLeads = []; });
@@ -150,10 +154,14 @@ test("each low note matches the window on screen, also after a slider jump", asy
   await useOfflineBasemap(page);
   await page.goto("/");
   await page.locator(".map[data-ready=true] canvas").waitFor();
-  await page.getByRole("button", { name: "Hear the season" }).click();
+  await expect(page.getByRole("button", { name: "Hear the season" })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.waitForFunction(() => Number((document.getElementById("window") as HTMLInputElement).value) >= 2);
   await page.getByLabel("Window").fill("7");
-  await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible();
+  await page.waitForFunction(() => {
+    const shown = window.audioNotes.filter((_, i) => i % 3 === 0).map(note => note.shown);
+    return [7, 8, 9, 10].every(value => shown.includes(value));
+  });
   // No town is selected, so each note is three partials and the first is the low voice.
   const notes = await page.evaluate(() => window.audioNotes.filter((_, i) => i % 3 === 0));
   expect(notes.map(note => note.shown)).toEqual(expect.arrayContaining([7, 8, 9, 10]));

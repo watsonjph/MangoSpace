@@ -13,6 +13,8 @@ test("the map timeline plays the season in about five seconds, with speed, loop 
   await page.goto("/");
   await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible();
   const slider = page.getByLabel("Window");
+  await expect(page.getByRole("button", { name: "Loop", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Loop", exact: true }).click();
   await expect(page.locator(".track .staff i")).toHaveCount(manifest.windows.length);
   await expect(page.locator(".track .ticks span")).toHaveText(["Jun", "Jul", "Aug", "Sept", "Oct"]);
   await saveProof(page, "sc-491-timeline-desktop.png");
