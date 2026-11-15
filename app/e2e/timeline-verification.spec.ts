@@ -79,3 +79,16 @@ for (const reducedMotion of ["no-preference", "reduce"] as const) {
     }
   });
 }
+
+for (const width of [320, 340, 360]) {
+  test(`the phone timeline fits a ${width} px screen`, async ({ page }) => {
+    await useOfflineBasemap(page);
+    await page.setViewportSize({ width, height: 700 });
+    await page.goto("/?town=0702211000");
+    await expect(page.locator(".map[data-ready=true] canvas")).toBeVisible({ timeout: 15_000 });
+    for (const window of ["0", "5"]) {
+      await page.getByLabel("Window").fill(window);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+    }
+  });
+}
