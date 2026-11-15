@@ -191,7 +191,7 @@ export default function DamView({ dam }: { dam: Target }) {
       <h2>The radar image of each date</h2>
       <div className="dam-image">
         <Radar testId="dam-radar" src={old ? old.src : images[index][band]}
-          caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark is smooth water.`} />
+          caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`} />
         <div>
           <div className="dam-picker">
             <label>
@@ -226,7 +226,7 @@ export default function DamView({ dam }: { dam: Target }) {
                 <div><dt>Water area</dt><dd data-testid="dam-area">{areas[index].toFixed(2)} km²</dd></div>
                 {rain && <div><dt>Rain in the 12 days before</dt><dd data-testid="dam-rain">{dam.rainMm[index].toFixed(0)} mm</dd></div>}
               </dl>
-              <p className="dam-note">The area of one date is uncertain by about 0.09 km². Click a point of the chart, or move the slider.</p>
+              <p className="dam-note">Changing the water or outline threshold by 1 dB changes a one-date estimate by up to 0.09 km². This is threshold sensitivity, not accuracy against ground truth. Click a point of the chart, or move the slider.</p>
             </>
           )}
         </div>
