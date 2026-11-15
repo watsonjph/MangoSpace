@@ -99,17 +99,13 @@ async function up(o) {
   const child = spawn(process.execPath, [fileURLToPath(import.meta.url), "serve", "--port", String(port)], { detached: true, stdio: ["ignore", log, log], windowsHide: true });
   child.unref();
   const url = `http://127.0.0.1:${port}`;
-  const logTail = () => existsSync(path.join(VERIFY, "server.log"))
-    ? readFileSync(path.join(VERIFY, "server.log"), "utf8").trim().split("\n").slice(-12).join("\n")
-    : "No server log was written.";
+  const logText = () => readFileSync(path.join(VERIFY, "server.log"), "utf8");
   for (let i = 0; i < 50; i++) {
     if (child.exitCode !== null || child.signalCode !== null || !alive(child.pid)) {
-      fail("The server process exited before it became ready.", `The port may have been taken during the build or startup. Pick another with --port.\n${logTail()}`);
+      fail("The server process exited before it became ready.", `The port may have been taken during the build or startup. Pick another with --port.\n${logText().trim().split("\n").slice(-12).join("\n")}`);
     }
-    if ((await get(`${url}/data/manifest.json`)).status === 200) {
-      if (child.exitCode !== null || child.signalCode !== null || !alive(child.pid)) {
-        fail("The server process exited while checking readiness.", `The port may have been taken during the build or startup. Pick another with --port.\n${logTail()}`);
-      }
+    // Another server can answer on this port before our child even tries to bind, so only trust a response once the child says it is listening.
+    if (logText().includes(`serving ${OUT} on ${port}`) && (await get(`${url}/data/manifest.json`)).status === 200) {
       writeFileSync(STATE, JSON.stringify({ pid: child.pid, port, url, startedAt: new Date().toISOString() }, null, 2));
       return out({ ok: true, url, pid: child.pid, next: "node scripts/control-hubas.mjs doctor" });
     }
