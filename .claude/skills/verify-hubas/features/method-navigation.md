@@ -5,7 +5,7 @@ The top bar links the soil water map and the Method page. The Method page explai
 ## Sub-features
 
 - `navigation` opens each available view and marks the current page.
-- `method` explains the data, coverage, planned rank and limits.
+- `method` explains the data, coverage, rank preview and limits.
 - `sources` credits the current sources, the 2024 census and map licences.
 - `attribution` keeps the map credits visible on desktop and phone: MapLibre, OpenFreeMap, OpenMapTiles and OpenStreetMap.
 
@@ -29,5 +29,5 @@ The top bar links the soil water map and the Method page. The Method page explai
 - `drive` starts on the map, so it needs the base map. Add `--offline-basemap yes` without internet. Playwright MCP has no stub.
 - Town and window travel in the URL. Reloading, top bar links and Back to soil water preserve the selection; invalid selections fall back to no town and window 0.
 - Dam, rice, rank and history navigation items must wait for their view stories to merge. sc-225's dam round trip cannot be completed before sc-104.
-- The page states when soil water has not been loaded or the outlook is mock. Do not describe placeholders as measured results.
+- The sources list names each province's PAGASA advisory and issue date. If any `advisory` in `outlook.json` contains "MOCK", the page says the outlook is mock text instead. The page also says when soil water has not been loaded. Do not describe placeholders as measured results.
 - NISAR passes are combined per 12-day window using all valid readings, per Gate 1; coverage does not mean scientific quality.

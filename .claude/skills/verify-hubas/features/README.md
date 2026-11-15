@@ -7,7 +7,7 @@ This directory is the maintained source for verifying what a Hubas user can see 
 - Run all commands from `app/`.
 - Start the app with `node scripts/control-hubas.mjs up`. It serves the static export at `http://127.0.0.1:4310`.
 - Run `node scripts/control-hubas.mjs doctor` and require `ok: true`.
-- `lgus.json` and `lgus.geojson` have the 101 real towns (10-digit `psgc`, 2024 population). `pipeline/soil.py` (sc-71) writes their soil water and coverage from the NISAR SME2 files. `rank.py` (sc-120) writes the rank: 99 towns have one; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey. `outlook.json` is still mock data. The Malinao Dam data in `targets.json` is real NISAR data. Get current town IDs with `node scripts/control-hubas.mjs towns`.
+- `lgus.json` and `lgus.geojson` have the 101 real towns (10-digit `psgc`, 2024 population). `pipeline/soil.py` (sc-71) writes their soil water and coverage from the NISAR SME2 files. `rank.py` (sc-120) writes the rank: 99 towns have one; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey. `outlook.json` has PAGASA's El Niño Advisory No. 6 (issued 2026-11-03), the November 2026 rainfall outlook for Cebu and Bohol (sc-61). The Malinao Dam data in `targets.json` is real NISAR data. Get current town IDs with `node scripts/control-hubas.mjs towns`.
 - Never drive a server that this run did not start.
 
 ## Driving conventions
