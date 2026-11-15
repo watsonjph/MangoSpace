@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MapLink from "../MapLink";
 import lgus from "../../../public/data/lgus.json";
+import manifest from "../../../public/data/manifest.json";
 import outlooks from "../../../public/data/outlook.json";
 import { dateLabel } from "../date-label";
 
@@ -13,7 +14,7 @@ export default function MethodPage() {
     <main className="method-page">
       <p className="eyebrow">Cebu + Bohol · Data and limits</p>
       <h1>Measured, not forecast</h1>
-      <p data-testid="view-finding">Hubas shows 11 windows of satellite soil water measurements for 101 towns and cities.
+      <p data-testid="view-finding">Hubas shows {manifest.windows.length} windows of satellite soil water measurements for {lgus.length} towns and cities.
         The app makes no forecast of its own. An official PAGASA outlook is separate from the measurements.</p>
       <p className="notice">The NISAR soil water data is provisional. The rank is a preview,
         not a drought risk score. {hasSoilWater

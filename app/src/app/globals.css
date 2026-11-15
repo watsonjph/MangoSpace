@@ -335,6 +335,9 @@ input[type="range"]::-moz-range-thumb {
   .map { grid-row: 1; height: 56dvh; min-height: 360px; }
   .hud { top: 12px; left: 12px; width: min(264px, calc(100% - 24px)); gap: 8px; }
   .tag strong { font-size: 16px; }
+  .tag p { margin: 4px 0 0; font-size: 12px; }
+  /* The top bar links Method, and the map needs the room. */
+  .tag span, .tag a { display: none; }
   .panel { position: static; grid-row: 2; width: auto; max-height: none; overflow: visible; margin: 12px 12px 0; }
   .explorer > .timeline { grid-row: 3; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
   .explorer > .timeline .readout { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; align-items: end; }

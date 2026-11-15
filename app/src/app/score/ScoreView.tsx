@@ -88,7 +88,7 @@ export default function ScoreView({ parts, rain, steps, start, end }: {
   return (
     <main className="dam-page score-page" data-ready={ready}>
       <p className="eyebrow">The score · 2026 wet season, Cebu and Bohol</p>
-      <h1 data-testid="view-finding">3 parts of the season: the soil, the dam and the rice, played together</h1>
+      <h1 data-testid="view-finding">Soil water fell in late July, the dam held, and the rice signal fell on 5 Nov 2026</h1>
       <p className="dam-note">Each note sits on its real NISAR date. The soil has 12-day windows. The dam and the rice have 11 radar passes.
         So the lines do not meet on the same days.</p>
 
