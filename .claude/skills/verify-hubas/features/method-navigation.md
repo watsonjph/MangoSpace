@@ -18,7 +18,7 @@ The top bar links the soil water map and the Method page. The Method page explai
 ## Driving it with control-hubas
 
 - Start the static export with `node scripts/control-hubas.mjs up` and run `doctor`.
-- **Open Method.** Run `node scripts/control-hubas.mjs drive --nav Method --name method` and again with `--viewport 375x812`. `path` is `/method`, `heading` is `Measured, not forecast`, and `consoleErrors` is empty. Read the page text in `aria.yml`, including the line explaining "Good pixels" as coverage.
+- **Open Method.** Run `node scripts/control-hubas.mjs drive --nav Method --name method` and again with `--viewport 375x812`. `path` is `/method`, `heading` is `Measured, not forecast`, and `consoleErrors` is empty. Read the page text in `aria.yml`, including the line explaining "Pixels with data" as coverage.
 - **Wrong link.** `drive --nav Bogus` fails and lists the top bar links.
 - For the "Back to soil water" link and the map credits, use the spec below or the Playwright MCP.
 - Run the committed flows with `npx playwright test e2e/method-navigation.spec.ts e2e/map-selection.spec.ts`. The selection spec checks each return link, reloads, shared URLs and invalid selections on desktop and phone. The Method spec checks sources, map credits and console/network errors. Screenshots, video and traces go to test-results, not docs/proof.

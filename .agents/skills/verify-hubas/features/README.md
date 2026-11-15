@@ -32,7 +32,7 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 
 - [Soil water map](./soil-water-map.md): the map of Cebu and Bohol, town shapes colored by soil water, the "provisional" label, the legend, and the desktop and phone layouts.
 - [Time slider](./time-slider.md): moving through the 12-day windows and the map and panel following.
-- [Town panel](./town-panel.md): opening a town from the map or the dropdown and reading its rank, soil water, good pixels and PAGASA outlook.
+- [Town panel](./town-panel.md): opening a town from the map or the dropdown and reading its rank, soil water line, soil water, pixels with data and PAGASA outlook.
 - [Method and navigation](./method-navigation.md): the top bar, the `/method` page, source credits and the map credits.
 
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
