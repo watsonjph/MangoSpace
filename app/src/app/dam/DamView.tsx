@@ -13,7 +13,10 @@ const RAIN = "#8fb4d9";
 const fmt = (date: string) =>
   new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const pct = (value: number, base: number) => (value / base - 1) * 100;
-const signed = (value: number) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(0)}%`;
+const signed = (value: number) => {
+  const rounded = Math.round(value);
+  return `${rounded > 0 ? "+" : rounded < 0 ? "−" : ""}${Math.abs(rounded)}%`;
+};
 
 function Chart({ lines, domain, unit, rain, selected, onSelect, label }: {
   lines: Line[];
