@@ -30,10 +30,11 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
   const left = 44, right = 10, top = 8, plot = 170, rainHeight = rain ? 56 : 0, height = top + plot + rainHeight + 22;
   const times = lines.flatMap((line) => line.points.map(([time]) => time));
   const t0 = Math.min(...times), t1 = Math.max(...times);
-  const x = (time: number) => left + ((time - t0) / (t1 - t0)) * (width - left - right);
+  const x = (time: number) => left + (t0 === t1 ? 0.5 : (time - t0) / (t1 - t0)) * (width - left - right);
   const y = (value: number) => top + (1 - (value - domain[0]) / (domain[1] - domain[0])) * plot;
   const months: number[] = [];
-  for (let d = new Date(t0), m = Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1); m <= t1; m = Date.UTC(new Date(m).getUTCFullYear(), new Date(m).getUTCMonth() + 1, 1)) months.push(m);
+  if (t0 === t1) months.push(t0);
+  else for (let d = new Date(t0), m = Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1); m <= t1; m = Date.UTC(new Date(m).getUTCFullYear(), new Date(m).getUTCMonth() + 1, 1)) months.push(m);
   const every = Math.ceil(months.length / ((width - left - right) / 38));
   const ticks = [0, 1, 2, 3].map((i) => domain[0] + ((domain[1] - domain[0]) * i) / 3);
   const rainMax = rain ? Math.max(...rain.map(([, mm]) => mm)) : 1;
@@ -50,7 +51,7 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
         ))}
         {months.map((month, i) => i % every === 0 && (
           <text key={month} x={x(month)} y={height - 6} textAnchor="middle">
-            {new Date(month).toLocaleDateString("en-GB", { month: "short", year: new Date(month).getUTCMonth() ? undefined : "numeric", timeZone: "UTC" })}
+            {new Date(month).toLocaleDateString("en-GB", { month: "short", year: (new Date(month).getUTCMonth() === 0 || t0 === t1) ? "numeric" : undefined, timeZone: "UTC" })}
           </text>
         ))}
         {rain?.map(([time, mm]) => (
