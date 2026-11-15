@@ -66,7 +66,7 @@ test("soil water legend and map framing work at desktop and mobile widths", asyn
   await mapShows(bogo, 0);
 
   const colorExpression = JSON.stringify(await page.evaluate(() => window.hubasMap!.getPaintProperty("soil", "fill-color")));
-  expect(colorExpression).toContain("#4b5a5e");
+  expect(colorExpression).toContain("#5d6e72");
   expect(colorExpression).toContain("#e6a94e");
   expect(colorExpression).toContain("#dcd9b4");
   expect(colorExpression).toContain("#4cc3cf");
