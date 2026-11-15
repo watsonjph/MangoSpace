@@ -62,7 +62,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
 
       <h2>The radar image behind each point</h2>
       <div className="dam-image">
-        <Radar src={images[index][band]} testId="rice-radar"
+        <Radar src={images[index][band]} images={images[index]} testId="rice-radar"
           caption={`${NAME[target.id]} parcel, NISAR ${band.toUpperCase()}, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
         <div>
           <div className="dam-picker" role="group" aria-label="Parcel">

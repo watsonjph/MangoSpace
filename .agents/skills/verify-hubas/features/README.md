@@ -37,6 +37,7 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 - [Malinao Dam](./dam.md): the `/dam` page, its water area chart with rain and "if it repeats" lines, and the radar image of each date.
 - [Rank preview](./rank-preview.md): the rank in the town panel, rank parts, stable towns and unranked towns.
 - [Rice parcels](./rice.md): the `/rice` page, the HV lines of the Ubay and Pilar parcels, and the radar image of each date.
+- [Radar pixel explainer](./radar-pixels.md): click, tap, or use the keyboard to inspect paired HH and HV readings on dam and rice images.
 - [The score](./score.md): the `/score` page, the soil, dam and rice staffs and the rain on one date axis, one playhead, and a sound voice for each staff.
 - [Hear the season](./sound.md): opt-in soil-water tones synchronized with slider playback.
 
@@ -44,7 +45,6 @@ Each feature file starts with an H1 title and one paragraph on the user-visible 
 
 From the plan (https://claude.ai/artifact/RnQvBADeQY7pRJLrBH8YR8). Add a feature file when each one lands.
 
-- Radar explainer: click a pixel for HH and HV (wave 2)
 - L-band vs C-band rice view (sc-193). The Sentinel-1 (C-band) pair of each rice parcel from 2026-10-13 is in `targets.json` (`cBand`), but no screen shows it yet.
 - RADARSAT-1 history for 1997–98 (sc-160).
 

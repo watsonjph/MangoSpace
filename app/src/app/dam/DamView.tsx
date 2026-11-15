@@ -101,7 +101,7 @@ export default function DamView({ dam }: { dam: Target }) {
 
       <h2>The radar image of each date</h2>
       <div className="dam-image">
-        <Radar testId="dam-radar" src={old ? old.src : images[index][band]}
+        <Radar testId="dam-radar" src={old ? old.src : images[index][band]} images={old ? undefined : images[index]}
           caption={`${old ? `${old.sensor} VV` : `NISAR ${band.toUpperCase()}`}, ${fmt(old ? old.date : dates[index])}. Dark areas can be water, flooded fields, or radar shadow.`} />
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}

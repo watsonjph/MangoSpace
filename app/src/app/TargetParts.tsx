@@ -2,6 +2,8 @@
 
 import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Timeline, { type Note, usePlayback } from "./Timeline";
+import type { Target } from "../../lib/data";
+import RadarInspector from "./RadarInspector";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
 
@@ -94,11 +96,16 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label }
   );
 }
 
-export function Radar({ src, caption, testId }: { src: string; caption: string; testId?: string }) {
+export function Radar({ src, caption, testId, images }: {
+  src: string; caption: string; testId?: string; images?: Target["nisar"]["images"][number];
+}) {
   return (
     <figure className="dam-radar" data-testid={testId}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={`/data/${src}`} alt={caption} width={440} height={440} />
+      {images ? <RadarInspector key={`${images.hh}:${images.hv}`} src={src} caption={caption} images={images} /> : <>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`/data/${src}`} alt={caption} width={440} height={440} />
+        <p className="dam-note">Pixel inspection needs an HH and HV pair. This historic image has one band.</p>
+      </>}
       <figcaption>{caption}</figcaption>
     </figure>
   );
