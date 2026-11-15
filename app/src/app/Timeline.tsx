@@ -7,21 +7,22 @@ const SPEEDS = [1, 2, 0.5] as const;
 
 export type Playback = ReturnType<typeof usePlayback>;
 
-export function usePlayback(count: number, index: number, setIndex: (index: number) => void, stepMs = STEP_MS) {
+// ready: false holds the current step until it is ready, for example until its image has loaded.
+export function usePlayback(count: number, index: number, setIndex: (index: number) => void, stepMs = STEP_MS, ready = true) {
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
   const [loop, setLoop] = useState(false);
   const last = count - 1;
 
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || !ready) return;
     const timer = window.setTimeout(() => {
       if (index < last) setIndex(index + 1);
       else if (loop) setIndex(0);
       else setPlaying(false);
     }, stepMs / speed);
     return () => window.clearTimeout(timer);
-  }, [playing, index, last, loop, speed, stepMs, setIndex]);
+  }, [playing, ready, index, last, loop, speed, stepMs, setIndex]);
 
   useEffect(() => {
     const pauseWhenHidden = () => { if (document.hidden) setPlaying(false); };
@@ -49,7 +50,7 @@ export type Note = { at: number; weak?: boolean } | null;
 export const place = (x: number, max: number) => `calc(5px + (100% - 10px) * ${x / Math.max(max, 1)})`;
 
 // axis: put step i at axis.at[i] on a 0 to axis.max scale (for example a day), not at i. staff replaces the one staff of notes.
-export default function Timeline({ id, name, count, index, onIndex, label, play, notes, ticks, axis, staff, className, children }: {
+export default function Timeline({ id, name, count, index, onIndex, label, play, notes, ticks, breaks, axis, staff, className, children }: {
   id: string;
   name: string;
   count: number;
@@ -59,6 +60,7 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
   play: Playback;
   notes?: Note[];
   ticks?: { index: number; label: string }[];
+  breaks?: number[];
   axis?: { at: number[]; max: number };
   staff?: ReactNode;
   className?: string;
@@ -97,6 +99,7 @@ export default function Timeline({ id, name, count, index, onIndex, label, play,
       <div className="track">
         {staff ?? (
           <div className="staff" aria-hidden="true">
+            {breaks?.map((index) => <span key={index} className="period-break" style={{ left: left(index - 0.5) }} />)}
             {notes?.map((note, i) => note && (
               <i key={i} className={[i === index ? "now" : "", note.weak ? "weak" : ""].join(" ").trim() || undefined}
                 style={{ left: left(i), bottom: `${note.at * 100}%` }} />

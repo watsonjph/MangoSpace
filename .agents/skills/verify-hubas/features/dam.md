@@ -11,6 +11,7 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - `dam-band` (group `Radar band`): `HH` and `HV`, only on 2026 frames.
 - `dam-comparison` shows Then and Now date selectors with sensor labels, defaulting to 20 Mar 2016 and the latest NISAR date. Drag the Image comparison divider or use its arrow keys. Each side gives percentage change against its own period baseline, with a sensor warning below.
 - `dam-causes` lists possible causes and links to the Method page.
+- Each line is named at its end. The chart marks the steady 2026 measurement; the March 2016 minimum is identified separately as historical. Rain has its own numeric axis in mm. Move a mouse or touch the chart for the nearest measured date and value.
 
 ## How to get to it (user POV)
 
@@ -35,3 +36,5 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - Past events are Sentinel-1 (C-band VV), 2026 is NISAR (L-band). Their km² differ, so past frames show percent change only. Compare changes, not areas.
 - Dashed scenario lines start at the latest NISAR area and apply past monthly-average changes. They can differ from the lowest single reading of that event. They are not a forecast.
 - The rain bars need `rainMm` to have one value per NISAR date. If not, the chart and the stats hide rain.
+
+- The dam staff labels 2015–16, 2023–24 and 2026, with breaks between periods. Play loads every frame up front and waits on a frame until its image has loaded, so no frame is skipped on a slow line. Run npx playwright test e2e/timelapse.spec.ts to play every frame in order with each image slowed to 400 ms; PROOF=1 saves the dam video and dam/rice screenshots.

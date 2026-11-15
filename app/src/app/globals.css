@@ -15,6 +15,12 @@
   --display: var(--font-display), "Segoe UI", system-ui, sans-serif;
   --mono: var(--font-mono), "Cascadia Code", Consolas, monospace;
   --bar: 56px;
+  --rain: #8fb4d9;
+  --chart-font: 10px var(--mono);
+  --chart-line-width: 2;
+  --chart-grid-width: 1;
+  --chart-point-radius: 3px;
+  --chart-selected-radius: 6px;
 }
 
 * { box-sizing: border-box; }
@@ -89,6 +95,8 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 
 .hud { position: absolute; z-index: 2; top: 16px; left: 16px; width: 264px; display: grid; gap: 12px; pointer-events: none; }
 .tag, .legend { margin: 0; padding: 12px 14px; background: rgb(16 27 30 / 88%); border: 1px solid var(--line); border-radius: 4px; backdrop-filter: blur(6px); }
+.tag p { margin: 8px 0; font-size: 13px; }
+.tag a { display: inline-block; margin-top: 8px; font-size: 11px; pointer-events: auto; }
 .tag { display: grid; gap: 4px; }
 .tag strong { font-size: 19px; font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
 .tag span { font: 11px var(--mono); color: var(--muted); }
@@ -154,13 +162,21 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 
 .soil-line { margin: 0; }
 .soil-line svg { display: block; width: 100%; height: auto; }
-.soil-line .grid { stroke: var(--line); stroke-width: 1; }
-.soil-line .guide { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.55; }
-.soil-line .line { fill: none; stroke: var(--water); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .grid { stroke: var(--line); stroke-width: var(--chart-grid-width); }
+.chart .guide { stroke: var(--ink); stroke-width: var(--chart-grid-width); stroke-dasharray: 3 3; opacity: 0.55; }
+.chart .line { stroke-width: var(--chart-line-width); stroke-linejoin: round; stroke-linecap: round; }
+.soil-line .line { fill: none; stroke: var(--water); }
 .soil-line circle { fill: var(--water); stroke: var(--surface); stroke-width: 1.5; }
 .soil-line circle.low { fill: var(--surface); stroke: var(--muted); stroke-width: 2; }
-.soil-line circle.selected { stroke: var(--ink); stroke-width: 2; }
-.soil-line .tick { font: 10px var(--mono); fill: var(--muted); }
+.chart circle.selected { stroke: var(--ink); stroke-width: var(--chart-line-width); }
+.chart circle { r: var(--chart-point-radius); stroke: var(--surface); stroke-width: 1.5; }
+.chart circle.selected { r: var(--chart-selected-radius); }
+.chart text, .soil-line .tick { font: var(--chart-font); fill: var(--muted); }
+.chart .line-label { fill: var(--water); }
+.chart .finding text { fill: var(--ink); }
+.chart .finding line { stroke: var(--muted); stroke-width: var(--chart-grid-width); }
+.chart-readout { display: block; min-height: 28px; font: 11px/1.5 var(--mono); color: var(--ink); }
+.chart svg { touch-action: pan-y; }
 .soil-line figcaption, .season-sound p { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 
 /* The timeline is a music staff. The notes are the values, and the thumb of the range input is the playhead. */
@@ -194,6 +210,7 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 }
 .track .staff i.weak { background: var(--surface); border: 1.5px solid var(--muted); }
 .track .staff i.now { background: var(--water); border-color: var(--water); scale: 1.5; }
+.track .staff .period-break { position: absolute; top: 0; bottom: 0; width: 4px; transform: translateX(-50%); background: var(--surface); }
 .track .ticks span { position: absolute; bottom: 0; transform: translateX(-50%); font: 10px var(--mono); color: var(--muted); }
 
 input[type="range"] { width: 100%; height: 44px; margin: 0; appearance: none; background: transparent; cursor: pointer; }
@@ -247,7 +264,7 @@ input[type="range"]::-moz-range-thumb {
 .dam-note { max-width: 68ch; color: var(--muted); font-size: 13px; margin: 8px 0; }
 .dam-chart { overflow: hidden; }
 .dam-chart svg { display: block; }
-.dam-chart text { font: 10px var(--mono); fill: var(--muted); }
+.dam-chart text { font: var(--chart-font); fill: var(--muted); }
 .dam-key { display: flex; flex-wrap: wrap; gap: 4px 16px; list-style: none; margin: 8px 0 0; padding: 0; font: 11px var(--mono); color: var(--muted); }
 .dam-key span { display: inline-block; width: 22px; margin-right: 6px; vertical-align: middle; }
 .dam-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0; margin: 0 0 8px; border-top: 1px solid var(--line); }
@@ -331,6 +348,9 @@ input[type="range"]::-moz-range-thumb {
   .map { grid-row: 1; height: 56dvh; min-height: 360px; }
   .hud { top: 12px; left: 12px; width: min(264px, calc(100% - 24px)); gap: 8px; }
   .tag strong { font-size: 16px; }
+  .tag p { margin: 4px 0 0; font-size: 12px; }
+  /* The top bar links Method, and the map needs the room. */
+  .tag span, .tag a { display: none; }
   .panel { position: static; grid-row: 2; width: auto; max-height: none; overflow: visible; margin: 12px 12px 0; }
   .explorer > .timeline { grid-row: 3; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
   .explorer > .timeline .readout { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; align-items: end; }

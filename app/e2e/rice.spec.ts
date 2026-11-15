@@ -48,7 +48,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
       const hv = parcel.nisar.meanHvDb!;
       await page.getByRole("button", { name }).click();
       expect((await chart.locator("polyline").first().getAttribute("points"))!.split(" ")).toHaveLength(dates.length);
-      await expect(chart.locator("rect[fill='#8fb4d9']")).toHaveCount(dates.length);
+      await expect(chart.getByTestId("rain-bar")).toHaveCount(dates.length);
       for (const [i, date] of dates.entries()) {
         await page.getByRole("slider").fill(String(i));
         await expect(page.locator(".dam-picker output")).toHaveText(day(date));
