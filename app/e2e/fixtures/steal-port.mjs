@@ -16,11 +16,8 @@ globalThis.fetch = async (input, init) => {
       server.once("error", reject);
       server.listen(port, "127.0.0.1", resolve);
     });
-    const cleanup = setTimeout(() => {
-      server.closeAllConnections();
-      server.close();
-    }, 1000);
-    cleanup.unref();
+    // Hold the port until up exits; a timed close lets a slow child bind it and pass for real.
+    server.unref();
     return { status: 0, text: async () => "" };
   }
 
