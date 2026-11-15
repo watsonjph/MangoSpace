@@ -81,6 +81,8 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
             </div>
           </div>
           <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} display={display} setDisplay={setDisplay} frames={frameSrcs}
+            sounds={target.nisar.meanHvDb!.map((hv, i) => ({ low: note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]).at, rain: target.rainMm[i] }))}
+            pitch="A higher pitch means a higher HV radar signal. Soft high notes show rain."
             notes={target.nisar.meanHvDb!.map((hv) => note(hv, [Math.min(...all) - 1, Math.max(...all) + 1]))} />
           <dl className="dam-stats">
             <div><dt>Mean HV signal</dt><dd data-testid="rice-hv">{db(target.nisar.meanHvDb![index])}</dd></div>

@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Timeline, { type Note, usePlayback } from "./Timeline";
+import SoundTimeline, { type SoundFrame } from "./SoundTimeline";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
 
@@ -222,13 +223,14 @@ const FRAME_MS = 300;
 
 // The display buttons are left out when setDisplay is absent: a Sentinel-1 date has one band.
 // The height of a value on the timeline staff, inside the same range as its chart.
-export const note = (value: number, [low, high]: [number, number]): Note => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
+export const note = (value: number, [low, high]: [number, number]): NonNullable<Note> => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
 
 // frames: the image of each step. They load up front, and play waits on a frame until it has loaded, so no frame is skipped.
-export function Picker({ label, max, index, setIndex, notes, frames, periods, display, setDisplay, children }: {
+export function Picker({ label, max, index, setIndex, notes, frames, periods, sounds, pitch, display, setDisplay, children }: {
   label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[]; frames: string[][];
   display: RadarDisplay; setDisplay?: (display: RadarDisplay) => void; children?: ReactNode;
   periods?: { index: number; label: string }[];
+  sounds: SoundFrame[]; pitch: string;
 }) {
   const [loaded, setLoaded] = useState<ReadonlySet<string>>(new Set());
   // Each frame can use one band or both bands for a color composite.
@@ -247,7 +249,9 @@ export function Picker({ label, max, index, setIndex, notes, frames, periods, di
     <div className="dam-picker">
       <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes}
         breaks={periods?.slice(1).map((period) => period.index)}
-        ticks={periods?.map((period, i) => ({ label: period.label, index: (period.index + (periods[i + 1]?.index ?? max + 1) - 1) / 2 }))} />
+        ticks={periods?.map((period, i) => ({ label: period.label, index: (period.index + (periods[i + 1]?.index ?? max + 1) - 1) / 2 }))}>
+        <SoundTimeline frames={sounds} index={index} play={play} stepMs={FRAME_MS} description={pitch} />
+      </Timeline>
       {children}
       {setDisplay && (
         <div role="group" aria-label="Radar display">
