@@ -5,6 +5,7 @@ import { saveProof } from "./proof";
 
 const BOGO = "0702211000";
 const TUBIGON = "0701245000";
+const MANDAUE = "0731300000";
 
 test("every town has real soil water and coverage for each window", async ({ request }) => {
   const lgus: Lgu[] = await (await request.get("/data/lgus.json")).json();
@@ -46,6 +47,18 @@ test("the map and the panel show a town with data and a town with no data in a w
   await page.getByLabel("Town").selectOption(BOGO);
   await expect(page.getByTestId("moisture")).toHaveText(`${bogo.soilMoisture[0]!.toFixed(3)} m³/m³`);
   await expect.poll(() => state(BOGO)).toBe(bogo.soilMoisture[0]);
+  // A town with less than half its pixels is grey on the map, but the panel still gives its value.
+  const mandaue = lgus.find((l) => l.psgc === MANDAUE)!;
+  expect(mandaue.soilMoisture[0]).not.toBeNull();
+  expect(mandaue.validShare[0]).toBeLessThan(0.5);
+  const fill = (psgc: string) =>
+    page.evaluate((id) => {
+      const layer = window.hubasMap!.queryRenderedFeatures({ layers: ["soil"] }).find((f) => f.id === id)?.layer;
+      return layer?.type === "fill" ? String(layer.paint?.["fill-color"]) : undefined;
+    }, psgc);
+  const grey = "rgba(154,165,162,1)"; // #9aa5a2 in Explorer.tsx
+  await expect.poll(() => fill(MANDAUE)).toBe(grey);
+  expect(await fill(BOGO)).not.toBe(grey);
   await page.waitForFunction(() => window.hubasMap!.loaded());
   await saveProof(page, "sc-71-map-window-1.png");
 

@@ -58,7 +58,8 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           "fill-outline-color": "#12201d",
           "fill-color": [
             "case",
-            ["==", ["feature-state", "sm"], null],
+            // Same 50% rule as the rank (sc-120): a town with less than half its pixels is not coloured.
+            ["any", ["==", ["feature-state", "sm"], null], ["<", ["coalesce", ["feature-state", "share"], 0], 0.5]],
             "#9aa5a2",
             ["interpolate", ["linear"], ["feature-state", "sm"], 0.1, "#b07a1f", 0.25, "#c8c48a", 0.45, "#0d6f7d"],
           ],
@@ -78,7 +79,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
 
   useEffect(() => {
     if (!map) return;
-    for (const lgu of lgus) map.setFeatureState({ source: SOURCE, id: lgu.psgc }, { sm: lgu.soilMoisture[windowIndex] });
+    for (const lgu of lgus) map.setFeatureState({ source: SOURCE, id: lgu.psgc }, { sm: lgu.soilMoisture[windowIndex], share: lgu.validShare[windowIndex] });
   }, [map, lgus, windowIndex]);
 
   const win = manifest.windows[windowIndex];
@@ -98,7 +99,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
           <span>0.10 m³/m³ · drier</span>
           <span>0.45 m³/m³ · wetter</span>
         </div>
-        <p><span className="no-data-swatch" aria-hidden="true" /> Gray: no good pixels</p>
+        <p><span className="no-data-swatch" aria-hidden="true" /> Gray: less than half the pixels have data</p>
       </section>
 
       <form className="slider" onSubmit={(e) => e.preventDefault()}>
