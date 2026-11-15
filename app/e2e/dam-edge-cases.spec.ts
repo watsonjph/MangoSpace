@@ -16,17 +16,18 @@ test("dam chart centers one date with finite coordinates", async ({ page }) => {
   await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
   const chart = page.getByTestId("dam-chart");
   await expect(chart.locator("polyline")).toHaveCount(1);
-  await expect(chart.locator("circle[r='2.5']")).toHaveCount(1);
-  await expect(chart.locator("circle[r='6']")).toHaveCount(1);
+  await expect(chart.locator("circle:not(.selected)")).toHaveCount(1);
+  await expect(chart.locator("circle.selected")).toHaveCount(1);
   const coordinates = await chart.locator("svg").evaluate(svg => ({
-    width: Number(svg.getAttribute("width")),
+    // A grid line spans the plot area, so its ends give the plot's left and right edges.
+    plot: ["x1", "x2"].map(key => Number(svg.querySelector("line.grid")!.getAttribute(key))),
     point: svg.querySelector("polyline")!.getAttribute("points")!.trim().split(/[\s,]+/).map(Number),
     all: [...svg.querySelectorAll("[cx], [x], [y], [height]")].flatMap(node =>
       ["cx", "cy", "x", "y", "height"].filter(key => node.hasAttribute(key)).map(key => Number(node.getAttribute(key)))),
   }));
   expect(coordinates.point).toHaveLength(2);
   expect([...coordinates.point, ...coordinates.all].every(Number.isFinite)).toBe(true);
-  expect(coordinates.point[0]).toBeCloseTo((coordinates.width + 34) / 2, 1);
+  expect(coordinates.point[0]).toBeCloseTo((coordinates.plot[0] + coordinates.plot[1]) / 2, 1);
   await saveProof(page, "sc-428-single-date.png");
   expect(errors).toEqual([]);
 });
