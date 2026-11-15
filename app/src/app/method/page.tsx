@@ -48,6 +48,9 @@ export default function MethodPage() {
         <p>The stability check doubles the weight of each part, one at a time. A town that remains
           in the top 10 in every check is called stable. These are places to look at first,
           not predictions of drought or a measure of risk.</p>
+        <p data-testid="rank-smap">SMAP does not confirm which towns are drier in the windows the rank uses
+          (correlation between places −0.06 on 7 October and −0.41 on 1 September). Read the order as a list
+          of towns to check, not as a result.</p>
       </section>
 
       <section aria-labelledby="radar-limits">
