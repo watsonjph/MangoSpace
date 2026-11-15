@@ -139,6 +139,7 @@ the periods of two dates in sequence do not overlap.
 
 - Product: `GPM_3IMERGDL` version 07, the IMERG Late Run daily rain on a 0.1°
   grid. The Final Run does not have the 2026 dates yet.
+- A GPM day is a UTC day: from 08:00 to 08:00 Philippine time.
 - Each target uses the one grid cell that has the centre of its bounds. Malinao
   Dam and the Pilar rice sample are in the same cell, so their values are equal.
 - The command asks the GES DISC OPeNDAP server for only those cells and keeps
@@ -147,6 +148,55 @@ the periods of two dates in sequence do not overlap.
 
 The rain is a possible cause of a change, not a proven one. One cell of about
 11 km is not the rain of the whole area that feeds the reservoir.
+
+## Town soil water
+
+```sh
+uv run python soil.py
+```
+
+The command writes `soilMoisture` and `validShare` of each town in `lgus.json`,
+one value for each window of `manifest.json`, and the `generatedAt` time of the
+manifest. It does not change the windows, the rank or the other fields.
+
+- It uses all valid readings: the soil water and the quality flag are not the
+  fill value and not NaN. NISAR marks most of them as not recommended.
+- It combines all files that start in a window. A grid cell with more than one
+  valid reading gets their mean.
+- `soilMoisture` is the mean of the valid cells in the town, in m³/m³, or `null`.
+  `validShare` is the valid cells divided by all grid cells in the town. A cell
+  is in a town if its centre is inside the border.
+- A window with no file over a town leaves it `null`. The command does not fill it.
+
+If `download_sme2.py` saved a file in `pipeline/data/sme2/`, the command reads it.
+If not, it reads only the soil water, the flag and the cell centres from the
+remote file, about 2 MB of 80 MB, and keeps them in the ignored
+`pipeline/data/sme2-grids/`. It prints the number of files of each track in each
+window. It needs an Earthdata Login.
+
+## Town rank
+
+```sh
+uv run python rank.py
+```
+
+The command reads `lgus.json`, fills `rank`, and writes the index of the window
+of the rank as `rankWindow` in `manifest.json`. It needs no login. Run it after
+`soil.py`.
+
+- The window of the rank is the latest window in which the most towns have data
+  on half of their area or more. A window with no pass over Bohol is not used.
+- A town is ranked if it has data on half of its area or more in that window and
+  3 windows before it. If not, `rank` is `null`.
+- Three parts, each from 0 to 1 over the ranked towns, with the same weight:
+  `dryness` (1 is the lowest soil water in the window), `dryingSpeed` (1 is the
+  largest fall of the soil water over the 3 windows) and `people` (1 is the
+  largest population, on a logarithm scale).
+- `stable` is true if the town is in the top 10 with equal weights and with each
+  part at double weight, one at a time.
+
+The rank says which towns to look at first. It is not a risk score and not a
+forecast.
 
 ## Town borders and population
 

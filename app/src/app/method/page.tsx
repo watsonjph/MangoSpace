@@ -34,8 +34,12 @@ export default function MethodPage() {
 
       <section aria-labelledby="rank-method">
         <h2 id="rank-method">How the rank preview works</h2>
-        <p>The planned rank gives equal weight to three parts: how dry a town is now,
-          how fast it becomes dry, and how many people live there. Population comes from the 2024 census.</p>
+        <p>The rank gives equal weight to three parts: how dry a town is now, how much its soil water
+          fell over the three windows before, and how many people live there (on a logarithm scale).
+          Population comes from the 2024 census.</p>
+        <p>&ldquo;Now&rdquo; is the latest window in which the most towns have data, shown next to the rank
+          in the town panel. The rank does not change with the slider. In the current data every town became
+          wetter from September to October, so a high drying speed means &ldquo;became wetter the least&rdquo;.</p>
         <p>The stability check doubles the weight of each part, one at a time. A town that remains
           in the top 10 in every check is called stable. These are places to look at first,
           not predictions of drought or a measure of risk.</p>

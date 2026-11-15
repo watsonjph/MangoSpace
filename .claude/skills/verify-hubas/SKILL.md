@@ -64,7 +64,7 @@ node scripts/control-hubas.mjs drive --nav Method --name sc-123-method
 
 Two more options: `--viewport 375x812` gives the phone layout, and `--offline-basemap yes` replaces the outside base map with a plain background (the same stub as `app/e2e/offline-basemap.ts`) for runs without internet.
 
-It prints `steps`, the map label, the legend lines, the slider value and range, the selected town, every row of the town panel (`Rank`, `Soil water`, `Good pixels`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
+It prints `steps`, the map label, the legend lines, the slider value and range, the selected town, every row of the town panel (`Rank, <start> → <end>`, `Soil water`, `Good pixels`, `PAGASA, <province>`), and all console errors. `ok` is `false` if any console error happened.
 
 `drive` always starts on `/`. Add `--nav Method` to open `/method`. It prints `path` and the page `heading`, and `window`, `town` and `panel` are `null` off the map. For anything else `drive` does not cover yet, use the Playwright MCP against the URL from `up`, with the same handles. If you drive the same steps by hand twice, add them to `control-hubas.mjs` instead.
 
@@ -97,5 +97,5 @@ node scripts/control-hubas.mjs down
 
 ## Known limits
 
-- The 101 towns are real, but their soil water and rank are empty until sc-71 and sc-120: every town is grey and `Not ranked`. `outlook.json` and the windows in `manifest.json` are still mock data. Get town IDs with `towns`. The Malinao Dam data in `targets.json` is already real.
+- The 101 towns and their soil water are real (sc-71, all valid NISAR readings, provisional). The rank is real too (sc-120): 99 towns have a rank from the window of 7 Oct; City of Mandaue and City of Lapu-Lapu are `Not ranked`. In windows 3 and 10 most Bohol towns are grey, because no Bohol track has a file there. `outlook.json` is still mock data. Get town IDs with `towns`. The Malinao Dam data in `targets.json` is already real.
 - Features from the plan that are not built yet (dam view, rice, explainer, sound, rank colors) are listed in the feature map as "not built". Update the map when they land, or run `/pstack:maintain-verification-skill`.
