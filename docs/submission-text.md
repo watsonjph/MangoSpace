@@ -22,7 +22,7 @@ A visitor picks a town and a 12-day window and sees the town's soil water in m³
 
 An offline Python pipeline prepares static JSON and PNG files. A TypeScript and Next.js app reads those packaged files, with MapLibre GL JS for the map. NASA services are not called from the visitor's browser.
 
-The repository contains NISAR HH/HV radar images and water-area measurements for Malinao Dam, and HV measurements for selected rice-field parcels. It also contains Sentinel-1 images and dam-water history for 2015–16 and 2023–24. These packaged datasets are not yet available as dam, rice or history views. The rank preview gives equal weight to how dry a town is now, how much its soil water fell over the three windows before, and its 2024 population. It means “Look at these towns first.” It is not a drought risk score or a prediction.
+The Dam page shows NISAR images and water-area measurements for Malinao Dam, and Sentinel-1 images from 2015–16 and 2023–24. The Rice page shows NISAR L-band images and Sentinel-1 C-band images for samples in Ubay and Pilar. GPM IMERG supplies the 12-day rain total before each dam and rice date. The Method page explains these sources and their limits. The rank preview gives equal weight to how dry a town is now, how much its soil water fell over the three windows before, and its 2024 population. It means “Look at these towns first.” It is not a drought risk score or a prediction.
 
 ### What the observations can tell us
 
@@ -39,13 +39,13 @@ We want people to inspect the measurements and their coverage before deciding wh
 - [NISAR SME2 and GCOV](https://nisar-docs.asf.alaska.edu/), NASA/ISRO, distributed by ASF. SME2 supplies the town soil water shown on the map and used by the rank preview. GCOV supplies the packaged Malinao Dam and rice-parcel HH/HV images and measurements. Cite the collection versions and granules actually included in the final artifact.
 - [ASF HyP3](https://hyp3-docs.asf.alaska.edu/) and [OPERA RTC-S1](https://www.jpl.nasa.gov/go/opera/products/rtc-product/) support the packaged Sentinel-1 dam history. The radar observations are Copernicus Sentinel-1 data; processing products do not make the original observations NISAR data.
 - [SMAP `SPL3SMP_E`](https://nsidc.org/data/spl3smp_e), NASA, enhanced daily soil water on a 9 km grid. Used only to check the NISAR soil water; the result is on the Method page.
-- [GPM IMERG `GPM_3IMERGDL` v07](https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDL_07/summary), NASA, daily Late Run rain. Supplies the 12-day rain total before each Malinao Dam and rice date. Packaged in the data, but no page shows or credits it yet. Per the [submission checklist](submission-checklist.md), drop this entry from the final page unless the dam view ships or the Method page credits GPM.
+- [GPM IMERG `GPM_3IMERGDL` v07](https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDL_07/summary), NASA, daily Late Run rain. Supplies the 12-day rain total shown on the Dam and Rice pages. GPM data is freely available; users should acknowledge the source and cite the dataset and archive under the [GPM data usage and citation policy](https://gpm.nasa.gov/data/policy).
 
 ## Space agency partner data and other references
 
 | Resource | Use |
 | --- | --- |
-| [Copernicus Sentinel-1](https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-1) | Packaged dam history and rice L-band/C-band comparison; cite the final processed products. |
+| [Copernicus Sentinel-1](https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-missions/sentinel-1) | Dam history for 2015–16 and 2023–24, plus the 13 October 2026 C-band rice comparison. Data has free, full and open access under the [Copernicus Sentinel Data Legal Notice](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice). For modified data, credit “Contains modified Copernicus Sentinel data [year]”. Processing uses [ASF HyP3](https://hyp3-docs.asf.alaska.edu/) and [OPERA RTC-S1](https://www.jpl.nasa.gov/go/opera/products/rtc-product/). |
 | [PAGASA advisory](https://pubfiles.pagasa.dost.gov.ph/pagasaweb/files/climate/monthlyclimateassessment/11052026_MCAO_EN_Advisory_6.pdf) | November 2026 rainfall outlook quoted in the town panel. |
 | [NAMRIA/PSA/OCHA boundaries](https://data.humdata.org/dataset/cod-ab-phl), via [philippines-json-maps v1.1.1](https://github.com/faeldon/philippines-json-maps/tree/v1.1.1) | Town borders; underlying CC BY 3.0 IGO, conversion MIT. The shipped app does not use geoBoundaries. |
 | [PSA PSGC and POPCEN 2024](https://psa.gov.ph/classification/psgc) | Town codes and population; credit PSA. |

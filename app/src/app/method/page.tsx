@@ -77,6 +77,19 @@ export default function MethodPage() {
             SME2 is the source for the soil water method; GCOV supplies the packaged dam and rice images.
             Science data is freely available under NASA’s open data policy.
             {" "}<a href="https://nisar-docs.asf.alaska.edu/">NISAR Data User Guide and data policy</a>.</li>
+          <li><strong>Rain.</strong> NASA GPM IMERG <code>GPM_3IMERGDL</code> version 07, daily Late Run.
+            It supplies the 12-day rain totals shown on the Dam and Rice pages. GPM data is freely available;
+            NASA asks users to acknowledge the data source and cite the dataset and archive.
+            {" "}<a href="https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDL_07/summary">GPM IMERG dataset</a> ·
+            {" "}<a href="https://gpm.nasa.gov/data/policy">GPM data usage and citation policy</a>.</li>
+          <li><strong>Sentinel-1 radar.</strong> Copernicus Sentinel-1 C-band data, processed as RTC products.
+            It supplies the 2015–16 and 2023–24 Malinao Dam history and the 13 October 2026 rice comparison
+            with NISAR. Sentinel data has free, full and open access under the Copernicus legal notice.
+            For modified data, use the credit “Contains modified Copernicus Sentinel data [year]”.
+            {" "}<a href="https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-missions/sentinel-1">Sentinel-1 collection</a> ·
+            {" "}<a href="https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice">Copernicus Sentinel Data Legal Notice</a> ·
+            {" "}<a href="https://hyp3-docs.asf.alaska.edu/">ASF HyP3</a> ·
+            {" "}<a href="https://www.jpl.nasa.gov/go/opera/products/rtc-product/">OPERA RTC-S1</a>.</li>
           <li><strong>Town borders.</strong> NAMRIA and the Philippine Statistics Authority (PSA),
             through OCHA’s COD-AB. Converted by James Faeldon’s philippines-json-maps v1.1.1,
             with PSGC 3Q 2026 codes, simplified to 1% of vertices and rounded to five decimal places.

@@ -39,9 +39,12 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
     await expect(page.getByRole("main")).toContainText("less than half of it has data");
     await expect(page.getByRole("main")).toContainText("“Pixels with data” in the town panel");
     const sources = page.getByRole("region", { name: "Data sources and licences" });
-    for (const text of ["NASA and ISRO", "NAMRIA", "CC BY 3.0 IGO", "2024 Census", "PSGC 3Q 2026", "DOST-PAGASA", "Open Database Licence"]) {
+    for (const text of ["NASA and ISRO", "GPM IMERG", "12-day rain totals shown on the Dam and Rice pages", "Sentinel-1 radar", "2015–16 and 2023–24 Malinao Dam history", "rice comparison with NISAR", "free, full and open", "Contains modified Copernicus Sentinel data", "NAMRIA", "CC BY 3.0 IGO", "2024 Census", "PSGC 3Q 2026", "DOST-PAGASA", "Open Database Licence"]) {
       await expect(sources).toContainText(text);
     }
+    await expect(sources.getByRole("link", { name: "GPM IMERG dataset" })).toHaveAttribute("href", "https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDL_07/summary");
+    await expect(sources.getByRole("link", { name: "GPM data usage and citation policy" })).toHaveAttribute("href", "https://gpm.nasa.gov/data/policy");
+    await expect(sources.getByRole("link", { name: "Copernicus Sentinel Data Legal Notice" })).toHaveAttribute("href", "https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice");
     expect(await sources.getByRole("link").count()).toBeGreaterThan(8);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: test.info().outputPath(`method-${viewport.width}.png`), fullPage: true });
