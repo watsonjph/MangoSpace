@@ -18,6 +18,7 @@ export interface Manifest {
   windows: { start: IsoDate; end: IsoDate }[]
   bounds: Bounds
   sme2Status: "provisional"
+  rankWindow: number | null // index in windows of the "now" of the rank
   generatedAt: string
 }
 

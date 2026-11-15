@@ -65,7 +65,9 @@ def main():
         lgu["rank"] = result[lgu["psgc"]]
     path.write_text(json.dumps(lgus, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     manifest = json.loads((PUBLIC / "manifest.json").read_text())
-    window = manifest["windows"][now_window(lgus)]
+    manifest["rankWindow"] = now_window(lgus)
+    (PUBLIC / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n")
+    window = manifest["windows"][manifest["rankWindow"]]
     listed = sorted((lgu for lgu in lgus if lgu["rank"]), key=lambda lgu: lgu["rank"]["position"])
     print(f"Window of the rank: {window['start']} to {window['end']}. {len(listed)} of {len(lgus)} towns ranked.")
     for lgu in listed[:TOP]:
