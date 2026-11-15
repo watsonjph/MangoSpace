@@ -72,7 +72,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
               ))}
             </div>
           </div>
-          <Picker dates={dates} index={index} setIndex={setPicked} band={band} setBand={setBand} />
+          <Picker label={fmt(dates[index])} max={dates.length - 1} index={index} setIndex={setPicked} band={band} setBand={setBand} />
           <dl className="dam-stats">
             <div><dt>Mean HV signal</dt><dd data-testid="rice-hv">{db(target.nisar.meanHvDb![index])}</dd></div>
             {rain && <div><dt>Rain in the 12 days before</dt><dd data-testid="rice-rain">{target.rainMm[index].toFixed(0)} mm</dd></div>}

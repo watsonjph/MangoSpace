@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
 
@@ -99,20 +99,25 @@ export function Radar({ src, caption, testId }: { src: string; caption: string; 
 
 export type Band = "hh" | "hv";
 
-export function Picker({ dates, index, setIndex, band, setBand }: {
-  dates: string[]; index: number; setIndex: (index: number) => void; band: Band; setBand: (band: Band) => void;
+// The band buttons are left out when setBand is absent: a Sentinel-1 date has one band.
+export function Picker({ label, max, index, setIndex, band, setBand, children }: {
+  label: string; max: number; index: number; setIndex: (index: number) => void;
+  band: Band; setBand?: (band: Band) => void; children?: ReactNode;
 }) {
   return (
     <div className="dam-picker">
       <label>
-        <span>Date <output>{fmt(dates[index])}</output></span>
-        <input type="range" min={0} max={dates.length - 1} value={index} onChange={(e) => setIndex(Number(e.target.value))} />
+        <span>Date <output>{label}</output></span>
+        <input type="range" min={0} max={max} value={index} onChange={(e) => setIndex(Number(e.target.value))} />
       </label>
-      <div role="group" aria-label="Radar band">
-        {(["hh", "hv"] as const).map((b) => (
-          <button key={b} type="button" aria-pressed={band === b} onClick={() => setBand(b)}>{b.toUpperCase()}</button>
-        ))}
-      </div>
+      {children}
+      {setBand && (
+        <div role="group" aria-label="Radar band">
+          {(["hh", "hv"] as const).map((b) => (
+            <button key={b} type="button" aria-pressed={band === b} onClick={() => setBand(b)}>{b.toUpperCase()}</button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
