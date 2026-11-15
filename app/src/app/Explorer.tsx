@@ -55,7 +55,7 @@ export default function Explorer({ manifest, lgus, outlooks }: { manifest: Manif
         customAttribution: '<a href="https://maplibre.org/" target="_blank">MapLibre</a>',
       },
     });
-    // The OpenFreeMap dark style names POI icons such as "circle-11" that its sprite lacks. They draw nothing either way.
+    // The OpenFreeMap dark style names images its sprite lacks, such as the "circle-11" icon and "wood-pattern" fill. They draw nothing either way.
     m.setMissingStyleImageResolver((id) => { m.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) }); });
     const fitRegion = () => {
       const compact = window.matchMedia("(max-width: 640px)").matches;
