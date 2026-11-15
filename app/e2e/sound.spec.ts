@@ -40,7 +40,7 @@ for (const width of [1280, 375]) {
     const slider = page.getByLabel("Window");
     await expect(sound).toHaveAttribute("aria-pressed", "false");
     expect(await page.evaluate(() => window.audioProbe.contexts)).toBe(0);
-    await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus") && window.hubasMap.loaded());
+    await page.waitForFunction(() => window.hubasMap?.getSource("lgus") && window.hubasMap.isSourceLoaded("lgus") && window.hubasMap.loaded());
     await page.clock.install({ time: new Date("2026-11-15T00:00:00Z") });
     await page.clock.pauseAt(new Date("2026-11-15T00:00:01Z"));
     await sound.click();
@@ -74,7 +74,7 @@ for (const width of [1280, 375]) {
     await sound.click();
     await page.getByRole("button", { name: "Pause", exact: true }).click();
     await page.clock.resume();
-    await page.waitForFunction(() => window.hubasMap?.isSourceLoaded("lgus") && window.hubasMap.loaded());
+    await page.waitForFunction(() => window.hubasMap?.getSource("lgus") && window.hubasMap.isSourceLoaded("lgus") && window.hubasMap.loaded());
     await page.screenshot({ path: test.info().outputPath(`sound-on-${width}.png`), fullPage: true });
     await sound.click();
     await page.screenshot({ path: test.info().outputPath(`sound-${width}.png`), fullPage: true });
