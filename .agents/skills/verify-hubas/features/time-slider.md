@@ -4,7 +4,8 @@ The slider at the bottom moves through the 12-day NISAR windows, from late June 
 
 ## Sub-features
 
-- `slider-play` advances one window per second and stops after the final window; Pause holds the current window.
+- `slider-play` advances one window per second and stops after the final window; Pause holds the current window. Play on the final window starts again from window 0. Hiding the tab pauses playback.
+- `slider-url` keeps the window in the URL as `?window=n`, so reloads and shared links open the same window; an invalid value falls back to window 0.
 - `slider-range` shows the start and end date of the selected window.
 - `slider-map` recolors the map for the new window.
 - `slider-panel` updates the open town panel for the new window.
@@ -30,5 +31,5 @@ Preconditions:
 ## Gotchas
 
 - `drive` sets the slider value directly and fires its change event. It does not test dragging with the mouse or the arrow keys.
-- The keyboard entry point is not covered by `drive`. Use the Playwright MCP: focus `Window`, press `ArrowRight`, read `.slider output`.
+- The keyboard entry point, Play/Pause and opening a `?window=` link are not covered by `drive`. Use the Playwright MCP (focus `Window`, press `ArrowRight`, read `.slider output`; click Play and read the slider value after a second), or run `npx playwright test e2e/sound.spec.ts e2e/map-selection.spec.ts`.
 - The window count comes from the manifest. Real data can have a different count.
