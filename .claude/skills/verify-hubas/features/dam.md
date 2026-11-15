@@ -11,6 +11,7 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - `dam-band` (group `Radar band`): `HH` and `HV`, only on 2026 frames.
 - `dam-comparison` shows Then and Now date selectors with sensor labels, defaulting to 20 Mar 2016 and the latest NISAR date. Drag the Image comparison divider or use its arrow keys. Each side gives percentage change against its own period baseline, with a sensor warning below.
 - `dam-causes` lists possible causes and links to the Method page.
+- `dam-interpretation` is the section "Why the water area can change". Its three lines give the 2026 range and historical lows, possible water-budget causes and nearby rain, and the limits. It links to Method.
 - Each line is named at its end. The chart marks the steady 2026 measurement; the March 2016 minimum is identified separately as historical. Rain has its own numeric axis in mm. Move a mouse or touch the chart for the nearest measured date and value.
 
 ## How to get to it (user POV)
@@ -20,6 +21,8 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 - On a phone the chart and image stack in one column. The stats sit two to a row.
 
 ## Driving it with control-hubas
+
+- Scroll to "Why the water area can change". Check the three labels and the 60.9 mm total before the 2026 low. `npx playwright test e2e/causes-and-next.spec.ts` checks the block. With `PROOF=1`, it writes `sc-476-dam-desktop.png` and `sc-476-dam-mobile.png`.
 
 - Start the static export with `node scripts/control-hubas.mjs up` and run `doctor`.
 - **Open the dam.** Run `node scripts/control-hubas.mjs drive --nav Dam --name dam` and again with `--viewport 375x812`. `path` is `/dam`, `heading` is `The water area is steady now. In past dry events it fell in March.`, and `consoleErrors` is empty. In `aria.yml`: `Now, 5 Nov 2026` with `0.82 km²`, `Lowest in 2015–16` `−52%` (20 Mar 2016), `Lowest in 2023–24` `−19%` (26 Mar 2024).
@@ -31,10 +34,12 @@ The `/dam` page shows the water area of Malinao Dam (Pilar, Bohol) from NISAR ra
 
 ## Gotchas
 
+- The GPM cell near the dam does not cover the whole catchment. Rain before a low area does not establish the cause or rule out a longer rain deficit. The historical percentages use the first date of each event as the baseline.
+
 - Wait for `.dam-page[data-ready=true]` before moving the slider. A fill before hydration is lost, and React then ignores a second fill to the same value.
 - The page has no map, so it does not need the base map, but `drive` starts on `/` and does. Add `--offline-basemap yes` without internet.
 - Past events are Sentinel-1 (C-band VV), 2026 is NISAR (L-band). Their km² differ, so past frames show percent change only. Compare changes, not areas.
 - Dashed scenario lines start at the latest NISAR area and apply past monthly-average changes. They can differ from the lowest single reading of that event. They are not a forecast.
 - The rain bars need `rainMm` to have one value per NISAR date. If not, the chart and the stats hide rain.
-
+- Development-only edge fixtures: run `npm run dev`, then open `/dam?fixture=empty` or `/dam?fixture=single-date`. The former has no chart; the latter has one centered finite point. `npx playwright test e2e/dam-edge-cases.spec.ts` covers both. Production ignores the fixture query.
 - The dam staff labels 2015–16, 2023–24 and 2026, with breaks between periods. Play loads every frame up front and waits on a frame until its image has loaded, so no frame is skipped on a slow line. Run npx playwright test e2e/timelapse.spec.ts to play every frame in order with each image slowed to 400 ms; PROOF=1 saves the dam video and dam/rice screenshots.

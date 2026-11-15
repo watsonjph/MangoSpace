@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Timeline, { type Note, usePlayback } from "./Timeline";
+import SoundTimeline, { type SoundFrame } from "./SoundTimeline";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
 
@@ -31,7 +32,9 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label, 
   const [width, setWidth] = useState(640);
   const [hover, setHover] = useState<number>();
   useEffect(() => {
-    const observer = new ResizeObserver(([entry]) => { if (entry.contentRect.width > 0) setWidth(entry.contentRect.width); });
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width > 0) setWidth(entry.contentRect.width);
+    });
     observer.observe(box.current!);
     return () => observer.disconnect();
   }, []);
@@ -128,51 +131,133 @@ export function Chart({ lines, domain, format, rain, selected, onSelect, label, 
   );
 }
 
-export function Radar({ src, caption, testId }: { src: string; caption: string; testId?: string }) {
+export type Band = "hh" | "hv";
+export type RadarDisplay = Band | "color";
+type RadarImages = { hh: string; hv: string };
+type RadarProps = { caption: string; testId?: string; frameKey: string; onReady: (frameKey: string) => void } & (
+  | { display: "color"; sources: RadarImages }
+  | { display: "history" | Band; src: string }
+);
+
+function ColorComposite({ sources, caption, onReady }: { sources: RadarImages; caption: string; onReady: () => void }) {
+  const canvas = useRef<HTMLCanvasElement>(null);
+  // Not reset on a new date: the last drawn image stays visible until the next one is drawn, so play does not blink.
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+
+  useEffect(() => {
+    let active = true;
+    const load = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error(`Could not load ${src}`));
+      image.src = `/data/${src}`;
+    });
+
+    Promise.all([load(sources.hh), load(sources.hv)]).then(([hh, hv]) => {
+      if (!active) return;
+      if (hh.naturalWidth !== hv.naturalWidth || hh.naturalHeight !== hv.naturalHeight) throw new Error("Radar image sizes differ");
+      const output = canvas.current?.getContext("2d");
+      const layer = document.createElement("canvas");
+      const input = layer.getContext("2d", { willReadFrequently: true });
+      if (!canvas.current || !output || !input) throw new Error("Canvas is unavailable");
+
+      layer.width = hh.naturalWidth;
+      layer.height = hh.naturalHeight;
+      canvas.current.width = hh.naturalWidth;
+      canvas.current.height = hh.naturalHeight;
+      input.drawImage(hh, 0, 0);
+      const red = input.getImageData(0, 0, layer.width, layer.height);
+      input.drawImage(hv, 0, 0);
+      const green = input.getImageData(0, 0, layer.width, layer.height);
+      for (let i = 0; i < red.data.length; i += 4) {
+        red.data[i + 1] = green.data[i];
+        red.data[i + 2] = Math.max(0, Math.min(255, Math.round(2 * (red.data[i] - green.data[i]))));
+        red.data[i + 3] = 255;
+      }
+      output.putImageData(red, 0, 0);
+      setStatus("ready");
+      onReady();
+    }).catch(() => {
+      if (active) {
+        setStatus("error");
+        onReady();
+      }
+    });
+
+    return () => { active = false; };
+  }, [sources.hh, sources.hv, onReady]);
+
   return (
-    <figure className="dam-radar" data-testid={testId}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={`/data/${src}`} alt={caption} width={440} height={440} />
-      <figcaption>{caption}</figcaption>
+    <div className="radar-composite" aria-busy={status === "loading"}>
+      <canvas ref={canvas} role="img" aria-label={caption} width={440} height={440} hidden={status !== "ready"} />
+      {status === "loading" && <span className="radar-status" role="status">Loading color image…</span>}
+      {status === "error" && <span className="radar-status" role="alert">Color image unavailable. Switch to HH or HV.</span>}
+    </div>
+  );
+}
+
+function ColorLegend() {
+  return (
+    <div className="radar-color-legend">
+      <ul>
+        <li><span className="radar-swatch radar-red" />Red shows HH return from −30 to 0 dB; brighter red means a stronger HH return.</li>
+        <li><span className="radar-swatch radar-green" />Green shows HV return from −30 to 0 dB; brighter green means a stronger HV return.</li>
+        <li><span className="radar-swatch radar-blue" />Blue shows the HH/HV power ratio on a fixed 0–15 dB stretch; brighter blue means HH is stronger relative to HV.</li>
+      </ul>
+      <p>Weak returns in both bands can be consistent with water; a stronger HV return can be consistent with vegetation. These signals do not identify land cover, water, or crops.</p>
+    </div>
+  );
+}
+
+export function Radar(props: RadarProps) {
+  const image = useRef<HTMLImageElement>(null);
+  const { display, frameKey, onReady } = props;
+  const markReady = useCallback(() => onReady(frameKey), [frameKey, onReady]);
+  useEffect(() => {
+    if (display !== "color" && image.current?.complete && image.current.naturalWidth > 0) markReady();
+  }, [display, frameKey, markReady]);
+
+  return (
+    <figure className="dam-radar" data-testid={props.testId}>
+      {props.display === "color" ? (
+        <ColorComposite sources={props.sources} caption={props.caption} onReady={markReady} />
+      ) : (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img ref={image} src={`/data/${props.src}`} alt={props.caption} width={440} height={440} onLoad={markReady} onError={markReady} />
+      )}
+      <figcaption>{props.caption}</figcaption>
+      {props.display === "color" && <ColorLegend />}
     </figure>
   );
 }
 
-export type Band = "hh" | "hv";
 const FRAME_MS = 300;
 
-// The band buttons are left out when setBand is absent: a Sentinel-1 date has one band.
+// The display buttons are left out when setDisplay is absent: a Sentinel-1 date has one band.
 // The height of a value on the timeline staff, inside the same range as its chart.
-export const note = (value: number, [low, high]: [number, number]): Note => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
+export const note = (value: number, [low, high]: [number, number]): NonNullable<Note> => ({ at: Math.max(0, Math.min(1, (value - low) / (high - low))) });
 
-// frames: the image of each step. They load up front, and play waits on a frame until it has loaded, so no frame is skipped.
-export function Picker({ label, max, index, setIndex, notes, frames, periods, band, setBand, children }: {
-  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[]; frames: string[];
-  band: Band; setBand?: (band: Band) => void; children?: ReactNode;
+// Playback stays on a frame until the displayed image or composite is ready.
+export function Picker({ label, max, index, setIndex, notes, periods, sounds, pitch, display, setDisplay, ready, children }: {
+  label: string; max: number; index: number; setIndex: (index: number) => void; notes?: Note[];
+  display: RadarDisplay; setDisplay?: (display: RadarDisplay) => void; children?: ReactNode;
   periods?: { index: number; label: string }[];
+  sounds: SoundFrame[]; pitch: string;
+  ready: boolean;
 }) {
-  const [loaded, setLoaded] = useState<ReadonlySet<string>>(new Set());
-  // The views rebuild frames on each render, so the effect keys on the joined list.
-  const list = frames.join(" ");
-  useEffect(() => {
-    for (const src of list.split(" ")) {
-      const image = new Image();
-      // A frame that fails to load must not stop play.
-      image.onload = image.onerror = () => setLoaded((done) => new Set(done).add(src));
-      image.src = `/data/${src}`;
-    }
-  }, [list]);
-  const play = usePlayback(max + 1, index, setIndex, FRAME_MS, loaded.has(frames[index]));
+  const play = usePlayback(max + 1, index, setIndex, FRAME_MS, ready);
   return (
     <div className="dam-picker">
       <Timeline id="date" name="Date" count={max + 1} index={index} onIndex={setIndex} label={label} play={play} notes={notes}
         breaks={periods?.slice(1).map((period) => period.index)}
-        ticks={periods?.map((period, i) => ({ label: period.label, index: (period.index + (periods[i + 1]?.index ?? max + 1) - 1) / 2 }))} />
+        ticks={periods?.map((period, i) => ({ label: period.label, index: (period.index + (periods[i + 1]?.index ?? max + 1) - 1) / 2 }))}>
+        <SoundTimeline frames={sounds} index={index} play={play} stepMs={FRAME_MS} description={pitch} />
+      </Timeline>
       {children}
-      {setBand && (
-        <div role="group" aria-label="Radar band">
-          {(["hh", "hv"] as const).map((b) => (
-            <button key={b} type="button" aria-pressed={band === b} onClick={() => setBand(b)}>{b.toUpperCase()}</button>
+      {setDisplay && (
+        <div role="group" aria-label="Radar display">
+          {(["hh", "hv", "color"] as const).map((mode) => (
+            <button key={mode} type="button" aria-pressed={display === mode} onClick={() => setDisplay(mode)}>{mode === "color" ? "Color" : mode.toUpperCase()}</button>
           ))}
         </div>
       )}

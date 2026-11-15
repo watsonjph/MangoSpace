@@ -36,6 +36,20 @@ body {
 }
 
 a { color: var(--water); text-underline-offset: 3px; }
+.story-page { max-width: 1080px; margin: auto; padding: 32px 24px 64px; }
+.story-page h1 { max-width: 850px; font-size: clamp(34px, 5vw, 64px); line-height: 1.05; }
+.story-intro { max-width: 780px; font-size: 22px; line-height: 1.5; }
+.story-steps { list-style: none; padding: 0; margin: 36px 0; display: grid; gap: 24px; }
+.story-steps li { border-top: 1px solid var(--line); padding-top: 20px; }
+.story-steps h2 { max-width: 900px; font-size: 26px; }
+.story-steps p, .story-page section { max-width: 780px; line-height: 1.6; }
+.timeline-sound { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 260px; text-align: left; }
+.timeline-sound label { display: flex; gap: 8px; align-items: center; font: 11px var(--mono); }
+.timeline-sound input[type="range"] { width: 100px; height: 24px; appearance: auto; }
+.timeline-sound input[type="range"]::-webkit-slider-runnable-track { height: auto; }
+.timeline-sound input[type="range"]::-webkit-slider-thumb { appearance: auto; height: auto; width: auto; }
+.timeline-sound p { flex-basis: 100%; font-size: 11px; line-height: 1.4; margin: 0; color: var(--muted); }
+.timeline .controls { flex-wrap: wrap; align-items: flex-start; justify-content: flex-end; }
 a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -149,6 +163,10 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 .panel .big { font: 600 34px/1.1 var(--mono); letter-spacing: -0.03em; color: var(--water); }
 .panel .big span { font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--muted); }
 .panel .hint { margin: 0; color: var(--muted); }
+.panel .interpretation { padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; }
+.panel .interpretation h2 { font-size: 16px; }
+.interpretation p { margin: 12px 0; }
+.interpretation strong { color: var(--ink); }
 .panel .outlook { padding-top: 12px; border-top: 1px solid var(--line); }
 .panel .outlook dd { font-size: 13px; color: var(--muted); }
 .rank-value { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -179,7 +197,6 @@ button[aria-pressed="true"] { color: var(--ground); background: var(--water); bo
 .chart svg { touch-action: pan-y; }
 .soil-line figcaption, .season-sound p { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 
-/* The timeline is a music staff. The notes are the values, and the thumb of the range input is the playhead. */
 .timeline {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -273,7 +290,8 @@ input[type="range"]::-moz-range-thumb {
 .dam-stats dt { letter-spacing: 0.04em; text-transform: uppercase; }
 .dam-stats dd { margin: 4px 0; font: 600 30px/1.1 var(--mono); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .dam-radar { margin: 0; }
-.dam-radar img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; background: #000; }
+.dam-radar img, .dam-radar canvas { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; background: #000; }
+.dam-radar canvas[hidden] { display: none; }
 .dam-radar figcaption { font: 11px var(--mono); color: var(--muted); margin-top: 6px; }
 .dam-comparison { max-width: 640px; }
 .dam-comparison-dates { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-bottom: 12px; }
@@ -288,6 +306,17 @@ input[type="range"]::-moz-range-thumb {
 .dam-swipe input::-moz-range-thumb { width: 40px; height: 40px; border: 2px solid var(--ink); border-radius: 50%; background: var(--surface); }
 .dam-swipe:has(input:focus-visible) { outline: 2px solid var(--water); outline-offset: 3px; }
 @media (max-width: 640px) { .dam-comparison-dates { grid-template-columns: 1fr; } }
+.radar-composite { display: grid; aspect-ratio: 1; place-items: center; }
+.radar-composite > * { grid-area: 1 / 1; }
+.radar-status { display: block; margin-top: 6px; color: var(--muted); font: 11px var(--mono); }
+.radar-color-legend { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.radar-color-legend ul { display: grid; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.radar-color-legend li { display: flex; gap: 7px; align-items: baseline; }
+.radar-color-legend p { margin: 8px 0 0; }
+.radar-swatch { display: inline-block; flex: 0 0 8px; height: 8px; border-radius: 50%; }
+.radar-red { background: #e3635f; }
+.radar-green { background: #53a976; }
+.radar-blue { background: #5489df; }
 .dam-picker { display: grid; gap: 10px; margin-bottom: 12px; }
 .dam-picker .timeline { grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
 .dam-picker .timeline .play { width: 44px; height: 44px; }
@@ -296,9 +325,8 @@ input[type="range"]::-moz-range-thumb {
 .dam-picker [role="group"] { display: flex; flex-wrap: wrap; gap: 6px; }
 .dam-image { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 28px; align-items: start; }
 .dam-image .dam-stats { grid-template-columns: 1fr; }
-.rice-page .dam-radar img { image-rendering: pixelated; }
+.rice-page .dam-radar img, .rice-page .dam-radar canvas { image-rendering: pixelated; }
 
-/* The score: three staves and the rain on one date axis. The range thumb is the playhead through all of them. */
 .score-page .timeline { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
 .score-page .timeline .play { width: 44px; height: 44px; }
 .score-page .readout { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; align-items: end; }
@@ -351,9 +379,11 @@ input[type="range"]::-moz-range-thumb {
   .tag p { margin: 4px 0 0; font-size: 12px; }
   /* The top bar links Method, and the map needs the room. */
   .tag span, .tag a { display: none; }
+  /* The top bar has no link to /start, so the opening link stays. */
+  .tag .opening-link { display: inline-block; }
   .panel { position: static; grid-row: 2; width: auto; max-height: none; overflow: visible; margin: 12px 12px 0; }
   .explorer > .timeline { grid-row: 3; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; }
-  .explorer > .timeline .readout { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; align-items: end; }
+  .explorer > .timeline .readout { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); justify-items: start; align-items: end; }
   .explorer > .timeline .readout label { justify-items: start; }
 }
 
@@ -362,6 +392,11 @@ input[type="range"]::-moz-range-thumb {
   .topbar { gap: 4px; padding: 0 8px; }
   .brand { font-size: 18px; }
   .topbar nav a { padding: 0 5px; font-size: 10px; letter-spacing: 0; }
+}
+
+/* At 360 px and less the date and the speed and loop buttons do not fit on one row. */
+@media (max-width: 360px) {
+  .explorer > .timeline .readout { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
