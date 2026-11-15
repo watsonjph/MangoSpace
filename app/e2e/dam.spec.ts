@@ -105,3 +105,29 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     expect(errors).toEqual([]);
   });
 }
+
+test("Color stays on screen while play steps through the 2026 dates", async ({ page, request }) => {
+  const dam = ((await (await request.get("/data/targets.json")).json()) as Target[]).find((target) => target.id === "malinao-dam")!;
+  const dates = dam.nisar.dates;
+  await page.goto("/dam");
+  await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
+  const slider = page.getByRole("slider", { name: "Date" });
+  const last = Number(await slider.getAttribute("max"));
+  await slider.fill(String(last - dates.length + 1));
+  await page.getByRole("button", { name: "Color" }).click();
+  const figure = page.getByTestId("dam-radar");
+  await expect(figure.locator("canvas")).toBeVisible();
+  await figure.evaluate((node) => {
+    const seen = { hidden: 0 };
+    (window as unknown as { colorBlink: typeof seen }).colorBlink = seen;
+    const check = () => {
+      const canvas = node.querySelector("canvas");
+      if (!canvas || canvas.hidden) seen.hidden++;
+    };
+    new MutationObserver(check).observe(node, { subtree: true, childList: true, attributes: true });
+  });
+  await page.getByRole("button", { name: "Play" }).click();
+  await expect(page.locator(".dam-picker output")).toHaveText(day(dates.at(-1)!), { timeout: 15_000 });
+  expect(await page.evaluate(() => (window as unknown as { colorBlink: { hidden: number } }).colorBlink.hidden)).toBe(0);
+  await expectColorComposite(figure, dam.nisar.images.at(-1)!);
+});

@@ -141,6 +141,7 @@ type RadarProps = { caption: string; testId?: string } & (
 
 function ColorComposite({ sources, caption }: { sources: RadarImages; caption: string }) {
   const canvas = useRef<HTMLCanvasElement>(null);
+  // Not reset on a new date: the last drawn image stays visible until the next one is drawn, so play does not blink.
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
@@ -208,7 +209,7 @@ export function Radar(props: RadarProps) {
   return (
     <figure className="dam-radar" data-testid={props.testId}>
       {props.display === "color" ? (
-        <ColorComposite key={`${props.sources.hh}:${props.sources.hv}`} sources={props.sources} caption={props.caption} />
+        <ColorComposite sources={props.sources} caption={props.caption} />
       ) : (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img src={`/data/${props.src}`} alt={props.caption} width={440} height={440} />
