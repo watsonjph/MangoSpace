@@ -47,7 +47,7 @@ for (const viewport of [{ width: 1280, height: 800 }, { width: 375, height: 812 
     }
     for (const [name, href] of [
       ["GPM data policy and citation", "https://gpm.nasa.gov/data/policy"],
-      ["Copernicus Sentinel legal notice", "https://cds.climate.copernicus.eu/licences/ec-sentinel"],
+      ["Copernicus Sentinel legal notice", "https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice"],
       ["SMAP dataset and citation", "https://nsidc.org/data/spl3smp_e"],
     ]) {
       await expect(sources.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);

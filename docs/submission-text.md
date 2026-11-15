@@ -53,7 +53,7 @@ We want people to inspect the measurements and their coverage before deciding wh
 
 | Resource | Use |
 | --- | --- |
-| [Copernicus Sentinel-1](https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-1) | Dam history shown in the app and packaged rice comparison images. Contains modified Copernicus Sentinel data 2015–2016, 2023–2024 and 2026. Free, full and open use under the [Copernicus Sentinel legal notice](https://cds.climate.copernicus.eu/licences/ec-sentinel). |
+| [Copernicus Sentinel-1](https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-missions/sentinel-1) | Dam history shown in the app and packaged rice comparison images. Contains modified Copernicus Sentinel data 2015–2016, 2023–2024 and 2026. Free, full and open use under the [Copernicus Sentinel legal notice](https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice). |
 | [PAGASA advisory](https://pubfiles.pagasa.dost.gov.ph/pagasaweb/files/climate/monthlyclimateassessment/11052026_MCAO_EN_Advisory_6.pdf) | November 2026 rainfall outlook quoted in the town panel. |
 | [NAMRIA/PSA/OCHA boundaries](https://data.humdata.org/dataset/cod-ab-phl), via [philippines-json-maps v1.1.1](https://github.com/faeldon/philippines-json-maps/tree/v1.1.1) | Town borders; underlying CC BY 3.0 IGO, conversion MIT. The shipped app does not use geoBoundaries. |
 | [PSA PSGC and POPCEN 2024](https://psa.gov.ph/classification/psgc) | Town codes and population; credit PSA. |

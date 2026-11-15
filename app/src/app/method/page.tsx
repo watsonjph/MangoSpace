@@ -87,8 +87,8 @@ export default function MethodPage() {
             Sentinel-1 rice comparison images are also included in the packaged data.
             Contains modified Copernicus Sentinel data 2015–2016, 2023–2024 and 2026.
             Access and use are free, full and open under the Copernicus Sentinel legal notice.
-            {" "}<a href="https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-1">Sentinel-1 dataset</a> ·
-            {" "}<a href="https://cds.climate.copernicus.eu/licences/ec-sentinel">Copernicus Sentinel legal notice</a> ·
+            {" "}<a href="https://dataspace.copernicus.eu/data-collections/copernicus-sentinel-missions/sentinel-1">Sentinel-1 dataset</a> ·
+            {" "}<a href="https://sentinels.copernicus.eu/documents/247904/690755/Sentinel_Data_Legal_Notice">Copernicus Sentinel legal notice</a> ·
             {" "}<a href="https://hyp3-docs.asf.alaska.edu/">ASF HyP3 processing</a> ·
             {" "}<a href="https://www.jpl.nasa.gov/go/opera/products/rtc-product/">OPERA RTC-S1 processing</a>.</li>
           <li><strong>SMAP soil water check.</strong> NASA NSIDC DAAC, SPL3SMP_E enhanced daily
