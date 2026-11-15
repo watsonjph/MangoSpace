@@ -16,7 +16,7 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 
 - Click Rice in the top bar, or open `/rice`.
 - Pick Ubay or Pilar. Move the Date slider or click the chart. Switch HH and HV.
-- On a phone the page stacks in one column.
+- On a phone the chart and image stack in one column. The two parcel ranges sit side by side.
 
 ## Driving it with control-hubas
 
