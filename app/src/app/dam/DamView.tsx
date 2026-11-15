@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { Target } from "../../../lib/data";
 import MapLink from "../MapLink";
 
@@ -123,10 +123,12 @@ export default function DamView({ dam }: { dam: Target }) {
   const areas = dam.nisar.waterAreaKm2 ?? [];
   const last = dates.length - 1;
   const [picked, setPicked] = useState<number>();
+  // True only after hydration, so tests know the slider and buttons respond.
+  const ready = useSyncExternalStore(() => () => {}, () => true, () => false);
   const [band, setBand] = useState<"hh" | "hv">("hh");
 
   if (!areas.length) return (
-    <main className="dam-page">
+    <main className="dam-page" data-ready={ready}>
       <p className="eyebrow">Malinao Dam · Pilar, Bohol</p>
       <h1>Malinao Dam water area</h1>
       <p data-testid="dam-empty">No water area has been measured for this dam yet.</p>
@@ -165,7 +167,7 @@ export default function DamView({ dam }: { dam: Target }) {
   const lowest = Math.min(...areas, ...scenarios.flatMap((line) => line.points.map(([, value]) => value)));
 
   return (
-    <main className="dam-page">
+    <main className="dam-page" data-ready={ready}>
       <p className="eyebrow">Malinao Dam · Pilar, Bohol</p>
       <h1>The water area is steady now. In past dry events it fell in March.</h1>
       <dl className="dam-stats">
