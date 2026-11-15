@@ -11,6 +11,7 @@ The `/rice` page shows the HV radar signal of two small rice parcels in Bohol, U
 - Band picker (group `Radar band`): `HH` (default) and `HV`.
 - `rice-radar` shows the parcel image, enlarged. `rice-hv` shows the mean HV signal and `rice-rain` the rain in the 12 days before.
 - `rice-empty` replaces the page when no parcel has HV data.
+- Each HV line is named at its end and a note marks the 5 November fall. The axis shows dB once, and rain has its own numeric mm axis. Move a mouse or touch the chart to read both parcels at the nearest date.
 
 ## How to get to it (user POV)
 
