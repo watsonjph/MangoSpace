@@ -47,7 +47,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     // The slider starts on the latest date and runs through the past events first, then 2026.
     await expect(page.getByTestId("dam-area")).toHaveText(`${areas.at(-1)!.toFixed(2)} km²`);
     for (const [i, frame] of past.entries()) {
-      await page.getByRole("slider").fill(String(i));
+      await page.locator("#date").fill(String(i));
       await expect(page.locator(".dam-picker output")).toHaveText(day(frame.date));
       await expect(radar).toHaveAttribute("src", `/data/${frame.image}`);
       await expect.poll(loaded).toBe(440);
@@ -59,7 +59,7 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await expect(page.getByTestId("dam-area")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "HV" })).toHaveCount(0);
     for (const [i, date] of dates.entries()) {
-      await page.getByRole("slider").fill(String(past.length + i));
+      await page.locator("#date").fill(String(past.length + i));
       await expect(page.locator(".dam-picker output")).toHaveText(day(date));
       await expect(page.getByTestId("dam-area")).toHaveText(`${areas[i].toFixed(2)} km²`);
       await expect(page.getByTestId("dam-rain")).toHaveText(`${dam.rainMm[i].toFixed(0)} mm`);
@@ -77,11 +77,11 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     await expect(radarFigure.locator(".radar-color-legend")).toContainText("do not identify land cover");
     await expect(page.getByRole("button", { name: "Color" })).toHaveAttribute("aria-pressed", "true");
     await saveProof(page, `sc-463-dam-color-${viewport.name}.png`);
-    await page.getByRole("slider").fill("0");
+    await page.getByRole("slider", { name: "Date" }).fill("0");
     await expect(radar).toHaveAttribute("src", `/data/${past[0].image}`);
     await expect(radarFigure.locator("canvas")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Color" })).toHaveCount(0);
-    await page.getByRole("slider").fill(String(past.length));
+    await page.getByRole("slider", { name: "Date" }).fill(String(past.length));
     await expectColorComposite(radarFigure, images[0]);
     await expect(page.getByRole("button", { name: "Color" })).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("button", { name: "HH" }).click();
@@ -105,3 +105,29 @@ for (const viewport of [{ name: "desktop", width: 1280, height: 800 }, { name: "
     expect(errors).toEqual([]);
   });
 }
+
+test("Color stays on screen while play steps through the 2026 dates", async ({ page, request }) => {
+  const dam = ((await (await request.get("/data/targets.json")).json()) as Target[]).find((target) => target.id === "malinao-dam")!;
+  const dates = dam.nisar.dates;
+  await page.goto("/dam");
+  await expect(page.locator(".dam-page[data-ready=true]")).toBeVisible();
+  const slider = page.getByRole("slider", { name: "Date" });
+  const last = Number(await slider.getAttribute("max"));
+  await slider.fill(String(last - dates.length + 1));
+  await page.getByRole("button", { name: "Color" }).click();
+  const figure = page.getByTestId("dam-radar");
+  await expect(figure.locator("canvas")).toBeVisible();
+  await figure.evaluate((node) => {
+    const seen = { hidden: 0 };
+    (window as unknown as { colorBlink: typeof seen }).colorBlink = seen;
+    const check = () => {
+      const canvas = node.querySelector("canvas");
+      if (!canvas || canvas.hidden) seen.hidden++;
+    };
+    new MutationObserver(check).observe(node, { subtree: true, childList: true, attributes: true });
+  });
+  await page.getByRole("button", { name: "Play" }).click();
+  await expect(page.locator(".dam-picker output")).toHaveText(day(dates.at(-1)!), { timeout: 15_000 });
+  expect(await page.evaluate(() => (window as unknown as { colorBlink: { hidden: number } }).colorBlink.hidden)).toBe(0);
+  await expectColorComposite(figure, dam.nisar.images.at(-1)!);
+});

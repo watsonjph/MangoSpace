@@ -117,7 +117,10 @@ export default function DamView({ dam }: { dam: Target }) {
         )}
         <div>
           <Picker label={fmt(old ? old.date : dates[index])} max={past.length + last} index={frame} setIndex={setPicked} notes={frames.map((share) => note(share, span))}
-            display={display} setDisplay={old ? undefined : setDisplay} periods={periods} frames={frameSrcs}>
+            periods={periods} frames={frameSrcs}
+            sounds={frames.map((share, i) => ({ low: note(share, span).at, rain: i < past.length ? undefined : dam.rainMm[i - past.length] }))}
+            pitch="A higher pitch means a larger water area relative to the first date of that period. Soft high notes show rain."
+            display={display} setDisplay={old ? undefined : setDisplay}>
             {past.length > 0 && (
               <div role="group" aria-label="Go to">
                 {jumps.map((jump) => (
