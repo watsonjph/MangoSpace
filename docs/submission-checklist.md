@@ -27,12 +27,12 @@ Unchecked means pending, not inapplicable. This repository cannot establish team
 | Item | Evidence or remaining work |
 | --- | --- |
 | Team page and registration | Team/project URL not found in repository or saved build-plan HTML. Team must confirm membership and event acceptance. |
-| Name, summary and description | Hubas; submission copy belongs to sc-175. Recheck claims against the final merged build. |
+| Name, summary and description | Hubas; submission copy belongs to sc-175 (draft in PR #39). Recheck claims against the final merged build. |
 | Repository | [watsonjph/MangoSpace](https://github.com/watsonjph/MangoSpace). |
 | Live app | No confirmed URL found. Deployment is sc-31/sc-260; final submission is sc-205. |
 | Demo | No public link found. sc-201 supplies it. |
-| NASA data | NISAR GCOV images and SME2 processing are in the repository. Soil-water results/ranks remain pending in current main. GPM and SMAP work is in review; cite as used only after checking the final artifact. |
-| Partner and other data | Sentinel-1 history and rice comparison are packaged. PAGASA advisory is in PR #37. Town boundaries use NAMRIA/PSA/OCHA via philippines-json-maps, not geoBoundaries in the shipped app. Cite the actual boundary source. Include PSA population, OpenFreeMap, OpenMapTiles, OpenStreetMap and implementation tools. |
+| NASA data | NISAR GCOV images and SME2 soil water are in the app: town soil water (sc-71) and the dryness rank (sc-120) are merged. SMAP is merged as a check and credited on the Method page (sc-163). GPM rain is in `targets.json` (sc-100) but no page shows or credits it yet; cite GPM only if the dam view ships or the Method page credits it. |
+| Partner and other data | Sentinel-1 history and rice comparison are packaged in `targets.json`; the dam and rice views are not built, so cite them only if they ship. The official PAGASA November outlook is merged (sc-61) and shown in the town panel. Town boundaries use NAMRIA/PSA through OCHA COD-AB via philippines-json-maps v1.1.1, not geoBoundaries. Cite the actual boundary source. Include PSA population, OpenFreeMap, OpenMapTiles, OpenStreetMap and implementation tools. |
 | AI disclosure | Draft below; team must confirm its accuracy and add any other tools/media used. |
 | Second reader | Pending: another team member must read the actual project page before sc-205. Record name and date in the story. |
 
@@ -40,4 +40,4 @@ Unchecked means pending, not inapplicable. This repository cannot establish team
 
 We used Claude and OpenAI Codex to assist with code, tests, documentation and submission text. AI-assisted implementation includes the Python processing pipeline and TypeScript web application. Satellite measurements come from the cited datasets; AI assistance in writing processing code is not a source of satellite observations. The team must review the final code, scientific claims and submitted text. Add any generated media and other AI tools before submission.
 
-Include this disclosure with the project description and repository documentation as well as the form's AI/SI field. Add identifiers in any relevant generated-data metadata without altering the app data contract without the tech lead. Check whether the final demo includes generated media before deciding watermark/audio disclosures are inapplicable.
+Include this disclosure with the project description and repository documentation as well as the form's AI/SI field. Add identifiers to the metadata of any generated data. Changes to the app data contract need the tech lead. Check whether the final demo includes generated media before deciding watermark/audio disclosures are inapplicable.
