@@ -77,7 +77,8 @@ export default function DamView({ dam }: { dam: Target }) {
   return (
     <main className="dam-page" data-ready={ready}>
       <p className="eyebrow">Malinao Dam · Pilar, Bohol</p>
-      <h1>The water area is steady now. In past dry events it fell in March.</h1>
+      <h1 data-testid="view-finding">The water area stayed between {Math.min(...areas).toFixed(2)} and {Math.max(...areas).toFixed(2)} km² in 2026.</h1>
+      <p className="dam-note">Radar alone does not establish the cause of a change. <MapLink href="/method">Read the method and limits</MapLink></p>
       <dl className="dam-stats">
         <div>
           <dt>Now, {fmt(dates[last])}</dt>
