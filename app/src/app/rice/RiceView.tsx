@@ -79,7 +79,7 @@ export default function RiceView({ parcels }: { parcels: Target[] }) {
           <Radar testId="rice-radar" display="color" sources={images[index]}
             caption={`${NAME[target.id]} parcel, NISAR HH/HV color composite, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
         ) : (
-          <Radar testId="rice-radar" display={display} src={images[index][display]}
+          <Radar testId="rice-radar" display={display} sources={images[index]}
             caption={`${NAME[target.id]} parcel, NISAR ${display.toUpperCase()}, ${fmt(dates[index])}. A small parcel, enlarged: each square is one pixel.`} />
         )}
         <div>

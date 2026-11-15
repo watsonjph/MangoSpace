@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Timeline, { type Note, usePlayback } from "./Timeline";
+import RadarInspector from "./RadarInspector";
 import SoundTimeline, { type SoundFrame } from "./SoundTimeline";
 
 export type Line = { label: string; color: string; dashed?: boolean; points: [number, number][] };
@@ -135,8 +136,8 @@ export type Band = "hh" | "hv";
 export type RadarDisplay = Band | "color";
 type RadarImages = { hh: string; hv: string };
 type RadarProps = { caption: string; testId?: string } & (
-  | { display: "color"; sources: RadarImages }
-  | { display: "history" | Band; src: string }
+  | { display: "history"; src: string }
+  | { display: RadarDisplay; sources: RadarImages }
 );
 
 function ColorComposite({ sources, caption }: { sources: RadarImages; caption: string }) {
@@ -206,14 +207,20 @@ function ColorLegend() {
 }
 
 export function Radar(props: RadarProps) {
+  const image = useRef<HTMLImageElement>(null);
+  const src = props.display === "history" ? props.src : props.display === "color" ? null : props.sources[props.display];
+  // The img stays one element across dates, bands and historic frames, so playback and its load listeners follow every frame.
   return (
     <figure className="dam-radar" data-testid={props.testId}>
       {props.display === "color" ? (
         <ColorComposite sources={props.sources} caption={props.caption} />
       ) : (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img src={`/data/${props.src}`} alt={props.caption} width={440} height={440} />
+        <img ref={image} src={`/data/${src}`} alt={props.caption} width={440} height={440} />
       )}
+      {props.display === "history" ? <p className="dam-note">Pixel inspection needs an HH and HV pair. This historic image has one band.</p>
+        : props.display === "color" ? <p className="dam-note">Switch to HH or HV to inspect a pixel.</p>
+          : <RadarInspector image={image} images={props.sources} />}
       <figcaption>{props.caption}</figcaption>
       {props.display === "color" && <ColorLegend />}
     </figure>
